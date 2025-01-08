@@ -1,0 +1,108 @@
+ @import "resources/eliteadmin/scss/variable";
+
+// bootstrap
+$line-height-base:            1.5 !default;
+$border-width:                1px !default;
+$font-weight-normal:          400 !default;
+
+$font-weight-base:  $font-weight-normal !default;
+$input-btn-padding-y:   .375rem !default;
+$input-btn-padding-x:         .75rem !default;
+$input-btn-padding-y-sm:      .25rem !default;
+$input-btn-padding-x-sm:      .5rem !default;
+
+$input-btn-font-size:   $font-size-base !default;
+$input-btn-line-height: $line-height-base !default;
+$input-font-weight: $font-weight-base !default;
+$input-line-height: $input-btn-line-height !default;
+$input-font-size: $input-btn-font-size !default;
+$input-btn-border-width:    $border-width !default;
+$input-border-width:    $input-btn-border-width !default;
+$input-height-border:   $input-border-width * 2 !default;
+$input-padding-y:   $input-btn-padding-y !default;
+$input-padding-x:   $input-btn-padding-x !default;
+$input-padding-y-sm:    $input-btn-padding-y-sm !default;
+$input-padding-x-sm:    $input-btn-padding-x-sm !default;
+$input-height: 38px;
+$input-height-sm: 20px;
+$input-border-radius:   $border-radius !default;
+$emphasized-link-hover-darken-percentage: 15% !default;
+$yiq-text-dark: black !default;
+$yiq-text-light: white !default;
+$yiq-contrasted-threshold: 150 !default;
+
+$ui-max-sizes: () !default;
+$ui-max-sizes: map-merge((
+    "100" : 100,
+    "125" : 125,
+    "150" : 150,
+    "175" : 175,
+    "200" : 200,
+    "225" : 225,
+    "250" : 250,
+    "275" : 275,
+    "300" : 300,
+    "325" : 325,
+    "350" : 350,
+    "375" : 375,
+    "400" : 400,
+    "425" : 425,
+    "450" : 450,
+    "475" : 475,
+    "500" : 500,
+    "525" : 525,
+    "550" : 550,
+    "575" : 575,
+    "600" : 600,
+    ),
+    $ui-max-sizes
+);
+
+$ui-app-colors: () !default;
+$ui-app-colors: map-merge((
+    "light-dark": #edf1f5,
+    "elegant" : #2e2e2e,
+    "elegant-dark" : #212121,
+    "special" : #59698d,
+    "special-dark" : #2d3f60,
+    "unique" : #880e4f,
+    "unique-dark" : #560027,
+    "pink": #ec407a,
+    "purple" : #8e24aa,
+    "deep-purple" : #512da8,
+    "indigo" : #3f51b5,
+    "light-blue" : #82b1ff,
+    "green" :  #4CAF50,
+    "dark-green" : #388e3c,
+    "light-green" : #8bc34a,
+    "yellow" : #fbc02d,
+    "amber" : #ffa000,
+    "deep-orange": #ff7043,
+    "brown" : #795548,
+    "blue-grey" : #78909c,
+    ),
+    $ui-app-colors
+);
+
+// vue2-datepicker start
+$namespace: 'mx' !default;
+
+$default-color: $body-color !default;
+$primary-color: $primary !default;
+// $input-border-color: $input-border-color !default;
+$input-color: $body-color !default;
+$input-hover-border-color: $input-border-color !default;
+
+// vue2-datepicker end
+
+// vue-select start
+$vs-colors: (
+        lightest: $input-border-color,
+        light: rgba(60, 60, 60, 0.5),
+        dark: #333,
+        darkest: rgba(0, 0, 0, .15),
+) !default;
+
+$vs-actions-width: 41px;
+
+// vue-select start

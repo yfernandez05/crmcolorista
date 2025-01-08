@@ -1,0 +1,71 @@
+/*
+Template Name: Admin Template
+Author: Niravjoshi / Wrappixel
+File: scss
+*/
+
+@import 'variable';
+
+//fonts
+@import 'fonts';
+
+//Colors
+@import 'colors/default';
+@import 'colors/green';
+@import 'colors/megna';
+@import 'colors/purple';
+@import 'colors/red';
+@import 'colors/blue';
+@import 'colors/blue-dark';
+@import 'colors/default-dark';
+@import 'colors/green-dark';
+@import 'colors/red-dark';
+@import 'colors/megna-dark';
+@import 'colors/purple-dark';
+
+
+// Import Bootstrap source files
+@import "~bootstrap/scss/bootstrap";
+
+//This is for the icons
+//fortawesome
+$fa-font-path: "../fonts";
+
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+
+//Simple-line-icons
+// $simple-line-font-path: "../fonts/" !default;
+// $simple-line-font-family: "simple-line-icons" !default;
+// $simple-line-icon-prefix: "icon-" !default;
+@import "node_modules/simple-line-icons/scss/simple-line-icons";
+
+//themify-icons
+$ti-font-path: "../fonts" !default;
+@import "node_modules/themify-icons-forked/themify-icons/_themify-icons";
+
+
+//@import '../icons/flag-icon-css/flag-icon.min.css';
+@import '../icons/weather-icons/css/weather-icons.min.css';
+@import "../icons/material-design-iconic-font/css/materialdesignicons.min.css";
+
+
+//vendor styles
+@import '~select2/src/scss/core';
+@import '~jquery-toast-plugin/dist/jquery.toast.min.css';
+@import '~bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css';
+@import '~bootstrap-daterangepicker/daterangepicker.css';
+@import '~sweetalert2/dist/sweetalert2.min.css';
+
+//This is the core files
+
+@import 'core/core';
+@import 'widgets/widgets';
+@import 'responsive';
+
+@import 'pages/other-pages';
+
+//In This scss you can write your scss
+@import 'custom';

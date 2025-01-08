@@ -1,0 +1,183 @@
+@import 'resources/eliteadmin/scss/variable.scss';
+
+/*******************
+Login register and recover password Page
+******************/
+// .login-register{
+//     background-size: cover;
+//     background-repeat: no-repeat;
+//     background-position: center center;
+//     height:100%;
+//     width: 100%;
+//     padding:10% 0;  
+//     position:fixed;
+//   }
+//   .login-box{
+//     width:400px;
+//     margin:0 auto;
+
+//     .footer{
+//       width:100%;
+//       left:0px;
+//       right:0px;
+//     }
+//     .social {
+//       display:block;
+//       margin-bottom:30px;
+//     }
+//   }
+//   #recoverform{
+//      display:none; 
+//   }
+//   .login-sidebar {
+//       padding: 0px;
+
+//       margin-top: 0px;
+//       .login-box{
+//           right: 0px;
+//           position: absolute;
+//           height: 100%;
+//       }
+
+//   }
+
+.login-register {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-image: url(../images/background/login-register.jpg);
+    background-position-y: top;
+    background-position-x: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 1rem;
+
+    &:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        z-index: 0;
+        top: 0;
+        left: 0;
+    }
+}
+
+.ui-auth-about-sistem {
+    text-align: center;
+
+    .card {
+        background: rgba(255, 255, 255, .85);
+        border-radius: 10px;
+    }
+
+    .text-version {
+        font-size: .6em;
+    }
+}
+
+.ui-auth-about-sistem,
+.ui-auth-form-container {
+    min-width: 18.75rem;
+    z-index: 1;
+}
+
+
+@media (min-width: 576px) {
+
+    .ui-auth-about-sistem,
+    .ui-auth-form-container {
+        min-width: 20rem;
+
+    }
+}
+
+@media (min-width: 768px) {
+    .login-register {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0;
+        align-items: stretch;
+    }
+
+    .ui-auth-about-sistem,
+    .ui-auth-form-container {
+        flex-basis: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22rem;
+
+        .card {
+            margin-bottom: 0;
+        }
+    }
+
+    .ui-auth-about-sistem {
+        flex-grow: 2;
+        align-self: center;
+        justify-content: center;
+    }
+
+    .ui-auth-form-container {
+        flex-grow: 1;
+        background: #fff;
+    }
+}
+
+@media (min-width: 992px) {
+    .ui-auth-about-sistem {
+        flex-grow: 3;
+    }
+}
+
+@media (min-width: 1200px){
+    .ui-auth-about-sistem {
+        flex-grow: 5;
+    }
+
+    .ui-auth-form-container {
+        flex-grow: 2;
+    }
+}
+
+//-webkit-autofill
+.form-material,
+.floating-labels {
+
+  input,
+  textarea,
+  select {
+    &:-webkit-autofill {
+      -webkit-box-shadow: inset 0 0 0px 9999px white, 0 0 8px rgba(102, 175, 233, 0.6) !important;
+      border-bottom: 1px solid $gray-200 !important;
+      transition: border-bottom .5s !important;
+
+      &:hover,
+      &:focus {
+        border-color: $themecolor !important;
+      }
+    }
+  }
+}
+
+//new color multiferia
+.c-melon{
+    color: #fff;
+    background-color: #77DD77;
+    border-color: #77DD77;
+
+    &:hover{
+        color: #fff;
+    background-color: #6ac56a;
+    border-color: #6ac56a;
+    }
+}
+
+.t-melon{
+    color: #77DD77;
+}

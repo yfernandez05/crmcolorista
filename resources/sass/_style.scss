@@ -1,0 +1,188 @@
+//function attribute-size
+@mixin attribute-size-variant($parent, $size, $attribute, $otherKey: null, $otherValue: null) {
+    #{$parent} {
+        #{$attribute} : #{$size}px;
+        @if($otherKey !=null and $otherValue != null){
+            #{$otherKey}: #{$otherValue};
+        }
+    }
+
+}
+
+//max-height >= 200
+@each $size,
+$value in $ui-max-sizes {
+    @if $value>=150 {
+        @include attribute-size-variant(".ui-max-h-#{$size}", $value, "max-height");
+    }
+}
+
+//max-widh
+@each $size,
+$value in $ui-max-sizes {
+    @include attribute-size-variant(".ui-max-w-#{$size}", $value, "max-width");
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    label {
+        font-weight: 400;
+        margin-bottom: .35rem;
+    }
+
+    &.form-group-sm {
+        margin-bottom: .675rem;
+
+        label {
+            margin-bottom: .15rem;
+        }
+    }
+}
+
+.form-group-date {
+    .form-control:disabled,
+    .form-control[readonly] {
+        opacity: 1;
+        background-color: #fff;
+    }
+}
+
+.input-group{
+    .input-group-prepend:nth-child(odd) {
+        margin-left: -1px;
+    }
+}
+
+// vue2-datepicker start
+.#{$namespace}-datepicker {
+    width: 100%;
+}
+
+.#{$namespace}-datepicker-range {
+    width: 100%;
+}
+
+.#{$namespace}-input {
+    display: inline-block;
+    width: 100%;
+    height: auto;
+    min-height: $input-height;
+    padding: $input-padding-y $input-padding-x;
+    // padding-left: 10px;
+    font-size: $input-font-size;
+    font-weight: $input-font-weight;
+    line-height: $input-line-height;
+    background-clip: padding-box;
+    border: $input-border-width solid $input-border-color;
+    border-radius: $input-border-radius;
+    box-shadow: none;
+}
+
+.#{$namespace}-datepicker-main {
+    font: $font-size-base $font-family-sans-serif;
+}
+
+.#{$namespace}-datepicker-sm{
+    .#{$namespace}-input {
+        min-height: $input-height-sm;
+        padding: $input-padding-y-sm $input-padding-x-sm;
+    }
+}
+.has-danger {
+    .#{$namespace}-input {
+        border-color: $red;
+    }
+}
+
+// vue2-datepicker end
+
+// vue-select start
+.v-select {
+    // .vs__selected-options {
+    //     max-width: calc(100% - #{$vs-actions-width});
+
+    //     .vs__selected {
+    //         display: block;
+    //         overflow: hidden;
+    //         text-overflow: ellipsis;
+    //         white-space: nowrap;
+    //         max-width: calc(100% - 20px);
+    //     }
+    // }
+
+    .vs__actions {
+        cursor: pointer;
+        // justify-content: flex-end;
+        // min-width: $vs-actions-width;
+    }
+
+}
+
+.v-select-lg {
+    .vs__dropdown-toggle {
+        padding: 4px 0 6px 0;
+    
+        .vs__selected {
+            font-size: .9rem;
+        }
+    }
+}
+
+// vue-select end
+
+/*card group*/
+
+.car-group-container{
+    border-radius: 0px 0px 0 0;
+    border-top: 3px solid #242424;
+    box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 13%);
+    background-color: transparent;
+}
+
+.colorcardchart{
+    box-shadow: rgb(45 82 199 / 13%) 0px 0px 0px 0px, rgb(45 82 199 / 12%) 0px 5px 6px 1px;
+    background-color: rgb(255 255 255 / 0%);
+}
+.title_report{
+    background-color: #242424;
+    padding: 0.5em;
+    color: white;
+}
+.border_report{
+    border: 1px solid #242424;
+    .form-group{
+        border: 1px solid #242424;
+    }
+}
+
+html .qr-scanner-container #video-container .scan-region-highlight-svg,
+html .qr-scanner-container #video-container .code-outline-highlight {
+    stroke: $primary !important;
+}
+.name-qr-response{
+    font-weight: bold;
+}
+.email-qr-response, .dni-qr-response{
+    font-size: smaller;
+    color: #595959;
+}
+
+.custom-swal-qrsucces .swal2-success-line-long{
+    top: 2em !important;
+    right: 0.3em !important;
+    width: 2.6em !important;
+    transform: rotate(-45deg);
+}
+
+.custom-swal-qrsucces .swal2-success-line-tip{
+    top: 2.5em !important;
+    left: 0.65em !important;
+    width: 1.2em !important;
+    transform: rotate(45deg);
+}
+
+
+.form-control:focus {
+    border-color: rgba(0, 0, 0, 0.352);
+    box-shadow: 0 0 2px 0.05rem rgb(52 58 64 / 13%);
+}
