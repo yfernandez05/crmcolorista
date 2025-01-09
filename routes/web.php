@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AsistenciaController;
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Auth::routes(['register' => false]);
@@ -27,7 +28,7 @@ Route::permanentRedirect('/home', '/crm');
 Route::get('crm/{path?}', "SpaController@index")->where('path', '([A-z0-9-\/_.]+)?')->name('spa');
 
 //Routes for consume data
-Route::prefix('rest')->name('rest.')->group(function () {  
+Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::get('user/userasesor', 'UserController@userasesor')->name('user.userasesor');
     Route::get('user/select', 'UserController@select')->name('user.select');
@@ -55,16 +56,16 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
 
 
-    
+
     Route::get('tipoAtencion/select', 'TipoAtencionController@select')->name('tipoAtencion.select');
     Route::resource('tipoAtencion', 'TipoAtencionController')->except(['show', 'create']);
 
     Route::get('atencion/detail/{id}', 'AtencionController@detail')->name('tipoAtencion.detail');
-    Route::resource('atencion', 'AtencionController')->except(['show', 'create']);    
+    Route::resource('atencion', 'AtencionController')->except(['show', 'create']);
 
     Route::get('cuenta/getecampania', 'CuentaController@getecampania')->name('cuenta.getecampania');
     Route::get('cuenta/select', 'CuentaController@select')->name('cuenta.select');
-    Route::resource('cuenta', 'CuentaController')->except(['show', 'create']);   
+    Route::resource('cuenta', 'CuentaController')->except(['show', 'create']);
     Route::get('campania/select', 'CampaniaController@select')->name('campania.select');
     Route::resource('campania', 'CampaniaController')->except(['show', 'create']);
 
@@ -85,14 +86,14 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('cliente', 'ClienteController')->except(['show', 'create']);
 
     Route::resource('clienteevento', 'EventoClienteController');
-    
+
     Route::get('ubigeo/index', 'UbigeoController@index')->name('ubigeo.index');
     Route::get('ubigeo/departamentos', 'UbigeoController@departamentos')->name('ubigeo.departamentos');
     Route::get('ubigeo/provincias', 'UbigeoController@provincias')->name('ubigeo.provincias');
     Route::get('ubigeo/distritos', 'UbigeoController@distritos')->name('ubigeo.distritos');
     Route::get('ubigeo/distritosleccionados', 'UbigeoController@distritosleccionados')->name('ubigeo.distritosleccionados');
 
-    Route::resource('import', 'ImportacionController')->except(['show', 'create']);  
+    Route::resource('import', 'ImportacionController')->except(['show', 'create']);
     Route::resource('logerror', 'LogErrorController')->except(['show', 'create']);
 
     Route::get('reporte/asistenciasedes','ReporteController@asistenciasedes');
@@ -122,5 +123,10 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::get('buttonmessage/select', 'ButtonMessageController@select');
     Route::resource('buttonmessage', 'ButtonMessageController');
-    
+
+
+    Route::get('asistencias', [AsistenciaController::class, 'index']);
+    Route::post('asistencias', [AsistenciaController::class, 'store']);
+    Route::get('asistencias/alumno/{alumno_id}', [AsistenciaController::class, 'getAsistenciasByAlumno']);
+
 });

@@ -9,12 +9,12 @@ window.intranetBaseUrl = '/crm';
 export default new VueRouter({
     mode: 'history',
     routes:[
-        { 
+        {
             path: intranetBaseUrl,
             name: 'spa',
             component: require('./components/empresa/EmpresaIndex').default
         },
-        { 
+        {
             path: `${intranetBaseUrl}/dashboard`,
             name: 'spa.dashboard',
             component: require('./components/dashboard/DashboardIndex').default
@@ -76,7 +76,7 @@ export default new VueRouter({
         },
 
 
-        
+
         {
             path: `${intranetBaseUrl}/alumno`,
             name: 'spa.alumno',
@@ -94,7 +94,7 @@ export default new VueRouter({
         },
 
 
-        
+
         {
             path: `${intranetBaseUrl}/turno`,
             name: 'spa.turno',
@@ -111,8 +111,8 @@ export default new VueRouter({
             component: require('./components/turno/TurnoEdit').default
         },
 
-        
-        
+
+
         {
             path: `${intranetBaseUrl}/curso`,
             name: 'spa.curso',
@@ -129,8 +129,8 @@ export default new VueRouter({
             component: require('./components/curso/CursoEdit').default
         },
 
-                
-        
+
+
         {
             path: `${intranetBaseUrl}/carrera`,
             name: 'spa.carrera',
@@ -166,7 +166,7 @@ export default new VueRouter({
         },
 
 
-                
+
         {
             path: `${intranetBaseUrl}/planestudio`,
             name: 'spa.planestudio',
@@ -182,10 +182,10 @@ export default new VueRouter({
             name: 'spa.planestudio.editar',
             component: require('./components/planestudio/PlanEstudioEdit').default
         },
-        
 
-        
-                
+
+
+
 
 
 
@@ -227,7 +227,7 @@ export default new VueRouter({
         {
             path: `${intranetBaseUrl}/evento`,
             name: 'spa.evento',
-            component: require('./components/evento/Eventoindex').default 
+            component: require('./components/evento/Eventoindex').default
         },
         {
             path: `${intranetBaseUrl}/evento/registrar`,
@@ -239,7 +239,7 @@ export default new VueRouter({
             name: 'spa.evento.editar',
             component: require('./components/evento/EventoEdit').default
         },
-        
+
 
         {
             path: `${intranetBaseUrl}/cliente`,
@@ -251,7 +251,7 @@ export default new VueRouter({
             name: 'spa.clienteevento',
             component: require('./components/cliente/ClienteEventoIndex').default
         },
-        
+
 
         {
             path: `${intranetBaseUrl}/tipoAtencion`,
@@ -274,7 +274,7 @@ export default new VueRouter({
             name: 'spa.atencion.atender',
             component: require('./components/atencion/AtencionCreate').default
         },
-        
+
 
         {
             path: `${intranetBaseUrl}/export`,
@@ -331,6 +331,12 @@ export default new VueRouter({
             path: `${intranetBaseUrl}/buttonmessage/editar/:id`,
             name: 'spa.buttonmessage.editar',
             component: require('./components/buttonmessage/ButtonMessageEdit').default
+        },
+
+        {
+            path: `${intranetBaseUrl}/asistencia`,
+            name: 'spa.asistencia',
+            component: require('./components/asistencia/AlumnoAsistencia').default
         },
 
         { path: '*', redirect: intranetBaseUrl },
