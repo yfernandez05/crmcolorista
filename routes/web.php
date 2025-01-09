@@ -127,6 +127,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::get('asistencias', [AsistenciaController::class, 'index']);
     Route::post('asistencias', [AsistenciaController::class, 'store']);
+    Route::get('alumno/generatecard/{id}','AlumnoController@generatecard')->name('alumno.generatecard');
     Route::get('asistencias/alumno/{alumno_id}', [AsistenciaController::class, 'getAsistenciasByAlumno']);
 
 });

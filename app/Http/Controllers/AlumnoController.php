@@ -6,6 +6,7 @@ use App\Models\Alumno;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
 use App\Util\RuleManager;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -154,5 +155,18 @@ class AlumnoController extends BaseController
         $alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y', $request->fecha_inscripcion);        
         
         return $alumno;
+    }
+
+    public function generatecard($id){
+        $alumno = Alumno::find($id);
+
+      
+        //$qrCodeDataUri = 'data:image/svg+xml;base64,' . base64_encode($qryf);//local
+        //$pdf = Pdf::loadView('card.cardaccess', ['cliente' => $cliente, 'qryf' => $qrCodeDataUri]); //local
+        
+       /*  $qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qryf); *///prod
+        $pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno]); //prod
+
+        return $pdf->stream('Carnet - '.$alumno->nombre.' '.$alumno->apellido. '.pdf');
     }
 }

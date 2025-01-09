@@ -65,6 +65,10 @@
                         <tr v-for="alum in alumnos" :key="alum.id">
                             <td>
                                 <row-actions :rowData="alum" @rowItemActions="rowItemActions">
+                                    <button type="button" title="Carnet Acceso" @click="donwloadcard(alum.id)"
+                                           class="btn btn-sm  waves-effect waves-light border-0 mr-1 btn-outline-warning">
+                                        <i class="fas fa-lg fa-address-card"></i>
+                                    </button>
                                 </row-actions>
                             </td>
                             <td v-text="alum.id"></td>
@@ -204,6 +208,12 @@
                 this.alumno.apellido = '';
                 this.alumno.correo = '';
             },
+
+            donwloadcard(data){
+                // console.log(data);
+                let urlPdf = `${appApiUrl}/alumno/generatecard/${data}`;
+                window.open(urlPdf,'_blank')
+            }
 
 
         },

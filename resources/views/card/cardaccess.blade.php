@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carnet de Acceso - {{$cliente->nombres}} {{$cliente->apellidopaterno}} {{$cliente->apellidomaterno}}</title>
+    <title>Carnet de Acceso - {{$alumno->nombre}} {{$alumno->apellido}}</title>
 
     <style>
       @page {
@@ -96,13 +96,14 @@
         {{-- <img src="{{asset('images/card/logo-card.jpg')}}" alt="Logo" class="light-logo" /> --}} 
     </div>
     <div class="info">
-        <h2>{{$cliente->nombres}}</h2>
-        <h2>{{$cliente->apellidopaterno}} {{$cliente->apellidomaterno}}</h2>
-        <p class="text-primary">{{$cliente->colegio}} </p>
+        <h2>{{$alumno->nombre}}</h2>
+        <h2>{{$alumno->apellido}}</h2>
+        <p class="text-primary">{{$alumno->curso}} </p>
+        <h6 style="margin-top: 3em;">{{$alumno->correo}}</h6>
     </div>
-    <div class="qrcode">
-    <img src="{{ $qryf }}" alt="QR Code">
-    </div>
+    {{--<div class="qrcode">
+        <img src="{{ $qryf }}" alt="QR Code">
+    </div>--}}
 </div>
     
 </body>
