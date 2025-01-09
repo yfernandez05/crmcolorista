@@ -30,6 +30,75 @@
                     <input type="text" class="form-control" v-model="alumno.correo" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('correo')" v-text="showError('correo').errorDetail"></small>
                 </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('curso')}">
+                    <label>Curso <small class="text-danger">(*)</small></label>
+                    <input type="text" class="form-control" v-model="alumno.curso" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('curso')" v-text="showError('curso').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('asesoracargo')}">
+                    <label>Asesor a cargo </label>
+                    <input type="text" class="form-control" v-model="alumno.asesoracargo" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('asesoracargo')" v-text="showError('asesoracargo').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('dni')}">
+                    <label>DNI </label>
+                    <input type="text" class="form-control" v-model="alumno.dni" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('dni')" v-text="showError('dni').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('direccion')}">
+                    <label>Dirección </label>
+                    <input type="text" class="form-control" v-model="alumno.direccion" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('direccion')" v-text="showError('direccion').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('distrito')}">
+                    <label>Distrito </label>
+                    <input type="text" class="form-control" v-model="alumno.distrito" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('distrito')" v-text="showError('distrito').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('celular')}">
+                    <label>Celular </label>
+                    <input type="text" class="form-control" v-model="alumno.celular" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('celular')" v-text="showError('celular').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('empresa')}">
+                    <label>Empresa </label>
+                    <input type="text" class="form-control" v-model="alumno.empresa" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('empresa')" v-text="showError('empresa').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('cargodesempenia')}">
+                    <label>Cargo que desempeña </label>
+                    <input type="text" class="form-control" v-model="alumno.cargodesempenia" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('cargodesempenia')" v-text="showError('cargodesempenia').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('colegiosegundario')}">
+                    <label>Colegio segundario </label>
+                    <input type="text" class="form-control" v-model="alumno.colegiosegundario" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('colegiosegundario')" v-text="showError('colegiosegundario').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('inicioclases')}">
+                    <label>Inicio de clases </label>
+                    <input type="text" class="form-control" v-model="alumno.inicioclases" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('inicioclases')" v-text="showError('inicioclases').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('turno')}">
+                    <label>Turno </label>
+                    <input type="text" class="form-control" v-model="alumno.turno" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('turno')" v-text="showError('turno').errorDetail"></small>
+                </div>                
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('pago')}">
+                    <label>Pago </label>
+                    <input type="text" class="form-control" v-model="alumno.pago" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('pago')" v-text="showError('pago').errorDetail"></small>
+                </div>       
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('fecha_inscripcion')}">
+                    <label>Fecha Inscripción </label>
+                    <v-date-picker v-model="alumno.fecha_inscripcion"
+                        format="DD-MM-YYYY"
+                        value-type="format"
+                        placeholder="Seccione">
+                    </v-date-picker>
+                    <small class="form-control-feedback" v-if="errorExists('fecha_inscripcion')" v-text="showError('fecha_inscripcion').errorDetail"></small>
+                </div>         
             </div>
             <hr class="mt-2">
         </template>
@@ -71,6 +140,19 @@
                         apellido: '',
                         fecha_nac: '',
                         correo: '',
+                        asesoracargo: '',
+                        dni: '',
+                        direccion: '',
+                        distrito: '',
+                        celular: '',
+                        empresa: '',
+                        cargodesempenia: '',
+                        colegiosegundario: '',
+                        inicioclases: '',
+                        turno: '',
+                        pago: '',
+                        fecha_inscripcion: '',
+                        curso: '',
                     }
                 }
             }
@@ -92,6 +174,19 @@
                     apellido: this.alumno.apellido,
                     correo: this.alumno.correo,
                     fecha_nac: this.alumno.fecha_nac,
+                    asesoracargo: this.alumno.asesoracargo,
+                    dni: this.alumno.dni,
+                    direccion: this.alumno.direccion,
+                    distrito: this.alumno.distrito,
+                    celular: this.alumno.celular,
+                    empresa: this.alumno.empresa,
+                    cargodesempenia: this.alumno.cargodesempenia,
+                    colegiosegundario: this.alumno.colegiosegundario,
+                    inicioclases: this.alumno.inicioclases,
+                    turno: this.alumno.turno,
+                    pago: this.alumno.pago,
+                    fecha_inscripcion: this.alumno.fecha_inscripcion,
+                    curso: this.alumno.curso,
                 }
 
                 this.$emit('saveData', rolData);

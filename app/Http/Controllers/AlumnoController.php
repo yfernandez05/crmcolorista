@@ -139,6 +139,20 @@ class AlumnoController extends BaseController
         $alumno->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
         $alumno->correo = $request->correo;
         $alumno->user_id = 1;
+        $alumno->asesoracargo = $request->asesoracargo;
+        $alumno->dni = $request->dni;
+        $alumno->direccion = $request->direccion;
+        $alumno->distrito = $request->distrito;
+        $alumno->celular = $request->celular;
+        $alumno->empresa = $request->empresa;
+        $alumno->cargodesempenia = $request->cargodesempenia;
+        $alumno->colegiosegundario = $request->colegiosegundario;
+        $alumno->inicioclases = $request->inicioclases;
+        $alumno->turno = $request->turno;
+        $alumno->pago = $request->pago;
+        $alumno->curso = $request->curso;
+        $alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y', $request->fecha_inscripcion);        
+        
         return $alumno;
     }
 }

@@ -38,6 +38,7 @@
                         }
                         vm.alumno = response.data;
                         vm.alumno.fecha_nac = vm.formatDate(vm.alumno.fecha_nac, 'DD-MM-YYYY');
+                        vm.alumno.fecha_inscripcion = vm.formatDate(vm.alumno.fecha_inscripcion, 'DD-MM-YYYY');
 
                         if(!vm.alumno.isactive){
                             warningMessage(appCannotDeleteMessage, appName);

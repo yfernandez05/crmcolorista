@@ -120,7 +120,7 @@
                 </li>
 
                 <li class="nav-small-cap">
-                    <span>FOMRULARIO</span>
+                    <span>FORMULARIO</span>
                 </li>
                 <li>
                     <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">

@@ -57,6 +57,7 @@
                             <th class="p-2">Nombre</th>
                             <th class="p-2">Apellido</th>
                             <th class="p-2">Correo</th>
+                            <th class="p-2">Curso</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -70,6 +71,7 @@
                             <td v-text="alum.nombre"></td>                            
                             <td v-text="alum.apellido"></td>                            
                             <td v-text="alum.correo"></td>                            
+                            <td v-text="alum.curso"></td>                            
                             <td >
                                 <span class="badge badge-pill py-1 px-3" 
                                     :class="alum.isactive ? 'badge-success':'badge-danger'"

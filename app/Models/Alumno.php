@@ -18,6 +18,19 @@ class Alumno extends Model
         'correo',        
         'user_id',
         'prospecto_id',
+        'asesoracargo',
+        'dni',
+        'direccion',
+        'distrito',
+        'celular',
+        'empresa',
+        'cargodesempenia',
+        'colegiosegundario',
+        'inicioclases',
+        'turno',
+        'pago',
+        'fecha_inscripcion',        
+        'curso',        
         'estado',
     ];
 
@@ -30,9 +43,11 @@ class Alumno extends Model
 
     protected $casts = [
         'fecha_nac' => 'datetime:Y-m-d',
+        'fecha_inscripcion' => 'datetime:Y-m-d',
     ];
     protected $dates = [
         'fecha_nac',
+        'fecha_inscripcion',
     ];
 
 
@@ -40,6 +55,7 @@ class Alumno extends Model
         'isactive',
         'statename',
         'fechanacimiento',
+        'fechainscripcion',
     ];
 
     public function getIsactiveAttribute(){
@@ -51,6 +67,11 @@ class Alumno extends Model
     }
 
     public function getFechanacimientoAttribute()
+    {
+        return optional($this->fecha_nac)->format('d-m-Y');
+    }
+
+    public function getFechainscripcionAttribute()
     {
         return optional($this->fecha_nac)->format('d-m-Y');
     }
