@@ -125,9 +125,11 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('buttonmessage', 'ButtonMessageController');
 
 
-    Route::get('asistencias', [AsistenciaController::class, 'index']);
-    Route::post('asistencias', [AsistenciaController::class, 'store']);
-    Route::get('alumno/generatecard/{id}','AlumnoController@generatecard')->name('alumno.generatecard');
+    //Route::get('asistencias', [AsistenciaController::class, 'index']);
+    //Route::post('asistencias', [AsistenciaController::class, 'store']);
+    Route::get('asistencias/select', 'AsistenciaController@select')->name('asistencias.select');
     Route::get('asistencias/alumno/{alumno_id}', [AsistenciaController::class, 'getAsistenciasByAlumno']);
+    Route::resource('asistencias', 'AsistenciaController')->except(['show', 'create']);
+    Route::get('alumno/generatecard/{id}','AlumnoController@generatecard')->name('alumno.generatecard');
 
 });

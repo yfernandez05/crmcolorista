@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Alumno;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,7 @@ class Asistencia extends Model
     protected $fillable = [
         'alumno_id',
         'fecha_asistencia',
+        'fecha',
         'estado',
     ];
 
@@ -35,7 +37,7 @@ class Asistencia extends Model
     protected $appends = [
         'isactive',
         'statename',
-        'fecha',
+        'fechaasis',
     ];
 
     public function getIsactiveAttribute(){
@@ -45,8 +47,12 @@ class Asistencia extends Model
     public function getStatenameAttribute(){
         return RuleManager::getStateName($this->estado);
     }
-    public function getFechaAttribute()
+    public function getFechaasisAttribute()
     {
         return optional($this->fecha_asistencia)->format('d-m-Y H:i:s');
+    }
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class);
     }
 }

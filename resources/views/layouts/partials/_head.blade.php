@@ -11,4 +11,4 @@
 
 <!-- Favicon icon -->
 <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
-<title>Sistema de eventos QR</title>
+<title>Coloristas</title>

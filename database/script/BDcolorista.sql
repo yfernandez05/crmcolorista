@@ -851,7 +851,7 @@ CREATE TABLE `asistencias` (
 );
 
 
-ALTER TABLE alumnos 
+ALTER TABLE alumnos
 ADD COLUMN `curso` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
 ADD COLUMN `asesoracargo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
 ADD COLUMN  `dni` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
@@ -865,3 +865,11 @@ ADD COLUMN `inicioclases` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_uni
 ADD COLUMN `turno` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
 ADD COLUMN `pago` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
 ADD COLUMN `fecha_inscripcion` date NULL;
+
+
+ALTER TABLE asistencias ADD COLUMN fecha timestamp DEFAULT NULL AFTER fecha_asistencia;
+
+ALTER TABLE `alumnos`
+CHANGE COLUMN `fecha_nac` `fecha_nac` DATE NULL ;
+
+

@@ -112,7 +112,7 @@ class AlumnoController extends BaseController
     {
         $result = "";
 
-        try {    
+        try {
 
             $alumno = Alumno::findOrFail($id);
             $alumno->estado = RuleManager::DISABLED_STATE;
@@ -137,7 +137,7 @@ class AlumnoController extends BaseController
     {
         $alumno->nombre = $request->nombre;
         $alumno->apellido = $request->apellido;
-        $alumno->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
+        //$alumno->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
         $alumno->correo = $request->correo;
         $alumno->user_id = 1;
         $alumno->asesoracargo = $request->asesoracargo;
@@ -152,18 +152,24 @@ class AlumnoController extends BaseController
         $alumno->turno = $request->turno;
         $alumno->pago = $request->pago;
         $alumno->curso = $request->curso;
-        $alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y', $request->fecha_inscripcion);        
-        
+        if (!is_null($request->fecha_nac)) {
+            $alumno->fecha_nac = Carbon::createFromFormat('d-m-Y H:i:s', $request->fecha_nac);
+        }
+        if (!is_null($request->fecha_inscripcion)) {
+            $alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y H:i:s', $request->fecha_inscripcion);
+        }
+        //$alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y', $request->fecha_inscripcion);
+
         return $alumno;
     }
 
     public function generatecard($id){
         $alumno = Alumno::find($id);
 
-      
+
         //$qrCodeDataUri = 'data:image/svg+xml;base64,' . base64_encode($qryf);//local
         //$pdf = Pdf::loadView('card.cardaccess', ['cliente' => $cliente, 'qryf' => $qrCodeDataUri]); //local
-        
+
        /*  $qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qryf); *///prod
         $pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno]); //prod
 

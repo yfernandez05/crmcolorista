@@ -25,6 +25,11 @@
                     <span class="form-control form-control-sm d-block text-truncate text-muted"
                         v-text="alumno.correo"></span>
                 </div>
+                <div class="form-group form-group-sm col-12 col-sm-6 col-md-4 col-xl-3">
+                    <label class="mb-0">Curso</label>
+                    <span class="form-control form-control-sm d-block text-truncate text-muted"
+                        v-text="alumno.curso"></span>
+                </div>
 
 
             </div>
@@ -40,7 +45,7 @@
                     <tbody>
                         <tr v-for="asiste in asistencias" :key="asiste.id">
                             <td v-text="asiste.id"></td>
-                            <td v-text="asiste.fecha"></td>
+                            <td v-text="asiste.fechaasis"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -73,6 +78,7 @@ export default {
                 nombre:'',
             };
             this.alumnos = [];
+            this.asistencias = [];
         },
         showDetail(data){
             console.log(data);
@@ -80,9 +86,10 @@ export default {
             this.obtenerasistencias(this.alumno.id);
             this.showModal = true;
         },
-        obtenerasistencias(alumnoId) {
+        obtenerasistencias(data) {
             showPreloader();
-            axios.get(`${appApiUrl}/asistencias/alumno/${alumnoId}`)
+            let vm = this;
+            axios.get(`${appApiUrl}/asistencias/alumno/${vm.alumno.id}`)
                 .then(response => {
                     hidePreloader();
                     if (!response.data.asistencias || response.data.asistencias.length === 0) {

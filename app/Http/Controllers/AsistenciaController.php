@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Carbon\Carbon;
+use App\Models\Alumno;
 use App\Util\RuleManager;
 use App\Models\Asistencia;
 use App\Util\ResultManager;
 use Illuminate\Http\Request;
 use App\Util\LogErrorManager;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 
 class AsistenciaController extends BaseController
@@ -21,14 +23,33 @@ class AsistenciaController extends BaseController
     public function index(Request $request)
     {
         $filters = $this->getFilters($request, new Asistencia());
-        $perpage = $this->getLimitPagination($request);
+        $perpage = $this->getLimitPagination($request) ?? 10; // Default to 10 if not provided
 
-        $query = Asistencia::where($filters);
+        $query = DB::table('alumnos as al')
+            ->leftJoin('asistencias as asi', function($join) use ($request) {
+                $fecha = $request->input('fecha', Carbon::now()->format('Y-m-d')); // Use today's date if not provided
+                $join->on('asi.alumno_id', '=', 'al.id')
+                    ->whereRaw("asi.fecha = STR_TO_DATE(?, '%Y-%m-%d')", [$fecha]);
+        })
+        ->select('al.*', 'asi.fecha', DB::raw("IF(ISNULL(asi.fecha), 'Pendiente', 'Asistencia Marcada') as Asistencia"))
+        ->where('al.estado', 'A');
 
-        $asistencia = $query-> orderBy('id', 'DESC')
-            ->paginate($perpage);
+            // Apply additional filters
+            if ($request->has('nombre')) {
+                $query->where('al.nombre', 'like', '%' . $request->input('nombre') . '%');
+            }
+            if ($request->has('apellido')) {
+                $query->where('al.apellido', 'like', '%' . $request->input('apellido') . '%');
+            }
+            if ($request->has('curso')) {
+                $query->where('al.curso', 'like', '%' . $request->input('curso') . '%');
+            }
 
-        return response()->json($asistencia);
+            $asistencia = $query->orderBy('al.id', 'DESC')
+                ->paginate($perpage);
+
+            return response()->json($asistencia);
+
     }
 
     /**
@@ -54,6 +75,8 @@ class AsistenciaController extends BaseController
             $asistencia = Asistencia::create([
                 'alumno_id' => $request->alumno_id,
                 'fecha_asistencia' => $request->fecha_asistencia,
+                'fecha' => $request->fecha,
+
             ]);
 
             return response()->json(['status' => true, 'message' => 'Asistencia marcada correctamente.', 'data' => $asistencia], 201);
@@ -108,8 +131,28 @@ class AsistenciaController extends BaseController
 
     public function getAsistenciasByAlumno($alumno_id)
     {
-        $asistencias = Asistencia::where('alumno_id', $alumno_id)->orderBy('fecha_asistencia', 'DESC')->get();
+        $asistencias = Asistencia::where('alumno_id', $alumno_id)
+        ->orderBy('fecha_asistencia', 'DESC')
+        ->get();
         return response()->json(['asistencias' => $asistencias]);
+    }
+
+    public function select(Request $request)
+    {
+        // $filters = $this->getFilters($request, new Asistencia());
+
+        // $queryasistencia = Asistencia::where($filters);
+
+        // // Agregar filtro para la fecha de hoy
+        // $hoy = date('Y-m-d');
+        // $queryasistencia->whereDate('fecha_asistencia', $hoy);
+
+        // $asistencia = $queryasistencia->orderBy('id', 'DESC')->get();
+        // return $asistencia;
+
+
+
+
     }
 
 }
