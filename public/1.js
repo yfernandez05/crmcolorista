@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-/*! @license DOMPurify 2.5.8 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.5.8/LICENSE */
+/*! @license DOMPurify 2.5.6 | (c) Cure53 and other contributors | Released under the Apache license 2.0 and Mozilla Public License 2.0 | github.com/cure53/DOMPurify/blob/2.5.6/LICENSE */
 
 (function (global, factory) {
    true ? module.exports = factory() :
@@ -232,7 +232,7 @@
   var MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm); // Specify template detection regex for SAFE_FOR_TEMPLATES mode
   var ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
   var TMPLIT_EXPR = seal(/\${[\w\W]*}/gm);
-  var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]+$/); // eslint-disable-line no-useless-escape
+  var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/); // eslint-disable-line no-useless-escape
   var ARIA_ATTR = seal(/^aria-[\-\w]+$/); // eslint-disable-line no-useless-escape
   var IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i // eslint-disable-line no-useless-escape
   );
@@ -295,7 +295,7 @@
      * Version label, exposed for easier checks
      * if DOMPurify is up to date or not
      */
-    DOMPurify.version = '2.5.8';
+    DOMPurify.version = '2.5.6';
 
     /**
      * Array of elements that DOMPurify removed during sanitation.
@@ -682,7 +682,7 @@
       CONFIG = cfg;
     };
     var MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, ['mi', 'mo', 'mn', 'ms', 'mtext']);
-    var HTML_INTEGRATION_POINTS = addToSet({}, ['annotation-xml']);
+    var HTML_INTEGRATION_POINTS = addToSet({}, ['foreignobject', 'annotation-xml']);
 
     // Certain elements are allowed in both SVG and HTML
     // namespace. We need to specify them explicitly
@@ -1130,7 +1130,7 @@
       var attributes = currentNode.attributes;
 
       /* Check if we have attributes; if not we might have a text node */
-      if (!attributes || _isClobbered(currentNode)) {
+      if (!attributes) {
         return;
       }
       var hookEvent = {
@@ -1157,6 +1157,12 @@
         hookEvent.forceKeepAttr = undefined; // Allows developers to see this is a property they can set
         _executeHook('uponSanitizeAttribute', currentNode, hookEvent);
         value = hookEvent.attrValue;
+
+        /* Work around a security issue with comments inside attributes */
+        if (SAFE_FOR_XML && regExpTest(/((--!?|])>)|<\/(style|title)/i, value)) {
+          _removeAttribute(name, currentNode);
+          continue;
+        }
 
         /* Did the hooks approve of the attribute? */
         if (hookEvent.forceKeepAttr) {
@@ -1199,12 +1205,6 @@
 
           // Prefix the value and later re-create the attribute with the sanitized value
           value = SANITIZE_NAMED_PROPS_PREFIX + value;
-        }
-
-        /* Work around a security issue with comments inside attributes */
-        if (SAFE_FOR_XML && regExpTest(/((--!?|])>)|<\/(style|title)/i, value)) {
-          _removeAttribute(name, currentNode);
-          continue;
         }
 
         /* Handle attributes that require Trusted Types */
@@ -1259,16 +1259,19 @@
       while (shadowNode = shadowIterator.nextNode()) {
         /* Execute a hook if present */
         _executeHook('uponSanitizeShadowNode', shadowNode, null);
-        /* Sanitize tags and elements */
-        _sanitizeElements(shadowNode);
 
-        /* Check attributes next */
-        _sanitizeAttributes(shadowNode);
+        /* Sanitize tags and elements */
+        if (_sanitizeElements(shadowNode)) {
+          continue;
+        }
 
         /* Deep shadow DOM detected */
         if (shadowNode.content instanceof DocumentFragment) {
           _sanitizeShadowDOM(shadowNode.content);
         }
+
+        /* Check attributes, sanitize if necessary */
+        _sanitizeAttributes(shadowNode);
       }
 
       /* Execute a hook if present */
@@ -1390,15 +1393,17 @@
         }
 
         /* Sanitize tags and elements */
-        _sanitizeElements(currentNode);
-
-        /* Check attributes next */
-        _sanitizeAttributes(currentNode);
+        if (_sanitizeElements(currentNode)) {
+          continue;
+        }
 
         /* Shadow DOM detected, sanitize it */
         if (currentNode.content instanceof DocumentFragment) {
           _sanitizeShadowDOM(currentNode.content);
         }
+
+        /* Check attributes, sanitize if necessary */
+        _sanitizeAttributes(currentNode);
         oldNode = currentNode;
       }
       oldNode = null;
