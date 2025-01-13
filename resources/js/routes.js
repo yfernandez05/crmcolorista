@@ -339,6 +339,37 @@ export default new VueRouter({
             component: require('./components/asistencia/AlumnoAsistencia').default
         },
 
+        {
+            path: `${intranetBaseUrl}/prospecto`,
+            name: 'spa.prospecto',
+            component: require('./components/prospecto/ProspectoIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/prospecto/registrar`,
+            name: 'spa.prospecto.registrar',
+            component: require('./components/prospecto/ProspectoCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/prospecto/editar/:id`,
+            name: 'spa.prospecto.editar',
+            component: require('./components/prospecto/ProspectoEdit').default
+        },
+        {
+            path: `${intranetBaseUrl}/seguimiento`,
+            name: 'spa.seguimiento',
+            component: require('./components/seguimiento/SeguimientoIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/seguimiento/registrar`,
+            name: 'spa.seguimiento.registrar',
+            component: require('./components/seguimiento/SeguimientoCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/seguimiento/editar/:id`,
+            name: 'spa.seguimiento.editar',
+            component: require('./components/seguimiento/SeguimientoEdit').default
+        },
+
         { path: '*', redirect: intranetBaseUrl },
         { path: '/', redirect: intranetBaseUrl },
     ]

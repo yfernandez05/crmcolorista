@@ -134,6 +134,18 @@
                         <!-- <li><router-link :to="{name: 'spa.turno'}">Periodo</router-link></li> -->
                     </ul>
                 </li>
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                        <i class="fas fa-users"></i>
+                        <span class="hide-menu">Prospecto</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+
+                        <li><router-link :to="{name: 'spa.prospecto'}">Prospecto</router-link></li>
+                        <li><router-link :to="{name: 'spa.seguimiento'}">seguimientos</router-link></li>
+
+                    </ul>
+                </li>
 
 
                 <!-- <li><router-link :to="{name: 'spa.import'}"><i class="fas fa-file-import"></i><span class="hide-menu">Importar Registros</span></li></router-link>
