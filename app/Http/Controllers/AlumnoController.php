@@ -175,4 +175,15 @@ class AlumnoController extends BaseController
 
         return $pdf->stream('Carnet - '.$alumno->nombre.' '.$alumno->apellido. '.pdf');
     }
+
+    public function select(Request $request)
+    {
+        $filters = $this->getFilters($request, new Alumno());
+
+        $carrera = Alumno::where($filters)
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        return $carrera;
+    }
 }

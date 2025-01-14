@@ -221,6 +221,24 @@ export default new VueRouter({
 
 
 
+        {
+            path: `${intranetBaseUrl}/inscripcion`,
+            name: 'spa.inscripcion',
+            component: require('./components/inscripcion/InscripcionIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/inscripcion/registrar`,
+            name: 'spa.inscripcion.registrar',
+            component: require('./components/inscripcion/InscripcionCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/inscripcion/editar/:id`,
+            name: 'spa.inscripcion.editar',
+            component: require('./components/inscripcion/InscripcionEdit').default
+        },
+
+
+
 
 
 

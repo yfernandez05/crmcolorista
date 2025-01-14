@@ -39,6 +39,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::resource('condicion', 'CondicionController');
 
+    Route::get('alumno/select', 'AlumnoController@select')->name('alumno.select');
     Route::resource('alumno', 'AlumnoController');
 
     Route::resource('turno', 'TurnoController');
@@ -139,5 +140,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     
     Route::resource('conceptopago', 'ConceptoPagoController');
     Route::resource('periodo', 'PeriodoController');
+
+    Route::resource('inscripcion', 'InscripcionController');
 
 });
