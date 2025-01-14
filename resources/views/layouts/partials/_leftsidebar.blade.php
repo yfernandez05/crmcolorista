@@ -131,7 +131,7 @@
                         <!-- <li><router-link :to="{name: 'spa.carrera'}">Matricula</router-link></li>
                         <li><router-link :to="{name: 'spa.turno'}">Inscripción</router-link></li> -->
                         <li><router-link :to="{name: 'spa.ciclo'}">Ciclo</router-link></li>
-                        <!-- <li><router-link :to="{name: 'spa.turno'}">Periodo</router-link></li> -->
+                        <li><router-link :to="{name: 'spa.periodo'}">Periodo</router-link></li>
                     </ul>
                 </li>
                 <li>
@@ -144,6 +144,22 @@
                         <li><router-link :to="{name: 'spa.prospecto'}">Prospecto</router-link></li>
                         <li><router-link :to="{name: 'spa.seguimiento'}">seguimientos</router-link></li>
 
+                    </ul>
+                </li>
+
+                <li class="nav-small-cap">
+                    <span>CAJA</span>
+                </li>
+                <li>
+                    <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
+                        <i class="fas fa-cash-register"></i>
+                        <span class="hide-menu">Pagos</span>
+                    </a>
+                    <ul aria-expanded="false" class="collapse">
+                        <!-- <li><router-link :to="{name: 'spa.carrera'}">Matricula</router-link></li>
+                        <li><router-link :to="{name: 'spa.turno'}">Inscripción</router-link></li> -->
+                        <li><router-link :to="{name: 'spa.conceptopago'}">CONCEPTO DE PAGO</router-link></li>
+                        <!-- <li><router-link :to="{name: 'spa.turno'}">Periodo</router-link></li> -->
                     </ul>
                 </li>
 

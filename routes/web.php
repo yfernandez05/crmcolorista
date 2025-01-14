@@ -136,4 +136,8 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('prospecto', 'ProspectoController')->except(['create']);
     Route::resource('seguimiento', 'SeguimientoController')->except(['create']);
 
+    
+    Route::resource('conceptopago', 'ConceptoPagoController');
+    Route::resource('periodo', 'PeriodoController');
+
 });

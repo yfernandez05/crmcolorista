@@ -185,10 +185,51 @@ export default new VueRouter({
 
 
 
+        {
+            path: `${intranetBaseUrl}/conceptopago`,
+            name: 'spa.conceptopago',
+            component: require('./components/conceptopago/ConceptoIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/conceptopago/registrar`,
+            name: 'spa.conceptopago.registrar',
+            component: require('./components/conceptopago/ConceptoCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/conceptopago/editar/:id`,
+            name: 'spa.conceptopago.editar',
+            component: require('./components/conceptopago/ConceptoEdit').default
+        },
+
+
+
+        {
+            path: `${intranetBaseUrl}/periodo`,
+            name: 'spa.periodo',
+            component: require('./components/periodo/PeriodoIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/periodo/registrar`,
+            name: 'spa.periodo.registrar',
+            component: require('./components/periodo/PeriodoCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/periodo/editar/:id`,
+            name: 'spa.periodo.editar',
+            component: require('./components/periodo/PeriodoEdit').default
+        },
 
 
 
 
+
+
+
+
+
+
+
+        
 
 
 
