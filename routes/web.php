@@ -37,11 +37,13 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('rol/select', 'RolController@select')->name('rol.select');
     Route::resource('rol', 'RolController')->except(['show', 'create']);
 
+    Route::get('condicion/select', 'CondicionController@select');
     Route::resource('condicion', 'CondicionController');
 
     Route::get('alumno/select', 'AlumnoController@select')->name('alumno.select');
     Route::resource('alumno', 'AlumnoController');
 
+    Route::get('turno/select', 'TurnoController@select');
     Route::resource('turno', 'TurnoController');
 
     Route::resource('curso', 'CursoController');
@@ -139,8 +141,12 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     
     Route::resource('conceptopago', 'ConceptoPagoController');
+
+    Route::get('periodo/select', 'PeriodoController@select');
     Route::resource('periodo', 'PeriodoController');
 
     Route::resource('inscripcion', 'InscripcionController');
+
+    Route::resource('matricula', 'MatriculaController');
 
 });

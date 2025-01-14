@@ -138,4 +138,16 @@ class PeriodoController extends BaseController
         $periodo->descripcion = $request->descripcion;
         return $periodo;
     }
+
+    public function select(Request $request)
+    {
+        $filters = $this->getFilters($request, new Periodo());
+
+        $queryprospecto = Periodo::where($filters);
+
+        $prospecto = $queryprospecto->orderBy('id', 'DESC')
+            ->get();
+        return $prospecto;
+
+    }
 }

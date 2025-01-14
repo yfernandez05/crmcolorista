@@ -2,7 +2,15 @@
 
 namespace App\Models;
 
+use App\User;
+use App\Models\Condicion;
+use App\Models\Periodo;
+use App\Models\Ciclo;
+use App\Models\Carrera;
+use App\Models\Turno;
 use App\Util\RuleManager;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Matricula extends Model
@@ -14,11 +22,12 @@ class Matricula extends Model
     protected $fillable = [
         'detalle',
         'fecha',
-        'inscripcion_id',
         'ciclo_id',        
         'periodo_id',
         'condicion_id',
         'turno_id',
+        'alumno_id',
+        'carrera_id',
         'user_id',
         'estado',
     ];
@@ -30,13 +39,14 @@ class Matricula extends Model
         'updated_at',
     ];
 
-    protected $casts = [
-        
-    ];
     protected $dates = [
        
     ];
 
+
+    protected $casts = [
+        'fecha' => 'datetime',
+    ];
 
     protected $appends = [
         'isactive',
@@ -51,5 +61,39 @@ class Matricula extends Model
         return RuleManager::getStateName($this->estado);
     }
 
+    public function alumno()
+    {
+        return $this->belongsTo(Alumno::class, 'alumno_id', 'id');
+    }
+
+    public function carrera()
+    {
+        return $this->belongsTo(Carrera::class, 'carrera_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function ciclo()
+    {
+        return $this->belongsTo(Ciclo::class, 'ciclo_id', 'id');
+    }
+    public function periodo()
+    {
+        return $this->belongsTo(Periodo::class, 'periodo_id', 'id');
+    }
+    public function condicion()
+    {
+        return $this->belongsTo(Condicion::class, 'condicion_id', 'id');
+    }
+    public function turno()
+    {
+        return $this->belongsTo(Turno::class, 'turno_id', 'id');
+    }
+
+    public function scopeFecha(Builder $query,$fecha){
+        $query->whereDate('fecha', Carbon::createFromFormat('d-m-Y', $fecha)->toDateString());
+    }
     
 }

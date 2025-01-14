@@ -549,3 +549,24 @@ BEGIN
     END IF;
 END //
 DELIMITER ;
+
+
+
+
+/***update 14/01/25********/
+ALTER TABLE matriculas
+ADD COLUMN alumno_id BIGINT UNSIGNED NOT NULL AFTER turno_id,
+ADD COLUMN carrera_id BIGINT UNSIGNED NOT NULL AFTER alumno_id,
+ADD KEY matriculas_alumno_id_foreign (alumno_id),
+ADD KEY matriculas_carrera_id_foreign (carrera_id),
+ADD CONSTRAINT matriculas_alumno_id_foreign FOREIGN KEY (alumno_id) REFERENCES alumnos (id),
+ADD CONSTRAINT matriculas_carrera_id_foreign FOREIGN KEY (carrera_id) REFERENCES carreras (id);
+
+ALTER TABLE matriculas
+DROP FOREIGN KEY matriculas_inscripcion_id_foreign;
+
+ALTER TABLE matriculas
+DROP INDEX matriculas_inscripcion_id_foreign;
+
+ALTER TABLE matriculas
+DROP COLUMN inscripcion_id;

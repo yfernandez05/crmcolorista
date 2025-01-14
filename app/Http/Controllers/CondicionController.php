@@ -136,4 +136,16 @@ class CondicionController extends BaseController
         $condicion->nombre = $request->nombre;
         return $condicion;
     }
+
+    public function select(Request $request)
+    {
+        $filters = $this->getFilters($request, new Condicion());
+
+        $queryprospecto = Condicion::where($filters);
+
+        $prospecto = $queryprospecto->orderBy('id', 'DESC')
+            ->get();
+        return $prospecto;
+
+    }
 }

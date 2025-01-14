@@ -138,4 +138,17 @@ class TurnoController extends BaseController
         $turno->descripcion = $request->descripcion;
         return $turno;
     }
+
+    public function select(Request $request)
+    {
+        $filters = $this->getFilters($request, new Turno());
+
+        $queryprospecto = Turno::where($filters);
+
+        $prospecto = $queryprospecto->orderBy('id', 'DESC')
+            ->get();
+        return $prospecto;
+
+    }
+
 }

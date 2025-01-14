@@ -239,6 +239,24 @@ export default new VueRouter({
 
 
 
+        {
+            path: `${intranetBaseUrl}/matricula`,
+            name: 'spa.matricula',
+            component: require('./components/matricula/MatriculaIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/matricula/registrar`,
+            name: 'spa.matricula.registrar',
+            component: require('./components/matricula/MatriculaCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/matricula/editar/:id`,
+            name: 'spa.matricula.editar',
+            component: require('./components/matricula/MatriculaEdit').default
+        },
+
+
+
 
 
 

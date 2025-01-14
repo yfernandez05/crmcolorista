@@ -1,0 +1,283 @@
+<template>
+    <main-content columnClass="col-12 col-xl-10">
+        <template v-slot:card-header-title>
+            <span v-text="cardTitle"></span>
+        </template>
+
+        <template v-slot:card-body-main>
+            <div class="form-row">
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle')}">
+                    <label>Detalle <small class="text-danger">(*)</small></label>
+                    <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('fecha')}">
+                    <label>Fecha</label>
+                    <v-date-picker v-model="matricula.fecha"
+                        format="DD-MM-YYYY"
+                        value-type="format"
+                        placeholder="Seccione una fecha">
+                    </v-date-picker>
+                    <small class="form-control-feedback" v-if="errorExists('fecha')" v-text="showError('fecha').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('alumno_id')}">
+                    <label>Alumno <small class="text-danger">(*)</small></label>
+                    <select2 :options="alumnos" v-model="matricula.alumno_id" :selectValue="matricula.alumno_id"
+                        placeholder="Seleccione un alumno" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('alumno_id')"
+                        v-text="showError('alumno_id').errorDetail"></small>
+                </div>              
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('carrera_id')}">
+                    <label>Carrera <small class="text-danger">(*)</small></label>
+                    <select2 :options="carreras" v-model="matricula.carrera_id" :selectValue="matricula.carrera_id"
+                        placeholder="Seleccione una carrera" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('carrera_id')"
+                        v-text="showError('carrera_id').errorDetail"></small>
+                </div>              
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('ciclo_id')}">
+                    <label>Ciclos <small class="text-danger">(*)</small></label>
+                    <select2 :options="ciclos" v-model="matricula.ciclo_id" :selectValue="matricula.ciclo_id"
+                        placeholder="Seleccione un ciclo" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('ciclo_id')"
+                        v-text="showError('ciclo_id').errorDetail"></small>
+                </div>              
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('periodo_id')}">
+                    <label>Periodo <small class="text-danger">(*)</small></label>
+                    <select2 :options="periodos" v-model="matricula.periodo_id" :selectValue="matricula.periodo_id"
+                        placeholder="Seleccione un periodo" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('periodo_id')"
+                        v-text="showError('periodo_id').errorDetail"></small>
+                </div>              
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('condicion_id')}">
+                    <label>Condicion <small class="text-danger">(*)</small></label>
+                    <select2 :options="condiciones" v-model="matricula.condicion_id" :selectValue="matricula.condicion_id"
+                        placeholder="Seleccione una condicion" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('condicion_id')"
+                        v-text="showError('condicion_id').errorDetail"></small>
+                </div>              
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('turno_id')}">
+                    <label>Turno <small class="text-danger">(*)</small></label>
+                    <select2 :options="turnos" v-model="matricula.turno_id" :selectValue="matricula.turno_id"
+                        placeholder="Seleccione un turno" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('turno_id')"
+                        v-text="showError('turno_id').errorDetail"></small>
+                </div>              
+            </div>
+            <hr class="mt-2">
+        </template>
+
+        <template v-slot:card-body-actions>
+            <router-link :to="{name: 'spa.matricula'}" class="btn waves-effect waves-light btn-info mr-2">
+                <i class="fas fa-reply"></i> <span class="button-text">Atrás</span>
+            </router-link>
+
+            <div>
+                <button type="button" class="btn btn-success waves-effect waves-light" @click="doSaveData">
+                    <i class="fa fa-save"></i>
+                    Guardar
+                </button>
+                <button type="reset" class="btn waves-effect waves-light btn-outline-secondary ml-2">
+                    <i class="fa fa-window-close"></i> <span class="button-text">Cancelar</span>
+                </button>
+            </div>
+        </template>
+
+    </main-content>
+</template>
+
+<script>
+    import MainContent from './../../utils/MainContent';
+    import Select2 from './../../utils/Select2';
+    import VDatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/locale/es';
+    import moment,{ now } from 'moment';
+
+    export default {
+        props: {
+            cardTitle: {
+                default: 'Matricula'
+            },
+            matricula: {
+                type: Object,
+                default() {
+                    return {
+                        detalle: '',
+                        fecha:'',
+                        alumno_id: '',
+                        carrera_id: '',
+                        ciclo_id: '',
+                        periodo_id: '',
+                        condicion_id: '',
+                        turno_id: '',
+                    }
+                }
+            }
+        },
+        data(){
+            return {
+                carreras: [],
+                alumnos: [],
+                ciclos: [],
+                periodos: [],
+                condiciones: [],
+                turnos: [],
+                errors: []
+            }
+        },
+        methods: {
+            doSaveData() {
+
+                if (this.validateFields().length > 0) {
+                    return;
+                }
+
+                let matriculaData = {
+                    detalle: this.matricula.detalle,
+                    fecha: this.matricula.fecha,
+                    alumno_id: this.matricula.alumno_id,
+                    carrera_id: this.matricula.carrera_id,
+                    ciclo_id: this.matricula.ciclo_id,
+                    periodo_id: this.matricula.periodo_id,
+                    condicion_id: this.matricula.condicion_id,
+                    turno_id: this.matricula.turno_id,
+                }
+
+                this.$emit('saveData', matriculaData);
+            },
+
+            validateFields() {
+                this.errors = [];
+
+                if (!this.matricula.detalle) {
+                    this.setError('detalle', 'El campo detalle es obligatorio');
+                }
+                if (!this.matricula.fecha) {
+                    this.setError('fecha', 'El campo fecha es obligatorio');
+                }
+                if (!this.matricula.alumno_id) {
+                    this.setError('alumno_id', 'El campo alumno es obligatorio');
+                }
+                if (!this.matricula.carrera_id) {
+                    this.setError('carrera_id', 'El campo carrera es obligatorio');
+                }
+                if (!this.matricula.ciclo_id) {
+                    this.setError('ciclo_id', 'El campo ciclo es obligatorio');
+                }
+                if (!this.matricula.periodo_id) {
+                    this.setError('periodo_id', 'El campo periodo es obligatorio');
+                }
+                if (!this.matricula.condicion_id) {
+                    this.setError('condicion_id', 'El campo condicion es obligatorio');
+                }
+                if (!this.matricula.turno_id) {
+                    this.setError('turno_id', 'El campo turno es obligatorio');
+                }
+
+                return this.errors;
+            },
+            setError(keyModel, errorDetail) {
+                this.errors.push({
+                    keyModel: keyModel,
+                    errorDetail: errorDetail
+                });
+            },
+            errorExists(keyModel){
+                return this.errors.filter(err => err.keyModel === keyModel).length;
+            },
+            showError(keyModel){
+                return this.errors.find(err => err.keyModel === keyModel);
+            },
+            listarAlumnos() {
+                let vm = this;
+                axios.get(`${appApiUrl}/alumno/select`)
+                    .then(function (response) {
+                        vm.alumnos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            listarCarreras() {
+                let vm = this;
+                axios.get(`${appApiUrl}/carrera/select`)
+                    .then(function (response) {
+                        vm.carreras = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            listarCiclo() {
+                let vm = this;
+                axios.get(`${appApiUrl}/ciclo/select`)
+                    .then(function (response) {
+                        vm.ciclos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            listarPeriodo() {
+                let vm = this;
+                axios.get(`${appApiUrl}/periodo/select`)
+                    .then(function (response) {
+                        vm.periodos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            listarCondicion() {
+                let vm = this;
+                axios.get(`${appApiUrl}/condicion/select`)
+                    .then(function (response) {
+                        vm.condiciones = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            listarTurno() {
+                let vm = this;
+                axios.get(`${appApiUrl}/turno/select`)
+                    .then(function (response) {
+                        vm.turnos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            formatDate (value, fmt = 'D MMM YYYY') {
+                return (value == null)
+                    ? ''
+                    : moment(value, 'YYYY-MM-DD HH:mm:ss').format(fmt)
+            },
+
+        },
+        mounted(){
+            this.listarAlumnos();
+            this.listarCarreras();
+            this.listarCiclo();
+            this.listarPeriodo();
+            this.listarCondicion();
+            this.listarTurno();
+            this.matricula.fecha = this.formatDate(new Date(),'DD-MM-YYYY');
+
+        },
+        components: {
+            MainContent,
+            Select2,
+            VDatePicker
+        }
+    }
+
+</script>

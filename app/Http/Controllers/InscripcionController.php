@@ -141,7 +141,7 @@ class InscripcionController extends BaseController
         $inscripcion->fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
         $inscripcion->alumno_id = $request->alumno_id;
         $inscripcion->carrera_id = $request->carrera_id;
-        $inscripcion->user_id = $request->user_id;
+        $inscripcion->user_id = Auth()->user()->id;
         return $inscripcion;
     }
 }

@@ -128,7 +128,7 @@
                         <span class="hide-menu">Matriculas</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-                        <!-- <li><router-link :to="{name: 'spa.carrera'}">Matricula</router-link></li> -->
+                        <li><router-link :to="{name: 'spa.matricula'}">Matricula</router-link></li>
                         <li><router-link :to="{name: 'spa.inscripcion'}">Inscripción</router-link></li>
                         <li><router-link :to="{name: 'spa.ciclo'}">Ciclo</router-link></li>
                         <li><router-link :to="{name: 'spa.periodo'}">Periodo</router-link></li>
