@@ -872,4 +872,8 @@ ALTER TABLE asistencias ADD COLUMN fecha timestamp DEFAULT NULL AFTER fecha_asis
 ALTER TABLE `alumnos`
 CHANGE COLUMN `fecha_nac` `fecha_nac` DATE NULL ;
 
+-- 13-01-2025
+ALTER TABLE `prospectos`
+CHANGE COLUMN `fecha_nac` `fecha_nac` DATE NULL ;
+
 

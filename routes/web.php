@@ -132,4 +132,8 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('asistencias', 'AsistenciaController')->except(['show', 'create']);
     Route::get('alumno/generatecard/{id}','AlumnoController@generatecard')->name('alumno.generatecard');
 
+    Route::get('prospecto/select', 'ProspectoController@select')->name('prospecto.select');
+    Route::resource('prospecto', 'ProspectoController')->except(['create']);
+    Route::resource('seguimiento', 'SeguimientoController')->except(['create']);
+
 });
