@@ -6,26 +6,11 @@
 
         <template v-slot:card-body-main>
             <div class="form-row">
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle')}">
-                    <label>Detalle <small class="text-danger">(*)</small></label>
-                    <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
-                </div>
-
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('fecha')}">
-                    <label>Fecha</label>
-                    <v-date-picker v-model="matricula.fecha"
-                        format="DD-MM-YYYY"
-                        value-type="format"
-                        placeholder="Seccione una fecha">
-                    </v-date-picker>
-                    <small class="form-control-feedback" v-if="errorExists('fecha')" v-text="showError('fecha').errorDetail"></small>
-                </div>
-
+            
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('alumno_id')}">
                     <label>Alumno <small class="text-danger">(*)</small></label>
                     <select2 :options="alumnos" v-model="matricula.alumno_id" :selectValue="matricula.alumno_id"
-                        placeholder="Seleccione un alumno" keyProperty="id" textProperty="nombre">
+                        placeholder="Seleccione un alumno" keyProperty="id" textProperty="nombrecompleto">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('alumno_id')"
                         v-text="showError('alumno_id').errorDetail"></small>
@@ -70,7 +55,22 @@
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('turno_id')"
                         v-text="showError('turno_id').errorDetail"></small>
-                </div>              
+                </div>  
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle')}">
+                    <label>Detalle <small class="text-danger">(*)</small></label>
+                    <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('fecha')}">
+                    <label>Fecha</label>
+                    <v-date-picker v-model="matricula.fecha"
+                        format="DD-MM-YYYY"
+                        value-type="format"
+                        placeholder="Seccione una fecha">
+                    </v-date-picker>
+                    <small class="form-control-feedback" v-if="errorExists('fecha')" v-text="showError('fecha').errorDetail"></small>
+                </div>            
             </div>
             <hr class="mt-2">
         </template>

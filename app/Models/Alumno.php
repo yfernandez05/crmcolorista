@@ -56,6 +56,7 @@ class Alumno extends Model
         'statename',
         'fechanacimiento',
         'fechainscripcion',
+        'nombrecompleto'
     ];
 
     public function getIsactiveAttribute(){
@@ -74,6 +75,16 @@ class Alumno extends Model
     public function getFechainscripcionAttribute()
     {
         return optional($this->fecha_nac)->format('d-m-Y');
+    }
+
+    public function getNombrecompletoAttribute()
+    {
+        $nombreCompleto = $this->nombre;
+
+        if($this->apellido != null)
+            $nombreCompleto = $nombreCompleto.' '.$this->apellido;
+
+        return $nombreCompleto;
     }
     
 }
