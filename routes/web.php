@@ -140,6 +140,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('seguimiento', 'SeguimientoController')->except(['create']);
 
     
+    Route::get('conceptopago/select', 'ConceptoPagoController@select');
     Route::resource('conceptopago', 'ConceptoPagoController');
 
     Route::get('periodo/select', 'PeriodoController@select');
@@ -147,6 +148,9 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::resource('inscripcion', 'InscripcionController');
 
+    Route::get('matricula/select', 'MatriculaController@select');
     Route::resource('matricula', 'MatriculaController');
+
+    Route::resource('pago', 'PagoController');
 
 });

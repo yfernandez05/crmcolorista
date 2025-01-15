@@ -156,9 +156,9 @@
                         <span class="hide-menu">Pagos</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-                        <!-- <li><router-link :to="{name: 'spa.carrera'}">Matricula</router-link></li>
-                        <li><router-link :to="{name: 'spa.turno'}">Inscripción</router-link></li> -->
-                        <li><router-link :to="{name: 'spa.conceptopago'}">CONCEPTO DE PAGO</router-link></li>
+                        <!-- <li><router-link :to="{name: 'spa.carrera'}">Matricula</router-link></li>-->
+                        <li><router-link :to="{name: 'spa.conceptopago'}">Concepto de pago</router-link></li>
+                        <li><router-link :to="{name: 'spa.pago'}">Pago</router-link></li>
                         <!-- <li><router-link :to="{name: 'spa.turno'}">Periodo</router-link></li> -->
                     </ul>
                 </li>

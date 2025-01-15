@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ConceptoPago;
+use App\Models\Pago;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
 use App\Util\RuleManager;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
-class ConceptoPagoController extends BaseController
+class PagoController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -19,14 +20,15 @@ class ConceptoPagoController extends BaseController
      */
     public function index(Request $request)
     {
-        $filters = $this->getFilters($request, new ConceptoPago());
+        $filters = $this->getFilters($request, new Pago());
         $perpage = $this->getLimitPagination($request);
 
-        $conceptopago = ConceptoPago::where($filters)
+        $pago = Pago::where($filters)
+            ->with('matricula','conceptopago')
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
             
-        return $conceptopago;
+        return $pago;
     }
 
     /**
@@ -40,20 +42,20 @@ class ConceptoPagoController extends BaseController
         $result = "";
         try {
 
-            $conceptopago = $this->setModel(new ConceptoPago(), $request);
-            $conceptopago->created_usr  = $this->user->email;
-            $conceptopago->save();
+            $pago = $this->setModel(new Pago(), $request);
+            $pago->created_usr  = $this->user->email;
+            $pago->save();
 
             $result = ResultManager::genericSuccessMessage();
 
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-
-            $result = ResultManager::errorMessage('Es posible que haya un concepto de pago registrado con el mismo nombre.');
+            dd($e);
+            $result = ResultManager::gerericErrorMessage();
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-
+            dd($e);
             $result = ResultManager::gerericErrorMessage();
         }
 
@@ -63,19 +65,20 @@ class ConceptoPagoController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\ConceptoPago  $conceptoPago
+     * @param  \App\Pago  $pago
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return ConceptoPago::find($id);
+        $pago = Pago::with('matricula','conceptopago')->find($id);
+        return $pago;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ConceptoPago  $conceptoPago
+     * @param  \App\Pago  $pago
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -83,16 +86,16 @@ class ConceptoPagoController extends BaseController
         $result = "";
         try {
 
-            $conceptoPago = $this->setModel(ConceptoPago::findOrFail($id), $request);
-            $conceptoPago->created_usr = $this->user->email;
-            $conceptoPago->update();
+            $pago = $this->setModel(Pago::findOrFail($id), $request);
+            $pago->created_usr = $this->user->email;
+            $pago->update();
 
             $result = ResultManager::genericSuccessMessage();
 
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
 
-            $result = ResultManager::errorMessage('Es posible que hay un concepto de pago registrado con el mismo nombre.');
+            $result = ResultManager::gerericErrorMessage();
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
@@ -106,7 +109,7 @@ class ConceptoPagoController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ConceptoPago  $conceptoPago
+     * @param  \App\Pago  $pago
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -114,11 +117,11 @@ class ConceptoPagoController extends BaseController
         $result = "";
         try {
 
-            $conceptoPago = ConceptoPago::findOrFail($id);
-            $conceptoPago->estado = RuleManager::DISABLED_STATE;
-            $conceptoPago->update();
+            $pago = Pago::findOrFail($id);
+            $pago->estado = RuleManager::DISABLED_STATE;
+            $pago->update();
 
-            $result = ResultManager::successMessage('Concepto de pago eliminado correctamente.');
+            $result = ResultManager::successMessage('Pago eliminado correctamente.');
             
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
@@ -132,22 +135,14 @@ class ConceptoPagoController extends BaseController
         return $result;
     }
 
-    private function setModel(ConceptoPago $conceptoPago, Request $request): ConceptoPago
+    private function setModel(Pago $pago, Request $request): pago
     {
-        $conceptoPago->nombre = $request->nombre;
-        $conceptoPago->descripcion = $request->descripcion;
-        return $conceptoPago;
+        $pago->matricula_id = $request->matricula_id;
+        $pago->concepto_id = $request->concepto_id;
+        $pago->monto = $request->monto;
+        $pago->detalle = $request->detalle;
+        $pago->user_id = Auth()->user()->id;
+        return $pago;
     }
 
-    public function select(Request $request)
-    {
-        $filters = $this->getFilters($request, new ConceptoPago());
-
-        $queryconcepto = ConceptoPago::where($filters);
-
-        $conceptopago = $queryconcepto->orderBy('id', 'DESC')
-            ->get();
-        return $conceptopago;
-    }
-    
 }

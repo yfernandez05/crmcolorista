@@ -257,6 +257,24 @@ export default new VueRouter({
 
 
 
+        {
+            path: `${intranetBaseUrl}/pago`,
+            name: 'spa.pago',
+            component: require('./components/pago/PagoIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/pago/registrar`,
+            name: 'spa.pago.registrar',
+            component: require('./components/pago/PagoCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/pago/editar/:id`,
+            name: 'spa.pago.editar',
+            component: require('./components/pago/PagoEdit').default
+        },
+
+
+
 
 
 
