@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetallePago;
 use App\Models\Pago;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
@@ -10,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PagoController extends BaseController
 {
@@ -40,20 +42,44 @@ class PagoController extends BaseController
     public function store(Request $request)
     {
         $result = "";
+        DB::beginTransaction();
         try {
 
             $pago = $this->setModel(new Pago(), $request);
             $pago->created_usr  = $this->user->email;
             $pago->save();
 
+            //dd($request->detalles);
+
+            //details
+            $detallePagos = [];
+
+            foreach ($request->detalles as $detalle) {
+                $detallePago = new DetallePago();
+                $detallePago->concepto_id = $detalle['concepto_id'];
+                $detallePago->precio_unitario = $detalle['precio_unitario'];
+                $detallePago->descuento = isset($detalle['descuento']) ? $detalle['descuento'] : 0.00;
+                $detallePago->importe = $detalle['subtotal'];
+                $detallePago->created_usr = $this->user->email;
+
+                $detallePago->pago_id = $pago->id;
+                $detallePagos[] = $detallePago;  // Agregar al array
+            }
+
+            // Guardar todos los detalles a la vez usando saveMany
+            $pago->detalles()->saveMany($detallePagos);
+
+            DB::commit();
             $result = ResultManager::genericSuccessMessage();
 
         } catch (QueryException $e) {
+            DB::rollBack(); 
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
             $result = ResultManager::gerericErrorMessage();
 
         } catch (Exception $e) {
+            DB::rollBack(); 
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
             $result = ResultManager::gerericErrorMessage();
@@ -138,8 +164,7 @@ class PagoController extends BaseController
     private function setModel(Pago $pago, Request $request): pago
     {
         $pago->matricula_id = $request->matricula_id;
-        $pago->concepto_id = $request->concepto_id;
-        $pago->monto = $request->monto;
+        $pago->subtotal = $request->subtotal;
         $pago->detalle = $request->detalle;
         $pago->user_id = Auth()->user()->id;
         return $pago;

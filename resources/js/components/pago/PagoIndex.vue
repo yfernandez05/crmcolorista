@@ -44,13 +44,13 @@
                         textProperty="detalle">
                     </select2>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
+               <!--  <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
                     <label class="mb-1">Concepto de Pago</label>
                     <select2 :options="conceptopagos" @input="buscarPago()" v-model="pago.concepto_id"
                         :selectValue="pago.concepto_id" placeholder="Seleccione una carrera" keyProperty="concepto_id"
                         textProperty="nombre">
                     </select2>
-                </div>
+                </div> -->
 
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>&nbsp;</label>
@@ -68,10 +68,9 @@
                         <tr>
                             <th class="p-2">Acciones</th>
                             <th class="p-2">Cod</th>
-                            <th class="p-2">Detalle</th>
+                            <th class="p-2">Detalle - Pago</th>
                             <th class="p-2">Monto</th>
-                            <th class="p-2">Matricula</th>
-                            <th class="p-2">Concepto de pago</th>
+                            <th class="p-2">Detalle - Matricula</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -83,9 +82,8 @@
                             </td>
                             <td v-text="ps.id"></td>
                             <td v-text="ps.detalle"></td>                            
-                            <td v-text="ps.monto"></td>                            
-                            <td v-text="ps.matricula?.detalle"></td>                            
-                            <td v-text="ps.conceptopago?.nombre"></td>
+                            <td v-text="ps.subtotal"></td>                            
+                            <td v-text="ps.matricula?.detalle"></td>
                             <td >
                                 <span class="badge badge-pill py-1 px-3" 
                                     :class="ps.isactive ? 'badge-success':'badge-danger'"

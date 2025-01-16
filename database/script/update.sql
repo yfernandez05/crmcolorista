@@ -570,3 +570,47 @@ DROP INDEX matriculas_inscripcion_id_foreign;
 
 ALTER TABLE matriculas
 DROP COLUMN inscripcion_id;
+
+
+
+
+/******************* update 16-01-25 *************************/
+
+DROP TABLE IF EXISTS `pagos`;
+CREATE TABLE `pagos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `matricula_id` bigint unsigned NOT NULL,
+  `subtotal` decimal(18,2) NOT NULL,
+  `detalle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pagos_matricula_id_foreign` (`matricula_id`),
+  KEY `pagos_user_id_foreign` (`user_id`),
+  CONSTRAINT `pagos_matricula_id_foreign` FOREIGN KEY (`matricula_id`) REFERENCES `matriculas` (`id`),
+  CONSTRAINT `pagos_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `detallepagos`;
+CREATE TABLE `detallepagos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `pago_id` bigint unsigned NOT NULL, -- Relación con la tabla `pagos`
+  `concepto_id` bigint unsigned NOT NULL, -- Relación con los conceptos de pago
+  `precio_unitario` decimal(18,2) NOT NULL, -- Precio por unidad
+  `descuento` decimal(18,2) NOT NULL DEFAULT 0.00,
+  `importe` decimal(18,2) NOT NULL, -- el total de la suma
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pago_detalles_pago_id_foreign` (`pago_id`),
+  KEY `pago_detalles_concepto_id_foreign` (`concepto_id`),
+  CONSTRAINT `pago_detalles_pago_id_foreign` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `pago_detalles_concepto_id_foreign` FOREIGN KEY (`concepto_id`) REFERENCES `concepto_pagos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

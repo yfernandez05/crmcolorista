@@ -15,8 +15,7 @@ class Pago extends Model
 
     protected $fillable = [
         'matricula_id',
-        'concepto_id',
-        'monto',        
+        'subtotal',        
         'detalle',
         'user_id',
         'estado',
@@ -34,11 +33,13 @@ class Pago extends Model
         'statename',
     ];
 
-    public function getIsactiveAttribute(){
+    public function getIsactiveAttribute()
+    {
         return RuleManager::getIsActive($this->estado);
     }
 
-    public function getStatenameAttribute(){
+    public function getStatenameAttribute()
+    {
         return RuleManager::getStateName($this->estado);
     }
 
@@ -50,6 +51,11 @@ class Pago extends Model
     public function conceptopago()
     {
         return $this->belongsTo(ConceptoPago::class, 'concepto_id', 'id');
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetallePago::class, 'pago_id', 'id');
     }
 
 }
