@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Atencion;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,6 +56,43 @@ class Prospecto extends Model
     public function getFechanacimientoAttribute()
     {
         return optional($this->fecha_nac)->format('d-m-Y');
+    }
+
+    public function ultimaatencion()
+    {
+        return $this->hasOne(Atencion::class, 'prospecto_id', 'id')
+            ->withDefault([
+                'prospecto_id'=>'',
+                'idtipoatencion'=>1,
+                'comentario'=> '',
+                'tipoatencion'=>[
+                    'idtipoatencion' => 1,
+                    'tipoatencion' => 'Sin Atender',
+                    "backgroundColor"=>'#ff0000',
+                    "textColor"=>'#ffffff',
+                    "estado"=>'A',
+                    "isactive"=>true,
+                    "statename"=>'Activo'
+                ],
+                'user'=>[
+                    'name' => '',
+                    'email' => '',
+                    'email_verified_at' => '',
+                    'idrol' => 3,
+                    'idcuenta' => 2,
+                ],
+                'etiquetatelefonica'=>[
+                    'etiquetatele' => 'Sin Atender',
+                    'idetiquetatele' => 1,
+                    "backgroundColor"=>'#ff0000',
+                    "textColor"=>'#ffffff',
+                    "estado"=>'A',
+                    "isactive"=>true,
+                    "statename"=>'Activo'
+                ],
+            ])
+            ->with('tipoatencion','etiquetatelefonica','user')
+            ->orderBy('idatencion', 'desc');
     }
 
 }

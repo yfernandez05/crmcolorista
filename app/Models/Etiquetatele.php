@@ -2,30 +2,28 @@
 
 namespace App\Models;
 
-use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
+use App\Util\RuleManager;
 
-class Curso extends Model
+class Etiquetatele extends Model
 {
-   
-    protected $table = 'cursos';
-    protected $primaryKey = 'id';
+    protected $table = 'etiquetatelefonica';
+    protected $primaryKey ='idetiquetatele';
     public $timestamps = false;
 
     protected $fillable = [
-        'nombre', 
-        'descripcion', 
-        'duracion_meses', 
-        'estado', 
+        'etiquetatele',
+        'backgroundColor',
+        'textColor',
+        'estado',
     ];
 
     protected $hidden = [
-        'created_usr', 
-        'created_at', 
-        'updated_usr', 
-        'updated_at',
+        'userinsert',
+        'dateinsert',
+        'userupdate',
+        'dateupdate',
     ];
-
 
     protected $appends = [
         'isactive',

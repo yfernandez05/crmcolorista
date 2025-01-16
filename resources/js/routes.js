@@ -364,12 +364,6 @@ export default new VueRouter({
             component: require('./components/tipoAtencion/TipoAtencionEdit').default
         },
 
-        {
-            path: `${intranetBaseUrl}/atencion/atender/:id`,
-            name: 'spa.atencion.atender',
-            component: require('./components/atencion/AtencionCreate').default
-        },
-
 
         {
             path: `${intranetBaseUrl}/export`,
@@ -463,6 +457,49 @@ export default new VueRouter({
             path: `${intranetBaseUrl}/seguimiento/editar/:id`,
             name: 'spa.seguimiento.editar',
             component: require('./components/seguimiento/SeguimientoEdit').default
+        },
+
+        {
+            path: `${intranetBaseUrl}/tipocomprobante`,
+            name: 'spa.tipocomprobante',
+            component: require('./components/tipocomprobante/TipoComprobanteIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/tipocomprobante/registrar`,
+            name: 'spa.tipocomprobante.registrar',
+            component: require('./components/tipocomprobante/TipoComprobanteCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/tipocomprobante/editar/:id`,
+            name: 'spa.tipocomprobante.editar',
+            component: require('./components/tipocomprobante/TipoComprobanteEdit').default
+        },
+
+        {
+            path: `${intranetBaseUrl}/etiquetaTelefonica`,
+            name: 'spa.etiquetaTelefonica',
+            component: require('./components/etiquetaTelefonica/EtiquetaTelefonicaIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/etiquetaTelefonica/registrar`,
+            name: 'spa.etiquetaTelefonica.registrar',
+            component: require('./components/etiquetaTelefonica/EtiquetaTelefonicaCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/etiquetaTelefonica/editar/:id`,
+            name: 'spa.etiquetaTelefonica.editar',
+            component: require('./components/etiquetaTelefonica/EtiquetaTelefonicaEdit').default
+        },
+
+        {
+            path: `${intranetBaseUrl}/atencion`,
+            name: 'spa.atencion',
+            component: require('./components/atencion/AtencionIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/atencion/atender/:id`,
+            name: 'spa.atencion.atender',
+            component: require('./components/atencion/AtencionCreate').default
         },
 
         { path: '*', redirect: intranetBaseUrl },

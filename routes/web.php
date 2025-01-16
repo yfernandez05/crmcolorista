@@ -46,6 +46,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('turno/select', 'TurnoController@select');
     Route::resource('turno', 'TurnoController');
 
+    Route::get('curso/select', 'CursoController@select');
     Route::resource('curso', 'CursoController');
 
     Route::get('carrera/select', 'CarreraController@select')->name('carrera.select');
@@ -149,8 +150,15 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('inscripcion', 'InscripcionController');
 
     Route::get('matricula/select', 'MatriculaController@select');
+    Route::get('matricula/factura/{id}', 'MatriculaController@factura');
     Route::resource('matricula', 'MatriculaController');
 
     Route::resource('pago', 'PagoController');
+
+    Route::get('tipocomprobante/select', 'TipocomprobanteController@select')->name('tipocomprobante.select');
+    Route::resource('tipocomprobante','TipocomprobanteController')->except(['show', 'create']);
+
+    Route::get('etiquetaTelefonica/select', 'EtiquetaTelefonicaController@select')->name('etiquetaTelefonica.select');
+    Route::resource('etiquetaTelefonica', 'EtiquetaTelefonicaController');
 
 });

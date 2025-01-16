@@ -10,12 +10,18 @@
                     <label>Nombre <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="curso.nombre" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('nombre')" v-text="showError('nombre').errorDetail"></small>
-                </div>                
+                </div> 
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('duracion_meses')}">
+                    <label>Duración Meses</label>
+                    <input type="text" class="form-control" v-model="curso.duracion_meses" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('duracion_meses')" v-text="showError('duracion_meses').errorDetail"></small>
+                </div>                  
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('descripcion')}">
                     <label>Descripción</label>
                     <input type="text" class="form-control" v-model="curso.descripcion" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('descripcion')" v-text="showError('descripcion').errorDetail"></small>
                 </div>                
+                            
             </div>
             <hr class="mt-2">
         </template>
@@ -53,6 +59,7 @@
                     return {
                         nombre: '',
                         descripcion: '',
+                        duracion_meses: '',
                     }
                 }
             }
@@ -72,6 +79,7 @@
                 let rolData = {
                     nombre: this.curso.nombre,
                     descripcion: this.curso.descripcion,
+                    duracion_meses: this.curso.duracion_meses,
                 }
 
                 this.$emit('saveData', rolData);
@@ -82,6 +90,9 @@
 
                 if (!this.curso.nombre) {
                     this.setError('nombre', 'El campo nombre es obligatorio');
+                }
+                if (!this.curso.duracion_meses) {
+                    this.setError('duracion_meses', 'El campo duracion_meses es obligatorio');
                 }
 
                 return this.errors;

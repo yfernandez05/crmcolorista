@@ -136,7 +136,20 @@ class CursoController extends BaseController
     {
         $curso->nombre = $request->nombre;
         $curso->descripcion = $request->descripcion;
+        $curso->duracion_meses = $request->duracion_meses;
         return $curso;
     }
+
+    public function select(Request $request)
+    {
+        $filters = $this->getFilters($request, new Curso());
+
+        $curso = Curso::where($filters)
+            -> orderBy('id', 'DESC')
+            ->get();
+
+        return $curso;
+    }
+
 
 }

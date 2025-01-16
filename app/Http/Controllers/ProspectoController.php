@@ -74,6 +74,12 @@ class ProspectoController extends BaseController
         return Prospecto::find($id);
     }
 
+
+ public function edit($id)
+    {
+        return Prospecto::find($id);
+       // return Cliente::with('ubicaciones')->find($id);
+    }
     /**
      * Update the specified resource in storage.
      *

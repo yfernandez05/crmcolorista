@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\User;
-use App\Models\TipoAtencion;
 use App\Util\RuleManager;
+use App\Models\Etiquetatele;
+use App\Models\TipoAtencion;
 use Illuminate\Database\Eloquent\Model;
 
 class Atencion extends Model
@@ -23,9 +24,9 @@ class Atencion extends Model
     ];
 
     protected $hidden = [
-        'userinsert', 
-        'dateinsert', 
-        'userupdate', 
+        'userinsert',
+        'dateinsert',
+        'userupdate',
         'dateupdate',
     ];
     protected $casts = [
@@ -46,7 +47,7 @@ class Atencion extends Model
     public function getStatenameAttribute(){
         return RuleManager::getStateName($this->estado);
     }
-    
+
     public function getIsattendedAttribute(){
         $attended = false;
 
@@ -70,5 +71,9 @@ class Atencion extends Model
     public function cliente(){
         return $this->belongsTo(Cliente::class, 'idcliente', 'idcliente');
     }
-    
+
+    public function etiquetatelefonica(){
+        return $this->belongsTo(Etiquetatele::class, 'idetiquetatele', 'idetiquetatele');
+    }
+
 }

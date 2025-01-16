@@ -21,7 +21,7 @@
                 <span class="d-none d-sm-inline-block ">
                     Nuevo
                 </span>
-            </router-link>    
+            </router-link>
         </template>
         <template v-slot:card-body-main>
             <div class="form-row">
@@ -31,7 +31,7 @@
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4">
                     <label>Monto </label>
-                    <vue-numeric class="form-control" ref="monto" 
+                    <vue-numeric class="form-control" ref="monto"
                         @keypress.native.enter.prevent="buscarPago"
                         thousand-separator="" v-model="pago.monto" v-bind:precision="0" >
                     </vue-numeric>
@@ -55,7 +55,7 @@
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>&nbsp;</label>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="estado" 
+                        <input type="checkbox" class="custom-control-input" id="estado"
                             v-model="pago.estado" @change="buscarPago()">
                         <label class="custom-control-label" for="estado">Incluir Eliminados</label>
                     </div>
@@ -75,17 +75,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="ps in pagos" :key="ps.id">
+                        <tr v-for="ps in pagos" :key="ps.id" :activeShow="false">
                             <td>
                                 <row-actions :rowData="ps" @rowItemActions="rowItemActions">
                                 </row-actions>
                             </td>
                             <td v-text="ps.id"></td>
-                            <td v-text="ps.detalle"></td>                            
-                            <td v-text="ps.subtotal"></td>                            
+                            <td v-text="ps.detalle"></td>
+                            <td v-text="ps.subtotal"></td>
                             <td v-text="ps.matricula?.detalle"></td>
                             <td >
-                                <span class="badge badge-pill py-1 px-3" 
+                                <span class="badge badge-pill py-1 px-3"
                                     :class="ps.isactive ? 'badge-success':'badge-danger'"
                                      v-text="ps.statename">
                                 </span>
@@ -127,7 +127,7 @@
                 }
             }
         },
-        
+
         methods: {
             listarpago() {
                 showPreloader();
@@ -181,7 +181,7 @@
                             break;
                         }
 
-                        this.$router.push({ name: 'spa.pago.editar', params: { id: event.data.id } }) 
+                        this.$router.push({ name: 'spa.pago.editar', params: { id: event.data.id } })
                     break;
                     case 'delete':
                         this.eliminarpago(event.data);
@@ -194,20 +194,20 @@
 
                 if (this.pago.detalle.length)
                     this.filters.detalle = this.pago.detalle;
-                                
+
                 if (this.pago.monto.length)
                     this.filters.monto = this.pago.monto;
-                
+
                 if (this.pago.matricula_id.length)
                     this.filters.matricula_id = this.pago.matricula_id;
-                
+
                 if (this.pago.concepto_id.length)
                     this.filters.concepto_id = this.pago.concepto_id;
-                
+
                 if (this.pago.estado)
                     this.filters.estado = this.pago.estado;
 
-                this.listarpago();  
+                this.listarpago();
             },
             eliminarpago(param){
                 let vm = this;
@@ -220,10 +220,10 @@
                 swalAlertConfirm(`¿Seguro que quiere eliminar el pago con codigo <b>${param.id}</b>?`, appName)
                     .then(function(optionSelected){
                         if(optionSelected.value){
-                            
+
                             showPreloader();
                             axios.delete(`${appApiUrl}/pago/${param.id}`)
-                                .then(function (response) {        0 
+                                .then(function (response) {        0
                                     hidePreloader();
                                     let result = response.data;
 
@@ -248,7 +248,7 @@
                 this.pago.concepto_id = '';
                 this.buscarPago();
             },
-            
+
         },
         mounted() {
             this.listarpago();

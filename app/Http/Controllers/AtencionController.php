@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Carbon\Carbon;
-use App\Models\Cliente;
 use App\Models\Atencion;
-use App\Models\Institucion;
+use App\Models\Prospecto;
 use App\Util\RuleManager;
+use App\Models\Institucion;
 use App\Util\ResultManager;
 use Illuminate\Http\Request;
 use App\Util\LogErrorManager;
@@ -22,7 +22,16 @@ class AtencionController extends BaseController
      */
     public function index(Request $request)
     {
-        
+        $filters = $this->getFilters($request, new Prospecto());
+        $perpage = $this->getLimitPagination($request);
+
+        $queryAlumnos = Prospecto::where($filters)
+        ->with('ultimaatencion');
+
+        $Alumnos = $queryAlumnos->orderBy('id', 'DESC')
+            ->paginate($perpage);
+
+        return $Alumnos;
     }
 
     /**
@@ -33,27 +42,26 @@ class AtencionController extends BaseController
      */
     public function store(Request $request)
     {
-        $result = "";
+        $result;
         try {
 
             $atencion = $this->setModel(new Atencion(), $request);
             $atencion->iduser = $this->user->id;
             $atencion->userinsert = $this->user->email;
-            $atencion->save();            
 
-            $cliente = Cliente::findOrFail($request->idcliente);
-            $cliente->idtipoatencion = $request->idtipoatencion;
-            $cliente->update();
+            $atencion->save();
 
             $result = ResultManager::genericSuccessMessage();
         } catch (QueryException $e) {
-            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+
             $result = ResultManager::gerericErrorMessage();
 
         } catch (Exception $e) {
-            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+
             $result = ResultManager::gerericErrorMessage();
         }
 
@@ -86,11 +94,8 @@ class AtencionController extends BaseController
             $atencion = $this->setModel(Atencion::findOrFail($id), $request);
             $atencion->iduser = $this->user->id;
             $atencion->userupdate = $this->user->email;
-            $atencion->update();
 
-            $cliente = Cliente::findOrFail($request->idcliente);
-            $cliente->idtipoatencion = $request->idtipoatencion;
-            $cliente->update();
+            $atencion->update();
 
             $result = ResultManager::genericSuccessMessage();
         } catch (QueryException $e) {
@@ -115,7 +120,7 @@ class AtencionController extends BaseController
      */
     public function destroy($id)
     {
-        
+
         $result;
         try {
             $atencion = Atencion::find($id);
@@ -135,13 +140,17 @@ class AtencionController extends BaseController
 
     public function detail($id)
     {
-        return Atencion::where('idcliente',$id)->with('tipoatencion')-> orderBy('idatencion', 'DESC')->get();
+        return Atencion::where('prospecto_id', $id)
+        ->with('tipoatencion')
+        ->with('etiquetatelefonica')
+        ->orderBy('idatencion', 'DESC')->get();
     }
 
     private function setModel(Atencion $atenciones, Request $request): Atencion
     {
         $atenciones->idtipoatencion = $request->idtipoatencion;
-        $atenciones->idcliente = $request->idcliente;
+        $atenciones->idetiquetatele = $request->idetiquetatele;
+        $atenciones->prospecto_id = $request->prospecto_id;
         $atenciones->fechaatencion = Carbon::createFromFormat('d-m-Y', $request->fechaatencion);
         $atenciones->comentario = $request->comentario;
 

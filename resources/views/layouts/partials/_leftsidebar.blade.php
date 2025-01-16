@@ -67,7 +67,10 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><router-link :to="{name: 'spa.rol'}">Roles</router-link></li>
                         <li><router-link :to="{name: 'spa.user'}">Usuarios</router-link></li>
-                        <li><router-link :to="{name: 'spa.condicion'}">Condiciones</router-link></li>
+
+                        <li><router-link :to="{name: 'spa.tipocomprobante'}">Tipo Comprobante</router-link></li>
+                        <li><router-link :to="{name: 'spa.tipoAtencion'}">Tipo Atencion</router-link></li>
+                        <li><router-link :to="{name: 'spa.etiquetaTelefonica'}">Etiqueta Telefonica</router-link></li>
                         <!-- <li><router-link :to="{name: 'spa.campania'}">Campañas</router-link></li>
                         <li><router-link :to="{name: 'spa.evento'}">Stands</router-link></li>
                         <li><router-link :to="{name: 'spa.tipoAtencion'}">Tipo de atención</router-link></li>
@@ -86,12 +89,12 @@
                 <li class="nav-small-cap">
                     <span>PROFESIONAL</span>
                 </li>
-                <li>
+                {{-- <li>
                     <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="fas fa-user-lock"></i>
                         <span class="hide-menu">DOCENTES</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="fas fa-user-lock"></i>
@@ -99,7 +102,7 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><router-link :to="{name: 'spa.alumno'}">Alumnos</router-link></li>
-                        <li><router-link :to="{name: 'spa.turno'}">Turno</router-link></li>
+
                     </ul>
                 </li>
                 <li>
@@ -129,7 +132,9 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><router-link :to="{name: 'spa.matricula'}">Matricula</router-link></li>
-                        <li><router-link :to="{name: 'spa.inscripcion'}">Inscripción</router-link></li>
+                        <li><router-link :to="{name: 'spa.turno'}">Turno</router-link></li>
+                        <li><router-link :to="{name: 'spa.condicion'}">Condiciones</router-link></li>
+                        {{-- <li><router-link :to="{name: 'spa.inscripcion'}">Inscripción</router-link></li> --}}
                         <li><router-link :to="{name: 'spa.ciclo'}">Ciclo</router-link></li>
                         <li><router-link :to="{name: 'spa.periodo'}">Periodo</router-link></li>
                     </ul>
@@ -142,7 +147,7 @@
                     <ul aria-expanded="false" class="collapse">
 
                         <li><router-link :to="{name: 'spa.prospecto'}">Prospecto</router-link></li>
-                        <li><router-link :to="{name: 'spa.seguimiento'}">seguimientos</router-link></li>
+                        <li><router-link :to="{name: 'spa.atencion'}">seguimientos</router-link></li>
 
                     </ul>
                 </li>

@@ -51,6 +51,7 @@
                             <th class="p-2">Acciones</th>
                             <th class="p-2">Cod</th>
                             <th class="p-2">Nombre</th>
+                            <th class="p-2">Duración Meses</th>
                             <th class="p-2">Descripción</th>
                             <th class="p-2">Estado</th>
                         </tr>
@@ -63,6 +64,7 @@
                             </td>
                             <td v-text="crs.id"></td>
                             <td v-text="crs.nombre"></td>                            
+                            <td v-text="crs.duracion_meses"></td>                            
                             <td v-text="crs.descripcion"></td>                            
                             <td >
                                 <span class="badge badge-pill py-1 px-3" 
