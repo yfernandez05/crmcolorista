@@ -36,7 +36,7 @@
                             this.backToList();
                         }
                         vm.pago = response.data;
-
+                        console.log(vm.pago);
                         if(!vm.pago.isactive){
                             warningMessage(appCannotDeleteMessage, appName);
                             vm.backToList();

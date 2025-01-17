@@ -26,7 +26,7 @@ class PagoController extends BaseController
         $perpage = $this->getLimitPagination($request);
 
         $pago = Pago::where($filters)
-            ->with('matricula','conceptopago')
+            ->with('matricula')
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
             
@@ -59,7 +59,7 @@ class PagoController extends BaseController
                 $detallePago->concepto_id = $detalle['concepto_id'];
                 $detallePago->precio_unitario = $detalle['precio_unitario'];
                 $detallePago->descuento = isset($detalle['descuento']) ? $detalle['descuento'] : 0.00;
-                $detallePago->importe = $detalle['subtotal'];
+                $detallePago->importe = $detalle['importe'];
                 $detallePago->created_usr = $this->user->email;
 
                 $detallePago->pago_id = $pago->id;
@@ -96,7 +96,7 @@ class PagoController extends BaseController
      */
     public function show($id)
     {
-        $pago = Pago::with('matricula','conceptopago')->find($id);
+        $pago = Pago::with('matricula','detalles')->find($id);
         return $pago;
     }
 
@@ -110,27 +110,62 @@ class PagoController extends BaseController
     public function update(Request $request, $id)
     {
         $result = "";
+        DB::beginTransaction();
         try {
+            // Obtener el pago a actualizar
+            $pago = Pago::findOrFail($id);
+            $pago->updated_usr = $this->user->email;
+            $pago->subtotal = $request->subtotal; // Actualizar otros campos principales
+            $pago->matricula_id = $request->matricula_id; // Actualizar matrícula
+            $pago->update(); // Actualizar el pago
 
-            $pago = $this->setModel(Pago::findOrFail($id), $request);
-            $pago->created_usr = $this->user->email;
-            $pago->update();
+            // Obtener todos los detalles actuales de este pago
+            $detallesExistentes = $pago->detalles()->get();
 
+            // Obtener los IDs de los detalles enviados en la solicitud
+            $detallesRecibidosIds = collect($request->detalles)->pluck('id')->filter();
+
+            // Eliminar los detalles que no están en la solicitud (detalles que fueron eliminados)
+            foreach ($detallesExistentes as $detalleExistente) {
+                if (!in_array($detalleExistente->id, $detallesRecibidosIds->toArray())) {
+                    // Eliminar el detalle que no está en la solicitud
+                    $detalleExistente->delete();
+                }
+            }
+
+            // Ahora actualizamos o creamos los detalles
+            foreach ($request->detalles as $detalle) {
+                // Usamos updateOrCreate para actualizar o crear el detalle
+                DetallePago::updateOrCreate(
+                    ['id' => $detalle['id'] ?? null], // Si existe 'id', actualiza; si no, crea un nuevo detalle
+                    [
+                        'concepto_id' => $detalle['concepto_id'],
+                        'precio_unitario' => $detalle['precio_unitario'],
+                        'descuento' => $detalle['descuento'] ?? 0.00,
+                        'importe' => $detalle['importe'],
+                        'updated_usr' => $this->user->email,
+                        'pago_id' => $pago->id, // Relacionar con el pago actualizado
+                    ]
+                );
+            }
+
+            // Confirmar la transacción si todo fue exitoso
+            DB::commit();
             $result = ResultManager::genericSuccessMessage();
-
         } catch (QueryException $e) {
+            DB::rollBack(); // Revertir en caso de error
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-
             $result = ResultManager::gerericErrorMessage();
-
         } catch (Exception $e) {
+            DB::rollBack(); // Revertir en caso de error
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-
             $result = ResultManager::gerericErrorMessage();
         }
 
         return $result;
     }
+
+
 
     /**
      * Remove the specified resource from storage.

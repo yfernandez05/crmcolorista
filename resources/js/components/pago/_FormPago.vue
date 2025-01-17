@@ -6,36 +6,46 @@
 
         <template v-slot:card-body-main>
             <div class="form-row">
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('matricula_id')}">
+
+                <div class="form-group col-12 col-sm-8" :class="{'has-danger':errorExists('matricula_id')}">
                     <label>Matricula <small class="text-danger">(*)</small></label>
-                    <select2 :options="matriculas" v-model="pago.matricula_id" :selectValue="pago.matricula_id"
-                        placeholder="Seleccione una matricula" keyProperty="id" textProperty="detalle">
-                    </select2>
+                    <v-select class="select-vue-customers"
+                        v-model="pago.matricula"
+                        :filterable="false"
+                        :options="matriculas"
+                        :searchable="true"
+                        label="detalle"
+                        :loading="loading"
+                        @search="onSearch"
+                        @input="onSelectMatricula"
+                        placeholder="Escriba al menos 3 caracteres del Nombre, Apellido, DNI.">
+                        <template #option="data">
+                            <div class="my-1">
+                                <div class="d-flex no-block text-truncate">
+                                    <h5 class="font-weight-bolder mb-0"><strong>{{ data.alumno.nombre }} {{ data.alumno.apellido }} - {{ data.detalle }}</strong></h5>
+                                </div>
+                                <div class="d-flex no-block text-truncate">
+                                    <span>DNI: </span><span class="font-weight-bolder pl-1 pr-3"
+                                        v-text="data.alumno.dni"></span>
+                                    <span>CARRERA: </span><span class="font-weight-bolder pl-1 pr-3"
+                                        v-text="data.carrera.nombre"></span>
+                                </div>
+                                <div class="d-flex no-block text-truncate">
+                                    <span>CICLO: </span><span class="font-weight-bolder pl-1 pr-3"
+                                        v-text="data.ciclo.nombre"></span>
+                                </div>
+                            </div>
+                        </template>
+                        <template #no-options>
+                            <span>No se encontraron opciones</span>
+                        </template>
+                    </v-select>
                     <small class="form-control-feedback" v-if="errorExists('matricula_id')"
                         v-text="showError('matricula_id').errorDetail"></small>
-                </div>
-
-                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('concepto_id')}">
-                    <label>Concepto <small class="text-danger">(*)</small></label>
-                    <select2 :options="conceptopagos" v-model="pago.concepto_id" :selectValue="pago.concepto_id"
-                        placeholder="Seleccione un concepto" keyProperty="id" textProperty="nombre">
-                    </select2>
-                    <small class="form-control-feedback" v-if="errorExists('concepto_id')"
-                        v-text="showError('concepto_id').errorDetail"></small>
-                </div>
-
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('monto')}">
-                    <label>Monto </label>
-                    <vue-numeric class="form-control" ref="monto" 
-                        @keypress.native.enter.prevent="doSaveData"
-                        thousand-separator="," v-model="pago.monto" v-bind:precision="2" currency="S/">
-                    </vue-numeric>
-
-                    <small class="form-control-feedback" v-if="errorExists('monto')" v-text="showError('monto').errorDetail"></small>
-                </div> -->
+                </div>                
 
                 <div class="form-group col-12 col-sm-6 col-md-8" :class="{'has-danger':errorExists('detalle')}">
-                    <label>Detalle<small class="text-danger">(*)</small></label>
+                    <label>Detalle <small class="text-danger">(*)</small></label>
                     <textarea class="form-control mt-0" v-model="pago.detalle" @:keyup.enter="doSaveData" rows="2"></textarea>
                     <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
                 </div>
@@ -95,7 +105,7 @@
                                 <td v-text="detalle.conceptopago.nombre"></td>
                                 <td v-text="formatNumber(detalle.precio_unitario)"></td>
                                 <td v-text="formatNumber(detalle.descuento)"></td>
-                                <td v-text="formatNumber(detalle.subtotal)"></td>
+                                <td v-text="formatNumber(detalle.importe)"></td>
                                 <td>
                                     <button class="btn btn-danger" @click="eliminarDetalle(index)">Eliminar</button>
                                 </td>
@@ -145,8 +155,10 @@
 <script>
 import MainContent from './../../utils/MainContent';
 import Select2 from './../../utils/Select2';
+import vSelect from 'vue-select';
 import VueNumeric from 'vue-numeric';
 import accounting from 'accounting';
+import debounce from 'lodash/debounce';
 
 export default {
     props: {
@@ -161,7 +173,8 @@ export default {
                     subtotal: '',
                     concepto_id: '',
                     matricula_id: '',
-                    detalles: [] // Array para los detalles del pago
+                    detalles: [], // Array para los detalles del pago
+                    matricula: []
                 };
             }
         }
@@ -170,19 +183,22 @@ export default {
         return {
             conceptopagos: [],
             matriculas: [],
-            errors: []
+            errors: [],
+            selectedMatricula: null,
+            loading: false,
         };
     },
     methods: {
         doSaveData() {
-            /* if (this.validateFields().length > 0) {
+            if (this.validateFields().length > 0) {
                 return;
-            } */
+            }
 
             let pagoData = {
                 detalle: this.pago.detalle,
-                subtotal: this.pago.subtotal,
-                matricula_id: this.pago.matricula_id,
+                subtotal: this.subtotal,
+                matricula_id: this.pago.matricula.id,
+                //matricula_id: this.pago.matricula_id,
                 detalles: this.pago.detalles
             };
 
@@ -190,15 +206,16 @@ export default {
         },
         validateFields() {
             this.errors = [];
+            if (!this.pago.matricula || Object.keys(this.pago.matricula).length === 0) {
+                this.setError('matricula_id', 'El campo matrícula es obligatorio');
+            }
             if (!this.pago.detalle) {
                 this.setError('detalle', 'El campo detalle es obligatorio');
             }
-            if (!this.pago.matricula_id) {
-                this.setError('matricula_id', 'El campo matricula es obligatorio');
+            if (!Array.isArray(this.pago.detalles) || this.pago.detalles.length === 0) {
+                this.setError('concepto_id', 'Debe seleccionar un concepto y establecer un precio.');
             }
-            if (!this.pago.concepto_id) {
-                this.setError('concepto_id', 'El campo concepto es obligatorio');
-            }
+
             return this.errors;
         },
         setError(keyModel, errorDetail) {
@@ -235,7 +252,7 @@ export default {
             };
 
             // Calcular el subtotal para el detalle
-            detalle.subtotal = this.calcularSubtotal(detalle);
+            detalle.importe = this.calcularSubtotal(detalle);
 
             // Agregar el detalle a la lista
             this.pago.detalles.push(detalle);
@@ -258,17 +275,30 @@ export default {
                 descuento = precio;
             }
 
-            let subtotal = precio - descuento;
-            this.pago.subtotal = subtotal.toFixed(2); 
-            return this.pago.subtotal;
+            return precio - descuento;
         },
-        listarMatriculas() {
-            axios.get(`${appApiUrl}/matricula/select`)
+
+        onSearch: debounce(function (search) {
+            if (search.length < 3) {
+                return;
+            }
+            this.loading = true;
+            this.listarMatriculas(search);
+        }, 500),
+
+        onSelectMatricula(matricula) {
+            this.pago.matricula = matricula;
+        },
+
+        listarMatriculas(search) {
+            axios.get(`${appApiUrl}/matricula/selectsearch`, { params: { search } })
                 .then(response => {
                     this.matriculas = response.data;
+                    this.loading = false;
                 })
                 .catch(error => {
                     console.error(error);
+                    this.loading = false;
                 });
         },
         listarConceptos() {
@@ -289,21 +319,23 @@ export default {
     },
     computed: {
         subtotal() {
-            // Sumar los subtotales de todos los detalles
-            return this.pago.detalles.reduce((sum, d) => sum + parseFloat(d.subtotal), 0);
+            if (!Array.isArray(this.pago.detalles)) {
+                return 0;
+            }
+            return this.pago.detalles.reduce((sum, d) => sum + parseFloat(d.importe || 0), 0);
         },
         total() {
-            // El total ahora es simplemente la suma de los subtotales
-            return this.subtotal.toFixed(2);
+            return this.subtotal; // Ajusta según tu lógica si hay otros cálculos
         }
     },
     mounted() {
-        this.listarMatriculas();
+        //this.listarMatriculas();
         this.listarConceptos();
     },
     components: {
         MainContent,
         Select2,
+        vSelect,
         VueNumeric
     }
 };

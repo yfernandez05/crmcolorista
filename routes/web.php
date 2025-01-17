@@ -149,6 +149,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::resource('inscripcion', 'InscripcionController');
 
+    Route::get('matricula/selectsearch','MatriculaController@selectsearch')->name('matricula.selectsearch');
     Route::get('matricula/select', 'MatriculaController@select');
     Route::get('matricula/factura/{id}', 'MatriculaController@factura');
     Route::resource('matricula', 'MatriculaController');

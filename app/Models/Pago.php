@@ -48,14 +48,9 @@ class Pago extends Model
         return $this->belongsTo(Matricula::class, 'matricula_id', 'id');
     }
 
-    public function conceptopago()
-    {
-        return $this->belongsTo(ConceptoPago::class, 'concepto_id', 'id');
-    }
-
     public function detalles()
     {
-        return $this->hasMany(DetallePago::class, 'pago_id', 'id');
+        return $this->hasMany(DetallePago::class, 'pago_id', 'id')->with('conceptopago');
     }
 
 }

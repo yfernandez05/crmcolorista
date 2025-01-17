@@ -171,4 +171,22 @@ class MatriculaController extends BaseController
 
         return $matricula;
     }
+
+    public function selectsearch(Request $request)
+    {
+        $search = $request->input('search');
+
+        $query = Matricula::where('estado', 'A')
+            ->with('alumno','carrera','ciclo')
+            ->whereHas('alumno', function ($query) use ($search) {
+                $query->whereRaw("concat(dni, ' ', nombre, ' ', apellido) like ?", "%{$search}%");
+            })
+            ->select('id', 'detalle', 'ciclo_id', 'periodo_id', 'condicion_id', 'turno_id', 'alumno_id', 'carrera_id')
+            ->orderBy('alumno_id', 'ASC')
+            //->limit(15)
+            ->get();
+
+        return $query;
+    }
+
 }

@@ -29,8 +29,8 @@ class DetallePago extends Model
     {
         return $this->belongsTo(Pago::class, 'pago_id', 'id');
     }
-
-    public function concepto()
+    
+    public function conceptopago()
     {
         return $this->belongsTo(ConceptoPago::class, 'concepto_id', 'id');
     }
