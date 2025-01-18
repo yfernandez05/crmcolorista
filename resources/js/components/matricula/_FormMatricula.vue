@@ -6,7 +6,7 @@
 
         <template v-slot:card-body-main>
             <div class="form-row">
-            
+
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('alumno_id')}">
                     <label>Alumno <small class="text-danger">(*)</small></label>
                     <select2 :options="alumnos" v-model="matricula.alumno_id" :selectValue="matricula.alumno_id"
@@ -14,7 +14,7 @@
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('alumno_id')"
                         v-text="showError('alumno_id').errorDetail"></small>
-                </div>              
+                </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('carrera_id')}">
                     <label>Carrera <small class="text-danger">(*)</small></label>
@@ -23,31 +23,31 @@
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('carrera_id')"
                         v-text="showError('carrera_id').errorDetail"></small>
-                </div>              
+                </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('ciclo_id')}">
-                    <label>Ciclos <small class="text-danger">(*)</small></label>
+                    <label>Modulo <small class="text-danger">(*)</small></label>
                     <select2 :options="ciclos" v-model="matricula.ciclo_id" :selectValue="matricula.ciclo_id"
-                        placeholder="Seleccione un ciclo" keyProperty="id" textProperty="nombre">
+                        placeholder="Seleccione un Modulo" keyProperty="id" textProperty="nombre">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('ciclo_id')"
                         v-text="showError('ciclo_id').errorDetail"></small>
-                </div>              
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('periodo_id')}">
+                </div>
+                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('periodo_id')}">
                     <label>Periodo <small class="text-danger">(*)</small></label>
                     <select2 :options="periodos" v-model="matricula.periodo_id" :selectValue="matricula.periodo_id"
                         placeholder="Seleccione un periodo" keyProperty="id" textProperty="nombre">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('periodo_id')"
                         v-text="showError('periodo_id').errorDetail"></small>
-                </div>              
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('condicion_id')}">
+                </div>               -->
+                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('condicion_id')}">
                     <label>Condicion <small class="text-danger">(*)</small></label>
                     <select2 :options="condiciones" v-model="matricula.condicion_id" :selectValue="matricula.condicion_id"
                         placeholder="Seleccione una condicion" keyProperty="id" textProperty="nombre">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('condicion_id')"
                         v-text="showError('condicion_id').errorDetail"></small>
-                </div>              
+                </div> -->
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('turno_id')}">
                     <label>Turno <small class="text-danger">(*)</small></label>
                     <select2 :options="turnos" v-model="matricula.turno_id" :selectValue="matricula.turno_id"
@@ -55,7 +55,7 @@
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('turno_id')"
                         v-text="showError('turno_id').errorDetail"></small>
-                </div>  
+                </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle')}">
                     <label>Detalle <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/>
@@ -70,7 +70,7 @@
                         placeholder="Seccione una fecha">
                     </v-date-picker>
                     <small class="form-control-feedback" v-if="errorExists('fecha')" v-text="showError('fecha').errorDetail"></small>
-                </div>            
+                </div>
             </div>
             <hr class="mt-2">
         </template>
@@ -115,8 +115,8 @@
                         alumno_id: '',
                         carrera_id: '',
                         ciclo_id: '',
-                        periodo_id: '',
-                        condicion_id: '',
+                       // periodo_id: '',
+                       // condicion_id: '',
                         turno_id: '',
                     }
                 }
@@ -127,8 +127,8 @@
                 carreras: [],
                 alumnos: [],
                 ciclos: [],
-                periodos: [],
-                condiciones: [],
+                //periodos: [],
+               // condiciones: [],
                 turnos: [],
                 errors: []
             }
@@ -146,8 +146,8 @@
                     alumno_id: this.matricula.alumno_id,
                     carrera_id: this.matricula.carrera_id,
                     ciclo_id: this.matricula.ciclo_id,
-                    periodo_id: this.matricula.periodo_id,
-                    condicion_id: this.matricula.condicion_id,
+                   // periodo_id: this.matricula.periodo_id,
+                   // condicion_id: this.matricula.condicion_id,
                     turno_id: this.matricula.turno_id,
                 }
 
@@ -172,12 +172,7 @@
                 if (!this.matricula.ciclo_id) {
                     this.setError('ciclo_id', 'El campo ciclo es obligatorio');
                 }
-                if (!this.matricula.periodo_id) {
-                    this.setError('periodo_id', 'El campo periodo es obligatorio');
-                }
-                if (!this.matricula.condicion_id) {
-                    this.setError('condicion_id', 'El campo condicion es obligatorio');
-                }
+
                 if (!this.matricula.turno_id) {
                     this.setError('turno_id', 'El campo turno es obligatorio');
                 }
@@ -226,26 +221,7 @@
                         console.log(error);
                     })
             },
-            listarPeriodo() {
-                let vm = this;
-                axios.get(`${appApiUrl}/periodo/select`)
-                    .then(function (response) {
-                        vm.periodos = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            },
-            listarCondicion() {
-                let vm = this;
-                axios.get(`${appApiUrl}/condicion/select`)
-                    .then(function (response) {
-                        vm.condiciones = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            },
+
             listarTurno() {
                 let vm = this;
                 axios.get(`${appApiUrl}/turno/select`)
@@ -267,8 +243,6 @@
             this.listarAlumnos();
             this.listarCarreras();
             this.listarCiclo();
-            this.listarPeriodo();
-            this.listarCondicion();
             this.listarTurno();
             this.matricula.fecha = this.formatDate(new Date(),'DD-MM-YYYY');
 

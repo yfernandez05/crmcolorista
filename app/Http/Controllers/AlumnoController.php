@@ -139,8 +139,8 @@ class AlumnoController extends BaseController
         $alumno->apellido = $request->apellido;
         //$alumno->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
         $alumno->correo = $request->correo;
-        $alumno->user_id = 1;
-        $alumno->asesoracargo = $request->asesoracargo;
+        $alumno->user_id = Auth()->user()->id;
+       // $alumno->asesoracargo = $request->asesoracargo;
         $alumno->dni = $request->dni;
         $alumno->direccion = $request->direccion;
         $alumno->distrito = $request->distrito;
@@ -149,16 +149,14 @@ class AlumnoController extends BaseController
         $alumno->cargodesempenia = $request->cargodesempenia;
         $alumno->colegiosegundario = $request->colegiosegundario;
         $alumno->inicioclases = $request->inicioclases;
-        $alumno->turno = $request->turno;
-        $alumno->pago = $request->pago;
-        $alumno->curso = $request->curso;
+        //$alumno->turno = $request->turno;
+        //$alumno->pago = $request->pago;
+        //$alumno->curso = $request->curso;
+        $alumno->prospecto_id = $request->prospecto_id;
         if (!is_null($request->fecha_nac)) {
             $alumno->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
         }
-        if (!is_null($request->fecha_inscripcion)) {
-            $alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y', $request->fecha_inscripcion);
-        }
-        //$alumno->fecha_inscripcion = Carbon::createFromFormat('d-m-Y', $request->fecha_inscripcion);
+        $alumno->fecha_inscripcion = Carbon::now();
 
         return $alumno;
     }

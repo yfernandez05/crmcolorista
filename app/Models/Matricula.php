@@ -22,9 +22,9 @@ class Matricula extends Model
     protected $fillable = [
         'detalle',
         'fecha',
-        'ciclo_id',        
-        'periodo_id',
-        'condicion_id',
+        'ciclo_id',
+        //'periodo_id',
+        //'condicion_id',
         'turno_id',
         'alumno_id',
         'carrera_id',
@@ -40,7 +40,7 @@ class Matricula extends Model
     ];
 
     protected $dates = [
-       
+
     ];
 
 
@@ -79,14 +79,6 @@ class Matricula extends Model
     {
         return $this->belongsTo(Ciclo::class, 'ciclo_id', 'id');
     }
-    public function periodo()
-    {
-        return $this->belongsTo(Periodo::class, 'periodo_id', 'id');
-    }
-    public function condicion()
-    {
-        return $this->belongsTo(Condicion::class, 'condicion_id', 'id');
-    }
     public function turno()
     {
         return $this->belongsTo(Turno::class, 'turno_id', 'id');
@@ -95,5 +87,5 @@ class Matricula extends Model
     public function scopeFecha(Builder $query,$fecha){
         $query->whereDate('fecha', Carbon::createFromFormat('d-m-Y', $fecha)->toDateString());
     }
-    
+
 }

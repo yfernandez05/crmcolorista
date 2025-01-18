@@ -158,13 +158,17 @@ class ProspectoController extends BaseController
 
     public function select(Request $request)
     {
-        $filters = $this->getFilters($request, new Prospecto());
 
-        $queryprospecto = Prospecto::where($filters);
+        $filter = '%'.$request->filter.'%';
 
-        $prospecto = $queryprospecto->orderBy('id', 'DESC')
+        $prospectos = Prospecto::where('estado','A')
+
+            ->whereRaw("concat(nombre,' ' ,apellido,' ' ,telefono) like ?", [$filter])
+
+            ->orderBy('nombre', 'ASC')
             ->get();
-        return $prospecto;
+
+        return $prospectos;
 
     }
 }

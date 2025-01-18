@@ -26,7 +26,7 @@ class MatriculaController extends BaseController
         $perpage = $this->getLimitPagination($request);
 
         $query = Matricula::where($filters)
-        ->with('user','carrera','alumno','ciclo','periodo','condicion','turno');
+        ->with('user','carrera','alumno','ciclo','turno');
 
         if ($request->exists('fechadesde')) {
             $fechadesde = Carbon::createFromFormat('d-m-Y', $request->fechadesde)->toDateString();
@@ -147,12 +147,12 @@ class MatriculaController extends BaseController
 
     private function setModel(Matricula $matricula, Request $request): Matricula
     {
-        
+
         $matricula->detalle = $request->detalle;
         $matricula->fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
         $matricula->ciclo_id = $request->ciclo_id;
-        $matricula->periodo_id = $request->periodo_id;
-        $matricula->condicion_id = $request->condicion_id;
+        //$matricula->periodo_id = $request->periodo_id;
+        //$matricula->condicion_id = $request->condicion_id;
         $matricula->turno_id = $request->turno_id;
         $matricula->alumno_id = $request->alumno_id;
         $matricula->carrera_id = $request->carrera_id;

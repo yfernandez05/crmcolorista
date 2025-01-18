@@ -15,10 +15,10 @@ class Alumno extends Model
         'nombre',
         'apellido',
         'fecha_nac',
-        'correo',        
+        'correo',
         'user_id',
         'prospecto_id',
-        'asesoracargo',
+        //'asesoracargo',
         'dni',
         'direccion',
         'distrito',
@@ -26,11 +26,11 @@ class Alumno extends Model
         'empresa',
         'cargodesempenia',
         'colegiosegundario',
-        'inicioclases',
-        'turno',
-        'pago',
-        'fecha_inscripcion',        
-        'curso',        
+        //'inicioclases',
+        //'turno',
+        //'pago',
+        'fecha_inscripcion',
+        //'curso',
         'estado',
     ];
 
@@ -86,5 +86,5 @@ class Alumno extends Model
 
         return $nombreCompleto;
     }
-    
+
 }

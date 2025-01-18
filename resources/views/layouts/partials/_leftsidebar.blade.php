@@ -117,7 +117,7 @@
                         <span class="hide-menu">Carreras</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><router-link :to="{name: 'spa.carrera'}">carreras</router-link></li>
+                        <li><router-link :to="{name: 'spa.carrera'}">Carreras</router-link></li>
                         <li><router-link :to="{name: 'spa.planestudio'}">Plan de estudio</router-link></li>
                     </ul>
                 </li>
@@ -132,11 +132,12 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><router-link :to="{name: 'spa.matricula'}">Matricula</router-link></li>
+                        <li><router-link :to="{name: 'spa.ciclo'}">Modulo</router-link></li>
                         <li><router-link :to="{name: 'spa.turno'}">Turno</router-link></li>
-                        <li><router-link :to="{name: 'spa.condicion'}">Condiciones</router-link></li>
+                        {{-- <li><router-link :to="{name: 'spa.condicion'}">Condiciones</router-link></li> --}}
                         {{-- <li><router-link :to="{name: 'spa.inscripcion'}">Inscripción</router-link></li> --}}
-                        <li><router-link :to="{name: 'spa.ciclo'}">Ciclo</router-link></li>
-                        <li><router-link :to="{name: 'spa.periodo'}">Periodo</router-link></li>
+
+                        {{-- <li><router-link :to="{name: 'spa.periodo'}">Periodo</router-link></li> --}}
                     </ul>
                 </li>
                 <li>

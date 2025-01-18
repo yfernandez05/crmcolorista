@@ -18,7 +18,7 @@ class PlanEstudio extends Model
         'duracion_meses',
         'carrera_id',
         'ciclo_id',
-        'estado' 
+        'estado'
     ];
 
     protected $hidden = [
@@ -50,5 +50,10 @@ class PlanEstudio extends Model
     public function ciclo()
     {
         return $this->belongsTo(Ciclo::class, 'ciclo_id', 'id');
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetallePlanes::class, 'plan_id', 'id')->with('curso');
     }
 }

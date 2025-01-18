@@ -32,12 +32,12 @@
                 </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('telefono')}">
-                    <label>Celular </label>
+                    <label>Celular <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="prospecto.telefono" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('telefono')" v-text="showError('telefono').errorDetail"></small>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('procedencia')}">
-                    <label>Procedencia </label>
+                    <label>Procedencia <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="prospecto.procedencia" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('procedencia')" v-text="showError('procedencia').errorDetail"></small>
                 </div>
@@ -126,6 +126,13 @@
                 if (!this.prospecto.correo) {
                     this.setError('correo', 'El campo correo es obligatorio');
                 }
+                if (!this.prospecto.procedencia) {
+                    this.setError('procedencia', 'El campo procedencia es obligatorio');
+                }
+                if (!this.prospecto.telefono) {
+                    this.setError('telefono', 'El campo telefono es obligatorio');
+                }
+
 
                 return this.errors;
             },

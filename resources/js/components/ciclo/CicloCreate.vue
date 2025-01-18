@@ -1,5 +1,5 @@
 <template>
-    <form-ciclo cardTitle="Registrar Ciclo" @saveData="saveData">
+    <form-ciclo cardTitle="Registrar Modulo" @saveData="saveData">
     </form-ciclo>
 </template>
 

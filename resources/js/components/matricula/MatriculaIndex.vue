@@ -21,7 +21,7 @@
                 <span class="d-none d-sm-inline-block ">
                     Nuevo
                 </span>
-            </router-link>    
+            </router-link>
         </template>
         <template v-slot:card-body-main>
             <div class="form-row">
@@ -55,26 +55,14 @@
                     </select2>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
-                    <label class="mb-1">Ciclo</label>
+                    <label class="mb-1">Modulo</label>
                     <select2 :options="ciclos" @input="buscarMatricula()" v-model="matricula.ciclo_id"
-                        :selectValue="matricula.ciclo_id" placeholder="Seleccione un ciclo" keyProperty="ciclo_id"
+                        :selectValue="matricula.ciclo_id" placeholder="Seleccione un Modulo" keyProperty="ciclo_id"
                         textProperty="nombre">
                     </select2>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
-                    <label class="mb-1">Periodo</label>
-                    <select2 :options="periodos" @input="buscarMatricula()" v-model="matricula.periodo_id"
-                        :selectValue="matricula.periodo_id" placeholder="Seleccione un periodo" keyProperty="periodo_id"
-                        textProperty="nombre">
-                    </select2>
-                </div>
-                <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
-                    <label class="mb-1">Condicion</label>
-                    <select2 :options="condiciones" @input="buscarMatricula()" v-model="matricula.condicion_id"
-                        :selectValue="matricula.condicion_id" placeholder="Seleccione una condicion" keyProperty="condicion_id"
-                        textProperty="nombre">
-                    </select2>
-                </div>
+
+
                 <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
                     <label class="mb-1">Turno</label>
                     <select2 :options="turnos" @input="buscarMatricula()" v-model="matricula.turno_id"
@@ -86,7 +74,7 @@
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>&nbsp;</label>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="estado" 
+                        <input type="checkbox" class="custom-control-input" id="estado"
                             v-model="matricula.estado" @change="buscarMatricula()">
                         <label class="custom-control-label" for="estado">Incluir Eliminados</label>
                     </div>
@@ -103,9 +91,7 @@
                             <th class="p-2">Carrera</th>
                             <th class="p-2">Detalle</th>
                             <th class="p-2">Fecha</th>
-                            <th class="p-2">Ciclo</th>
-                            <th class="p-2">Periodo</th>
-                            <th class="p-2">Condición</th>
+                            <th class="p-2">Modulo</th>
                             <th class="p-2">Turno</th>
                             <th class="p-2">Estado</th>
                         </tr>
@@ -117,16 +103,14 @@
                                 </row-actions>
                             </td>
                             <td v-text="mts.id"></td>
-                            <td v-text="mts.alumno?.nombre"></td>                            
-                            <td v-text="mts.carrera?.nombre"></td>                            
-                            <td v-text="mts.detalle"></td>                            
-                            <td v-text="mts.fecha"></td>                            
-                            <td v-text="mts.ciclo?.nombre"></td>                            
-                            <td v-text="mts.periodo?.nombre"></td>                            
-                            <td v-text="mts.condicion?.nombre"></td>                            
-                            <td v-text="mts.turno?.nombre"></td>                            
+                            <td v-text="mts.alumno?.nombre"></td>
+                            <td v-text="mts.carrera?.nombre"></td>
+                            <td v-text="mts.detalle"></td>
+                            <td v-text="mts.fecha"></td>
+                            <td v-text="mts.ciclo?.nombre"></td>
+                            <td v-text="mts.turno?.nombre"></td>
                             <td >
-                                <span class="badge badge-pill py-1 px-3" 
+                                <span class="badge badge-pill py-1 px-3"
                                     :class="mts.isactive ? 'badge-success':'badge-danger'"
                                      v-text="mts.statename">
                                 </span>
@@ -163,8 +147,6 @@
                 carreras: [],
                 alumnos: [],
                 ciclos: [],
-                periodos: [],
-                condiciones: [],
                 turnos: [],
                 pagination: {},
                 filters: {},
@@ -174,14 +156,12 @@
                     alumno_id: '',
                     carrera_id: '',
                     ciclo_id: '',
-                    periodo_id: '',
-                    condicion_id: '',
                     turno_id: '',
                     estado: false
                 }
             }
         },
-        
+
         methods: {
             listarMatricula() {
                 showPreloader();
@@ -232,26 +212,7 @@
                         console.log(error);
                     })
             },
-            listarPeriodo() {
-                let vm = this;
-                axios.get(`${appApiUrl}/periodo/select`)
-                    .then(function (response) {
-                        vm.periodos = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            },
-            listarCondicion() {
-                let vm = this;
-                axios.get(`${appApiUrl}/condicion/select`)
-                    .then(function (response) {
-                        vm.condiciones = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            },
+
             listarTurno() {
                 let vm = this;
                 axios.get(`${appApiUrl}/turno/select`)
@@ -275,7 +236,7 @@
                             break;
                         }
 
-                        this.$router.push({ name: 'spa.matricula.editar', params: { id: event.data.id } }) 
+                        this.$router.push({ name: 'spa.matricula.editar', params: { id: event.data.id } })
                     break;
                     case 'delete':
                         this.eliminarMatricula(event.data);
@@ -296,29 +257,24 @@
                     if (this.matricula.fecha[1] != null)
                         this.filters.fechahasta = this.formatDate(this.matricula.fecha[1], 'DD-MM-YYYY');
                 }
-                                
+
                 if (this.matricula.alumno_id.length)
                     this.filters.alumno_id = this.matricula.alumno_id;
-                
+
                 if (this.matricula.carrera_id.length)
                     this.filters.carrera_id = this.matricula.carrera_id;
-                
+
                 if (this.matricula.ciclo_id.length)
                     this.filters.ciclo_id = this.matricula.ciclo_id;
-                
-                if (this.matricula.periodo_id.length)
-                    this.filters.periodo_id = this.matricula.periodo_id;
-                
-                if (this.matricula.condicion_id.length)
-                    this.filters.condicion_id = this.matricula.condicion_id;
-                
+
+
                 if (this.matricula.turno_id.length)
                     this.filters.turno_id = this.matricula.turno_id;
-                
+
                 if (this.matricula.estado)
                     this.filters.estado = this.matricula.estado;
 
-                this.listarMatricula();  
+                this.listarMatricula();
             },
             eliminarMatricula(param){
                 let vm = this;
@@ -331,10 +287,10 @@
                 swalAlertConfirm(`¿Seguro que quiere eliminar la matricula con codigo <b>${param.id}</b>?`, appName)
                     .then(function(optionSelected){
                         if(optionSelected.value){
-                            
+
                             showPreloader();
                             axios.delete(`${appApiUrl}/matricula/${param.id}`)
-                                .then(function (response) {        0 
+                                .then(function (response) {        0
                                     hidePreloader();
                                     let result = response.data;
 
@@ -366,21 +322,17 @@
                 this.matricula.alumno_id = '';
                 this.matricula.carrera_id = '';
                 this.matricula.ciclo_id = '';
-                this.matricula.periodo_id = '';
-                this.matricula.condicion_id = '';
                 this.matricula.turno_id = '';
-                
+
                 this.buscarMatricula();
             },
-            
+
         },
         mounted() {
             this.listarMatricula();
             this.listarCarreras();
             this.listarAlumnos();
             this.listarCiclo();
-            this.listarPeriodo();
-            this.listarCondicion();
             this.listarTurno();
         },
         components: {

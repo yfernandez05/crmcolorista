@@ -1,7 +1,7 @@
 <template>
     <main-content>
         <template v-slot:card-header-title>
-            Ciclo
+            Modulo
         </template>
         <template v-slot:card-header-actions>
             <button class="btn btn-sm btn-info waves-effect waves-light" @click="buscarCiclo()">
@@ -21,7 +21,7 @@
                 <span class="d-none d-sm-inline-block ">
                     Nuevo
                 </span>
-            </router-link>    
+            </router-link>
         </template>
         <template v-slot:card-body-main>
             <div class="form-row">
@@ -37,7 +37,7 @@
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>&nbsp;</label>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="estado" 
+                        <input type="checkbox" class="custom-control-input" id="estado"
                             v-model="ciclo.estado" @change="buscarCiclo()">
                         <label class="custom-control-label" for="estado">Incluir Eliminados</label>
                     </div>
@@ -62,10 +62,10 @@
                                 </row-actions>
                             </td>
                             <td v-text="cic.id"></td>
-                            <td v-text="cic.nombre"></td>                            
-                            <td v-text="cic.descripcion"></td>                            
+                            <td v-text="cic.nombre"></td>
+                            <td v-text="cic.descripcion"></td>
                             <td >
-                                <span class="badge badge-pill py-1 px-3" 
+                                <span class="badge badge-pill py-1 px-3"
                                     :class="cic.isactive ? 'badge-success':'badge-danger'"
                                      v-text="cic.statename">
                                 </span>
@@ -101,7 +101,7 @@
                 }
             }
         },
-        
+
         methods: {
             listarCiclo() {
                 showPreloader();
@@ -135,7 +135,7 @@
                             break;
                         }
 
-                        this.$router.push({ name: 'spa.ciclo.editar', params: { id: event.data.id } }) 
+                        this.$router.push({ name: 'spa.ciclo.editar', params: { id: event.data.id } })
                     break;
                     case 'delete':
                         this.eliminarCiclo(event.data);
@@ -148,14 +148,14 @@
 
                 if (this.ciclo.nombre.length)
                     this.filters.nombre = this.ciclo.nombre;
-                
+
                 if (this.ciclo.descripcion.length)
                     this.filters.descripcion = this.ciclo.descripcion;
-                
+
                 if (this.ciclo.estado)
                     this.filters.estado = this.ciclo.estado;
 
-                this.listarCiclo();  
+                this.listarCiclo();
             },
             eliminarCiclo(param){
                 let vm = this;
@@ -168,10 +168,10 @@
                 swalAlertConfirm(`¿Seguro que quiere eliminar el ciclo <b>${param.nombre}</b>?`, appName)
                     .then(function(optionSelected){
                         if(optionSelected.value){
-                            
+
                             showPreloader();
                             axios.delete(`${appApiUrl}/ciclo/${param.id}`)
-                                .then(function (response) {         
+                                .then(function (response) {
                                     hidePreloader();
                                     let result = response.data;
 
@@ -188,13 +188,13 @@
                                 });
                         }
                     });
-            },             
+            },
             limpiarCiclo(){
                 this.ciclo.nombre = '';
                 this.ciclo.descripcion = '';
                 this.buscarCiclo();
             },
-            
+
         },
         mounted() {
             this.listarCiclo();
