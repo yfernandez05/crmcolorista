@@ -618,3 +618,85 @@ CREATE TABLE `detallepagos` (
 ALTER TABLE matriculas DROP FOREIGN KEY matriculas_condicion_id_foreign;
 ALTER TABLE matriculas DROP FOREIGN KEY matriculas_periodo_id_foreign;
 alter table matriculas drop periodo_id, drop condicion_id;
+
+-- 1-20-2025
+ALTER TABLE matriculas
+DROP FOREIGN KEY matriculas_inscripcion_id_foreign;
+
+ALTER TABLE matriculas
+DROP INDEX matriculas_inscripcion_id_foreign;
+
+ALTER TABLE matriculas
+DROP COLUMN inscripcion_id;
+
+
+CREATE TABLE `tipocomprobantes` (
+  `codcomprobante` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `nombrecomprobante` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `codigosunat` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `serie` char(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `correlativo` int NOT NULL DEFAULT '0',
+  `agregarigv` int DEFAULT '0',
+  `estado` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A',
+  `userIng` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fechaIng` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userUpd` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fechaUpd` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`codcomprobante`),
+  UNIQUE KEY `ak_nombrecomprobante` (`nombrecomprobante`,`estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `tipocomprobantes` (`codcomprobante`, `nombrecomprobante`, `codigosunat`, `serie`, `correlativo`, `agregarigv`, `estado`, `userIng`, `fechaIng`, `userUpd`, `fechaUpd`) VALUES
+(1, 'Boleta de Venta', '03', 'B001', 1, 0, 'A', 'sistemas@padinsolutions.com', '2018-07-10 13:26:15', 'sistemas@padinsolutions.com', '2018-08-04 20:17:44');
+
+ALTER TABLE cursos
+ADD COLUMN duracion_meses int NOT NULL;
+
+-- atencion 
+CREATE TABLE `tipoatenciones` (
+  `idtipoatencion` int(11) NOT NULL AUTO_INCREMENT,
+  `tipoatencion` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `backgroundColor` varchar(500) default '#d3d3d3',
+  `textColor` varchar(500) default '#000',
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idtipoatencion`),
+  UNIQUE KEY `ak_tipoatencion_tipoatenciones` (`tipoatencion`,`estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `tipoatenciones` (`idtipoatencion`, `tipoatencion`, `backgroundColor`, `textColor`, `estado`, `userinsert`, `dateinsert`, `userupdate`, `dateupdate`) VALUES
+(1, 'Sin Atender', '#ff0000', '#fff','A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:06'),
+(2, 'Inubicable', '#000000', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:22'),
+(3, 'Cliente no perfilado', '#a636e2', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-10 18:27:27'),
+(4, 'Pago realizado', '#077413', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(5, 'Venta finalizada', '#36c482', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(6, 'Negociación', '#fae500', '#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(7, 'Cliente perfilado', '#f05400', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(8, 'Contacto Inicial', '#4a4545', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09');
+
+CREATE TABLE `etiquetatelefonica` (
+  `idetiquetatele` int(11) NOT NULL AUTO_INCREMENT,
+  `etiquetatele` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `backgroundColor` varchar(500) default '#d3d3d3',
+  `textColor` varchar(500) default '#000',
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idetiquetatele`),
+  UNIQUE KEY `ak_etiquetatele_etiquetatelefonica` (`idetiquetatele`,`estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `etiquetatelefonica` (`idetiquetatele`, `etiquetatele`, `backgroundColor`, `textColor`,`estado`, `userinsert`, `dateinsert`, `userupdate`, `dateupdate`) VALUES
+(1, 'Sin Atender', '#ff0000','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:06'),
+(2, 'Número errado', '#d3d3d3','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:55'),
+(3, 'Contesta tercero', '#fae500','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(4, 'Buzón de voz', '#a636e2','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(5, 'No contesta', '#000000','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(6, 'Seguimiento', '#fae500','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(7, 'Contactado', '#077413','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09');
+
