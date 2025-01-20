@@ -614,3 +614,7 @@ CREATE TABLE `detallepagos` (
   CONSTRAINT `pago_detalles_pago_id_foreign` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`) ON DELETE CASCADE,
   CONSTRAINT `pago_detalles_concepto_id_foreign` FOREIGN KEY (`concepto_id`) REFERENCES `concepto_pagos` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE matriculas DROP FOREIGN KEY matriculas_condicion_id_foreign;
+ALTER TABLE matriculas DROP FOREIGN KEY matriculas_periodo_id_foreign;
+alter table matriculas drop periodo_id, drop condicion_id;
