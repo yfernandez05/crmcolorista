@@ -181,7 +181,7 @@ class MatriculaController extends BaseController
             ->whereHas('alumno', function ($query) use ($search) {
                 $query->whereRaw("concat(dni, ' ', nombre, ' ', apellido) like ?", "%{$search}%");
             })
-            ->select('id', 'detalle', 'ciclo_id', 'periodo_id', 'condicion_id', 'turno_id', 'alumno_id', 'carrera_id')
+            ->select('id', 'detalle', 'ciclo_id','turno_id', 'alumno_id', 'carrera_id')
             ->orderBy('alumno_id', 'ASC')
             //->limit(15)
             ->get();
