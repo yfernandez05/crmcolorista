@@ -700,3 +700,28 @@ INSERT INTO `etiquetatelefonica` (`idetiquetatele`, `etiquetatele`, `backgroundC
 (6, 'Seguimiento', '#fae500','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
 (7, 'Contactado', '#077413','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09');
 
+
+CREATE TABLE `atenciones` (
+  `idatencion` int(11) NOT NULL AUTO_INCREMENT,
+  `iduser` bigint unsigned NOT NULL,
+  `prospecto_id` bigint unsigned NOT NULL,
+  `fechaatencion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `comentario` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idtipoatencion` int(11) NOT NULL,
+  `idetiquetatele` int(11) NOT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idatencion`),
+  KEY `fk_iduser_atenciones` (`iduser`),
+  KEY `fk_idtipoatencion_atenciones` (`idtipoatencion`),
+  KEY `fk_idetiquetatele_atenciones` (`idetiquetatele`),
+  KEY `fk_alumno_id_atenciones` (`prospecto_id`),
+  CONSTRAINT `fk_prospecto_id_atenciones` FOREIGN KEY (`prospecto_id`) REFERENCES `prospectos` (`id`),
+  CONSTRAINT `fk_idtipoatencion_atenciones` FOREIGN KEY (`idtipoatencion`) REFERENCES `tipoatenciones` (`idtipoatencion`),
+   CONSTRAINT `fk_idetiquetatele_atenciones` FOREIGN KEY (`idetiquetatele`) REFERENCES `etiquetatelefonica` (`idetiquetatele`),
+  CONSTRAINT `fk_iduser_atenciones` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
