@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Mail\MessageReceived;
+use App\Models\Alumno;
+use App\Models\Asistencia;
 use App\Models\Cliente;
 use App\Models\EventoCliente;
 use App\Util\LogErrorManager;
@@ -23,32 +25,35 @@ class QrCodeController extends Controller
     public function decryptQRCode(Request $qrCodeData)
     {        
 
-        $datosDescifrados = $this->decryptBase64($qrCodeData->qrCode);
+        // El dato escaneado se espera como algo similar a "17-78775577"
+        $data = $qrCodeData->qrCode;
 
-        $datos = json_decode($datosDescifrados, true);
+        // Dividir la cadena usando el guion como delimitador
+        $parts = explode('-', $data);
 
-        if(!$datos){
-            return ResultManager::warningMessage('QR no valido');
+        // Tomar la segunda parte después del guion
+        $afterHyphen = $parts[1] ?? null;
+
+        // Verificar si la parte después del guion es válida
+        if (!$afterHyphen) {
+            return ResultManager::warningMessage('QR no válido');
         }
 
-        return $this->authLogin($datos);
-    }
-
-    private function decryptBase64($data)
-    {
-        $decodedData = base64_decode($data);        
-        return $decodedData;
+        // Usar la parte después del guion para continuar con la lógica
+        return $this->authLogin($afterHyphen);
     }
 
     public function authLogin($dataQR)
     {
         $result = '';
+
+        //return $result = $this->readingAssistanceQR($dataQR);
         
-        if(Auth()->user()->idrol == RuleManager::PERSONAL_ATTENDANCE_ACCESS){
+        if(Auth()->user()->rol_id == RuleManager::PERSONAL_ATTENDANCE_ACCESS || in_array(Auth()->user()->rol_id, RuleManager::ADMINISTRATORS_ACCESS)){
             $result = $this->readingAssistanceQR($dataQR);
         }
 
-        if(Auth()->user()->idrol == RuleManager::PERSONAL_STAND_ACCESS || Auth()->user()->idrol == RuleManager::PERSONAL_STAND_SALE_ACCESS){
+        if(Auth()->user()->rol_id == RuleManager::PERSONAL_STAND_ACCESS || Auth()->user()->rol_id == RuleManager::PERSONAL_STAND_SALE_ACCESS){
             $result = $this->readingStandQR($dataQR);
         }
 
@@ -66,7 +71,7 @@ class QrCodeController extends Controller
 
         try {
             
-            $clientAsisten = Cliente::where(['email' => $dataQR['correo'], 'idcampania' => $dataQR['idcampania'], 'estado' => RuleManager::ACTIVE_STATE])->first();
+            /* $clientAsisten = Cliente::where(['email' => $dataQR['correo'], 'idcampania' => $dataQR['idcampania'], 'estado' => RuleManager::ACTIVE_STATE])->first();
 
             if($clientAsisten->asistencia){
 
@@ -95,21 +100,38 @@ class QrCodeController extends Controller
                         </h4>'
                     );
                 }
+
+                if ($anioAsistencia < 1970) {
+                    $clientAsisten->fechaasistencia = Carbon::now()->format('y-m-d H:i:s');
+                }
+    
+                $anioEgreso = (int) $clientAsisten->anioegreso;
+                $dataQR['config'] = RuleManager::getQRConfigColor($anioEgreso);
+                $clientAsisten->update();
+    
+                $result = ResultManager::successMessageData('El QR si es valido', $dataQR); */
+    
+
+
+
+            $alumno = Alumno::select('id','dni','nombre','apellido')->where('dni', $dataQR)->first();
+            //return dd($alumno);
+            $asistenciaHoy = Asistencia::where('alumno_id', $alumno->id)
+            ->whereDate('fecha_asistencia', Carbon::today())
+            ->first();
+
+            if ($asistenciaHoy) {
+                return ResultManager::warningMessage('YA MARCO ASISTENCIA');
             }
 
-            $clientAsisten->asistencia = 1;
+            Asistencia::create([
+                'alumno_id' => $alumno->id,
+                'fecha_asistencia' => Carbon::now()->format('Y-m-d H:i:s'),
+                'fecha' => Carbon::now()->startOfDay()->format('Y-m-d H:i:s'),
 
-            $anioAsistencia = (int)optional($clientAsisten->fechaasistencia)->format('Y');
-
-            if ($anioAsistencia < 1970) {
-                $clientAsisten->fechaasistencia = Carbon::now()->format('y-m-d H:i:s');
-            }
-
-            $anioEgreso = (int) $clientAsisten->anioegreso;
-            $dataQR['config'] = RuleManager::getQRConfigColor($anioEgreso);
-            $clientAsisten->update();
-
-            $result = ResultManager::successMessageData('El QR si es valido', $dataQR);
+            ]);
+            
+            $result = ResultManager::successMessageData('El QR si es valido', $alumno);
 
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);

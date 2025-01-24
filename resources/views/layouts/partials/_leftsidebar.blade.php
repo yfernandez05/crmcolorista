@@ -28,14 +28,14 @@
                 </li>
                 {{-- @if (Auth::user()->idrol == Rule::PERSONAL_ATTENDANCE_ACCESS || Auth::user()->idrol == Rule::PERSONAL_STAND_ACCESS || Auth::user()->idrol == Rule::PERSONAL_STAND_SALE_ACCESS || in_array(Auth::user()->idrol, Rule::ADMINISTRATORS_ACCESS)) --}}
                 @if (Auth::user()->rol_id == Rule::PERSONAL_ATTENDANCE_ACCESS || Auth::user()->rol_id == Rule::PERSONAL_STAND_ACCESS || Auth::user()->rol_id == Rule::PERSONAL_STAND_SALE_ACCESS || in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS))
-                <!-- <div class="dropdown-divider"></div>
+                <div class="dropdown-divider"></div>
                 <li>
                     <router-link class="waves-effect waves-dark" :to="{ name: 'spa.lectorqr'}" aria-expanded="false">
                         <i class="fas fa-qrcode"></i>
                         <span class="hide-menu">Lector QR</span>
                     </router-link>
                 </li>
-                <div class="dropdown-divider"></div> -->
+                <div class="dropdown-divider"></div>
                 @endif
 
 
@@ -98,7 +98,7 @@
                 <li>
                     <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false">
                         <i class="fas fa-user-lock"></i>
-                        <span class="hide-menu">ESTUDIANTES</span>
+                        <span class="hide-menu">Estudiantes</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><router-link :to="{name: 'spa.alumno'}">Alumnos</router-link></li>

@@ -17,7 +17,7 @@ class RuleManager
     const STANDARD_ACCESS = [3];
     const REPORT_ACCESS = [4];
     const ASESOR_ACCESS = [5];
-    const PERSONAL_ATTENDANCE_ACCESS = 6;
+    const PERSONAL_ATTENDANCE_ACCESS = 3;
     const PERSONAL_STAND_ACCESS = 7;
     const PERSONAL_STAND_SALE_ACCESS = 8;
 

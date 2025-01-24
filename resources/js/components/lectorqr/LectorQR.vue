@@ -5,7 +5,7 @@
     <main-content style="padding: 0px;">
         <!-- titulo -->
         <template v-slot:card-header-title>
-            LECTOR QR
+            LECTOR ASISTENCIA QR
         </template>
         <!-- Acciones header -->
         <template v-slot:card-header-actions>
@@ -55,35 +55,35 @@
             </div>            
 
             <!-- Fomrulario busqueda -->
-            <div class="form-row" v-show="authenticatedUser.idrol <= 2 || authenticatedUser.idrol == 6 || authenticatedUser.idrol == 8">
+            <div class="form-row" v-show="authenticatedUser.rol_id == 1">
                 <hr class="col-12 text-secondary">
                 <div class="form-group col-12" v-if="!cameraOn">
                     <label class="col-12 d-none d-md-block"> </label>
-                    <strong v-if="authenticatedUser.idrol == 8">¿Desea registrarlo manualmente?</strong><strong v-else>¿Desea registrar la asistencia manualmente?</strong> Por favor, busque al asistente ingresando su correo electrónico, teléfono o nombres y apellidos:
+                    <strong>¿Desea registrar la asistencia manualmente?</strong> Por favor, busque al asistente ingresando su dni, nombres y apellidos:
                 </div>
                 <div class="form-group col-12 col-sm-8">
                     <v-select class="select-vue-customers"
-                        v-model="selectedClient"
+                        v-model="selectedAlumno"
                         :filterable="false"
-                        :options="clientes"
+                        :options="alumnos"
                         :searchable="true"
-                        label="email"
+                        label="nombrecompleto"
                         :loading="loading"
                         @search="onSearch"
                         @input="onSelectClient"
-                        placeholder="Escriba al menos 3 caracteres del correo, telefono ó nombres y apellidos.">
+                        placeholder="Escriba al menos 3 caracteres del dni, nombre ó apellidos.">
                         <template #option="data">
                             <div class="my-1">
                                 <div class="d-flex no-block text-truncate">
-                                    <h5 class="font-weight-bolder mb-0"><strong>{{ data.nombres }} {{ data.apellidopaterno }} {{ data.apellidomaterno }}</strong></h5    >
+                                    <h5 class="font-weight-bolder mb-0"><strong>{{ data.nombre }} {{ data.apellido }}</strong></h5    >
+                                </div>
+                                <div class="d-flex no-block text-truncate">
+                                    <span>DNI: </span><span class="font-weight-bolder pl-1 pr-3"
+                                        v-text="data.dni"></span>
                                 </div>
                                 <div class="d-flex no-block text-truncate">
                                     <span>Correo: </span><span class="font-weight-bolder pl-1 pr-3"
-                                        v-text="data.email"></span>
-                                </div>
-                                <div class="d-flex no-block text-truncate">
-                                    <span>Telefono: </span><span class="font-weight-bolder pl-1 pr-3"
-                                        v-text="data.telefono"></span>
+                                        v-text="data.correo"></span>
                                 </div>
                             </div>
                         </template>
@@ -92,8 +92,8 @@
                         </template>
                     </v-select>
                 </div> 
-                <div class="form-group col-12 col-sm-4" v-if="selectedClient" >
-                    <div v-if="!selectedClient.isassistance || authenticatedUser.idrol == 8" >
+                <div class="form-group col-12 col-sm-4" v-if="selectedAlumno" >
+                    <div v-if="!selectedAlumno.isassistance || authenticatedUser.idrol == 1" >
                         <button class="btn btn-md btn-info waves-effect badge-pill px-4 shadow-sm" @click="markAttendance()">
                             <i class="far fa-check-circle"></i>
                             <span v-if="authenticatedUser.idrol == 8" class="">
@@ -105,49 +105,50 @@
                         </button>
                     </div>
                 </div>
-                <div class="form-group col-12 mb-0" v-if="selectedClient">
+                <div class="form-group col-12 mb-0" v-if="selectedAlumno">
                     <div class="col-sm-12 p-0">
                         <div class="form-row info-cont-qr-search p-2">
                             <div class="card col-12 col-md-4  cont-details-info">
                                 <div class="card-body py-0 py-md-3">
                                     <label class="h6 title-search-qr mb-1 text-info-dark">Nombres:</label>
-                                    <p class="card-text small" v-text="selectedClient.nombres"></p>
+                                    <p class="card-text small" v-text="selectedAlumno.nombre"></p>
                                 </div>
                             </div>
                             <div class="card col-12 col-md-4  cont-details-info">
                                 <div class="card-body py-0 py-md-3">
                                     <label class="h6 title-search-qr mb-1 text-info-dark">Apellidos:</label>
-                                    <p class="card-text small" v-text="selectedClient.apellidopaterno + ' '+ selectedClient.apellidomaterno"></p>
+                                    <p class="card-text small" v-text="selectedAlumno.apellido"></p>
                                 </div>
                             </div>
                             <div class="card col-12 col-md-4 cont-details-info">
                                 <div class="card-body py-0 py-md-3">
-                                    <label class="h6 title-search-qr mb-1 text-info-dark">Email:</label>
-                                    <p class="card-text text-info small" v-text="selectedClient.email"></p>
+                                    <label class="h6 title-search-qr mb-1 text-info-dark">DNI:</label>
+                                    <p class="card-text text-info small" v-text="selectedAlumno.dni"></p>
                                 </div>
                             </div>
                             <div class="card col-12 col-md-4 cont-details-info">
                                 <div class="card-body py-0 py-md-3">
-                                    <label class="h6 title-search-qr mb-1 text-info-dark">telefono:</label>
-                                    <p class="card-text text-info small" v-text="selectedClient.telefono"></p>
+                                    <label class="h6 title-search-qr mb-1 text-info-dark">Correo:</label>
+                                    <p class="card-text text-info small" v-text="selectedAlumno.correo"></p>
                                 </div>
                             </div>
                             <div class="card col-12 col-md-4 cont-details-info">
                                 <div class="card-body py-0 py-md-3">
                                     <label class="h6 title-search-qr mb-1 text-info-dark">Asistencia:</label><br>
-                                    <span class="badge badge-pill py-1 px-3" :class="selectedClient.isassistance ? 'badge-success':'badge-warning'" v-text="selectedClient.asistencianame"></span>
+                                    <span class="badge badge-pill py-1 px-3" :class="selectedAlumno.isassistance ? 'badge-success':'badge-warning'" v-text="selectedAlumno.asistencianame"></span>
                                 </div> 
                             </div>
-                            <div v-show="selectedClient.evento_cliente && selectedClient.evento_cliente.length" class="card col-12 cont-details-info">
+                            <div v-show="selectedAlumno.matriculas && selectedAlumno.matriculas.length" class="card col-12 cont-details-info">
                                 <div class="d-flex flex-wrap">
-                                    <div v-for="(evento, index) in selectedClient.evento_cliente" :key="index" class="evento-item p-2">
-                                        <h6 class="title-search-qr mb-1 text-info-dark" v-text="evento.evento.nombreevento"></h6>
-                                        <p class="card-text text-dark small" v-text="evento.fechaasistencia"></p>
+                                    <div v-for="(matri, index) in selectedAlumno.matriculas" :key="index" class="evento-item p-2">
+                                        <h6 class="title-search-qr mb-1 text-info-dark text-primary" v-text="matri.nombre_carrera"></h6>
+                                        <p class="card-text text-dark small" v-text="matri.detalle_matricula"></p>
+                                        <p class="card-text text-dark small" v-text="matri.fecha_matricula"></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mt-3" v-if="!selectedClient.isassistance">
+                        <div class="col-12 mt-3" v-if="!selectedAlumno.isassistance">
                             <p class="font-italic small text-muted mt-1 text-center">
                                 El asistente no ha registrado su asistencia. Haga clic en 'Registrar Asistencia'.
                             </p>
@@ -168,6 +169,7 @@ import RowActions from './../../utils/RowActions';
 import QrScanner from 'qr-scanner';
 import vSelect from 'vue-select';
 import debounce from 'lodash/debounce';
+import moment, { now, relativeTimeThreshold } from 'moment';
 
 export default {
     data() {
@@ -181,8 +183,8 @@ export default {
             flashSupported: false,
             users: {},
 
-            selectedClient: null,
-            clientes: [],
+            selectedAlumno: null,
+            alumnos: [],
             loading: false,
         };
     },
@@ -200,10 +202,19 @@ export default {
             
             const videoElement = this.$refs.videoElement;
 
+            this.isProcessing = false;
+
             this.scanner = new QrScanner(videoElement, result => {
                 console.log('Código QR escaneado:', result);
+
+                if (this.isProcessing) {
+                    console.log('Lectura bloqueada. Procesando petición anterior.');
+                    return;
+                }
+
                 this.qrResult = result;
                 if (this.qrResult) {
+                    this.isProcessing = true;
                     this.turnOffFlash();
                     this.stopScanner();
                     this.sendQRResult();
@@ -292,6 +303,7 @@ export default {
             if (!this.qrResult) {
                 console.warn('Error al leer el qr intentelo nuevamente');
                 warningMessage('Error al leer el qr intentelo nuevamente');
+                this.isProcessing = false;
                 return;
             }
             
@@ -324,8 +336,8 @@ export default {
 
                 if (result.status) {
                     swalAlertSuccessQR(`Asistente: <br>
-                    <h3 class="name-qr-response mt-1 mb-0 text-primary">${result.dataaditional.nombre}</h3>
-                    <p class="email-qr-response mb-1">${result.dataaditional.correo}</p> ${infodatahtml}` , messageResult, result.dataaditional.colorClass)
+                    <h3 class="name-qr-response mt-1 mb-0 text-primary">${result.dataaditional.nombrecompleto}</h3>
+                    <p class="email-qr-response mb-1">DNI: ${result.dataaditional.dni}</p> ${infodatahtml}` , messageResult, result.dataaditional.colorClass)
                     .then(function(optionSelected){
                         if(optionSelected.value){
                             vm.startScanner();
@@ -348,6 +360,10 @@ export default {
                 hidePreloader();
                 errorMessage(appErrorMessage, appName);
                 console.log(error);
+            })
+            .finally(function () {
+                    vm.isProcessing = false;
+                    //vm.startScanner();
             });
         },
 
@@ -360,9 +376,9 @@ export default {
         }, 500),
 
         fetchClients(search) {
-            axios.get(`${appApiUrl}/cliente/selectsearch`, { params: { search } })
+            axios.get(`${appApiUrl}/asistencias/selectsearch`, { params: { search } })
                 .then(response => {
-                    this.clientes = response.data;
+                    this.alumnos = response.data;
                     this.loading = false;
                 })
                 .catch(error => {
@@ -371,32 +387,43 @@ export default {
             });
         },
         onSelectClient(client) {
-            this.selectedClient = client;
+            this.selectedAlumno = client;
         },
         markAttendance() {
-            console.log(this.selectedClient);
-            if (!this.selectedClient) {
-                console.warn('No selecciono un asistente');
-                warningMessage('Debe Seleccionar un asistente de los resultados para registrar su asistencia.');
+            console.log(this.selectedAlumno);
+
+            if (!this.selectedAlumno) {
+                console.warn('No selecciono un alumno');
+                warningMessage('Debe Seleccionar un alumno de los resultados para registrar su asistencia.');
                 return;
             }
+
+            const fechaAsistencia = moment().format('YYYY-MM-DD HH:mm:ss');
+            const fechaAsistenciaFormateada = moment().format('YYYY-MM-DD');
             
             let vm = this;
-            let clientData = {
-                idcliente : this.selectedClient.idcliente,
-                idcampania : this.selectedClient.idcampania,
-                email : this.selectedClient.email,
+            let alumnoData = {
+                alumno_id : this.selectedAlumno.id,
+                fecha_asistencia : fechaAsistencia,
+                fecha : fechaAsistenciaFormateada,
             };
 
-            axios.post(`${appApiUrl}/markattendanceentry`, clientData)
+            axios.post(`${appApiUrl}/asistencias`, alumnoData)
             .then(function (response) {
 
                 let result = response.data;
                 console.log(result);
 
-                if (result.status) {                    
-                    vm.selectedClient =  result.dataaditional;
-                    vm.replaceClientInArray(vm.selectedClient);
+                if (result.status) {
+                    let updatedFields = {
+                        alumno_id: alumnoData.alumno_id,
+                        asistencianame: "Asistencia Marcada",
+                        isassistance: 1
+                    };
+
+                    // Actualizar solo los campos específicos de `selectedAlumno`
+                    Object.assign(vm.selectedAlumno, updatedFields);
+                    vm.replaceClientInArray(updatedFields);
                     successMessage(result.message, appName);
                 } else if(result.warning) {
                     warningMessage(result.message, appName);
@@ -410,10 +437,11 @@ export default {
             });
         },
 
-        replaceClientInArray(updatedClient) {
-            let index = this.clientes.findIndex(c => c.idcliente === updatedClient.idcliente);
-            if (index !== -1) {            
-                this.clientes.splice(index, 1, updatedClient);
+        replaceClientInArray(updatedFields) {
+            let index = this.alumnos.findIndex(a => a.id === updatedFields.alumno_id);
+            if (index !== -1) {
+                // Actualiza solo los campos necesarios
+                Object.assign(this.alumnos[index], updatedFields);
             }
         }
     },
