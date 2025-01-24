@@ -7,7 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-window.appName = 'SISQR';
+window.appName = 'CRM COLORISTA';
 window.appErrorMessage = 'ocurrió un error inesperado. intente nuevamente más tarde.';
 window.appCannotDeleteMessage = 'No se puede editar un registro eliminado.';
 window.appRecordIsDeletedMessage = 'El registro ya está eliminado.';

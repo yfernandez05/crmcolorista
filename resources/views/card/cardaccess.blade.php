@@ -73,8 +73,8 @@
         }
 
         .qrcode {
-            width: 25mm;
-            height: 25mm;
+            width: 23mm;
+            height: 23mm;
             margin: 0mm auto;
         }
 
@@ -98,12 +98,11 @@
     <div class="info">
         <h2>{{$alumno->nombre}}</h2>
         <h2>{{$alumno->apellido}}</h2>
-        <p class="text-primary">{{$alumno->curso}} </p>
-        <h6 style="margin-top: 3em;">{{$alumno->correo}}</h6>
+        {{-- <h6 style="margin-top: 3em;">{{$alumno->correo}}</h6> --}}
     </div>
-    {{--<div class="qrcode">
+    <div class="qrcode">
         <img src="{{ $qryf }}" alt="QR Code">
-    </div>--}}
+    </div>
 </div>
     
 </body>

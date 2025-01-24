@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MessageReceived;
+use Intervention\Image\ImageManagerStatic as Image;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Alumno;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
@@ -11,6 +14,8 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\HtmlString;
 
 class AlumnoController extends BaseController
 {
@@ -164,14 +169,76 @@ class AlumnoController extends BaseController
     public function generatecard($id){
         $alumno = Alumno::find($id);
 
+        $qryf =  $this->enviarCorreoConQR($alumno, true);
 
-        //$qrCodeDataUri = 'data:image/svg+xml;base64,' . base64_encode($qryf);//local
-        //$pdf = Pdf::loadView('card.cardaccess', ['cliente' => $cliente, 'qryf' => $qrCodeDataUri]); //local
+        //return dd($qryf);
 
-       /*  $qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qryf); *///prod
-        $pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno]); //prod
+        $qrCodeDataUri = 'data:image/svg+xml;base64,' . base64_encode($qryf);//local
+        $pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno, 'qryf' => $qrCodeDataUri]); //local
+        
+        //$qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qryf);//prod
+        //$pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno, 'qryf' => $qrCodeDataUri]); //prod
 
-        return $pdf->stream('Carnet - '.$alumno->nombre.' '.$alumno->apellido. '.pdf');
+        return $pdf->stream('Carnet - '.$alumno->nombre.' '.$alumno->apellido.'.pdf');
+    }
+
+    private function enviarCorreoConQR($alumno,$issendmail)
+    {
+        /* $datos = [
+            "id" => $alumno->id,
+            "nombre" => $alumno->nombre,
+            "dni" => $alumno->dni,
+        ]; */
+
+        $dataalunos = $alumno->id .'-'.$alumno->dni;
+
+        // Convertir los datos a formato JSON
+        //$datosJSON = json_encode($datos);
+
+        // "Cifrar" los datos utilizando base64_encode()
+        //$datosCifrados = base64_encode($datosJSON); 
+        
+        // Generar código QR con los datos "cifrados"
+        //$qrCodePNG = QrCode::format('png')->size(400)->generate($datosCifrados); //prod
+        //$qqWithPadding = $this->paddinQRpng($qrCodePNG, 50); //prod
+        
+        $qrCodePNG = QrCode::size(400)->generate($dataalunos); //local
+        $qqWithPadding = $this->agregarPaddingSVG($qrCodePNG, '20px'); //local      
+
+        /* if (!$issendmail){
+            Mail::to($alumno->email)->send(new MessageReceived($alumno, $qqWithPadding));
+        } */
+
+        if($issendmail){
+            return $qqWithPadding;
+        }
+
+    }
+
+    function paddinQRpng($img, $padding){
+
+        if ($img instanceof HtmlString) {
+            $img = (string) $img;
+        }
+
+        $qrImage = Image::make($img);
+
+        // Calcular el tamaño del lienzo con padding
+        $canvasWidth = $qrImage->width() + 2 * $padding;
+        $canvasHeight = $qrImage->height() + 2 * $padding;
+
+        // Crear un lienzo blanco
+        $canvas = Image::canvas($canvasWidth, $canvasHeight, '#ffffff');
+
+        $canvas->insert($qrImage, 'center');
+        
+        return $canvas->encode('png');
+        
+    }
+
+
+    function agregarPaddingSVG($svgString, $padding) {
+        return str_replace('<svg', '<svg style="padding: ' . $padding . '; background: #fff;"', $svgString);
     }
 
     public function select(Request $request)
