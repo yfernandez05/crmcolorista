@@ -725,3 +725,26 @@ CREATE TABLE `atenciones` (
   CONSTRAINT `fk_iduser_atenciones` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- -----------------------------
+
+alter table pagos add codcomprobante int DEFAULT NULL AFTER user_id;
+alter table pagos add serie varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL AFTER codcomprobante;
+alter table pagos add numero varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL AFTER serie;
+
+DELIMITER $$
+CREATE TRIGGER `pago_before_insert_add_serienumero` BEFORE INSERT ON `pagos` FOR EACH ROW BEGIN
+
+    declare v_correlativo int;
+    
+    set v_correlativo = (select (correlativo + 1) from tipocomprobantes where codcomprobante = new.codcomprobante);
+    
+    set new.numero = v_correlativo;
+    
+    update tipocomprobantes set correlativo = v_correlativo where codcomprobante = new.codcomprobante;
+
+END
+$$
+DELIMITER ;
+
+
+
