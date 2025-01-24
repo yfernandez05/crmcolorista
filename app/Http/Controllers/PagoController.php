@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetallePago;
-use App\Models\Pago;
-use App\Util\LogErrorManager;
-use App\Util\ResultManager;
-use App\Util\RuleManager;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\QueryException;
+use Carbon\Carbon;
+use App\Models\Pago;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Util\RuleManager;
+use App\Models\DetallePago;
+use App\Util\ResultManager;
 use Illuminate\Http\Request;
+use App\Util\LogErrorManager;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class PagoController extends BaseController
 {
@@ -26,10 +27,10 @@ class PagoController extends BaseController
         $perpage = $this->getLimitPagination($request);
 
         $pago = Pago::where($filters)
-            ->with('matricula')
+            ->with('matricula','matricula.alumno','comprobante')
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
-            
+
         return $pago;
     }
 
@@ -47,6 +48,9 @@ class PagoController extends BaseController
 
             $pago = $this->setModel(new Pago(), $request);
             $pago->created_usr  = $this->user->email;
+            $pago->codcomprobante = $request->codcomprobante;
+            $pago->serie = $request->serie;
+            $pago->numero = $request->numero;
             $pago->save();
 
             //dd($request->detalles);
@@ -73,13 +77,13 @@ class PagoController extends BaseController
             $result = ResultManager::genericSuccessMessage();
 
         } catch (QueryException $e) {
-            DB::rollBack(); 
+            DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
             $result = ResultManager::gerericErrorMessage();
 
         } catch (Exception $e) {
-            DB::rollBack(); 
+            DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
             $result = ResultManager::gerericErrorMessage();
@@ -96,7 +100,9 @@ class PagoController extends BaseController
      */
     public function show($id)
     {
-        $pago = Pago::with('matricula','detalles')->find($id);
+       /* $pago = Pago::with('matricula','detalles','alumno')->find($id);
+        return $pago;*/
+        $pago = Pago::with(['matricula.alumno', 'detalles','matricula.carrera','matricula.ciclo','comprobante'])->find($id);
         return $pago;
     }
 
@@ -117,6 +123,8 @@ class PagoController extends BaseController
             $pago->updated_usr = $this->user->email;
             $pago->subtotal = $request->subtotal; // Actualizar otros campos principales
             $pago->matricula_id = $request->matricula_id; // Actualizar matrícula
+            $pago->codcomprobante = $request->codcomprobante;
+            $pago->serie = $request->serie;
             $pago->update(); // Actualizar el pago
 
             // Obtener todos los detalles actuales de este pago
@@ -183,7 +191,7 @@ class PagoController extends BaseController
             $pago->update();
 
             $result = ResultManager::successMessage('Pago eliminado correctamente.');
-            
+
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
@@ -203,6 +211,21 @@ class PagoController extends BaseController
         $pago->detalle = $request->detalle;
         $pago->user_id = Auth()->user()->id;
         return $pago;
+    }
+
+    public function comprobante($id)
+    {
+        if (empty($id)) {
+            return redirect()->route('spa');
+        }
+
+        $comprobante = Pago::with(['matricula.alumno', 'detalles','matricula.carrera','matricula.ciclo','comprobante'])->find($id);
+
+        $pdf = PDF::loadView('factura.factura', ['factura' => $comprobante]);
+
+        $nombrearchivo= "PRESUPUESTO ". $comprobante->numero.".pdf";
+        return $pdf->stream($nombrearchivo);
+       // return $pdf->stream();
     }
 
 }

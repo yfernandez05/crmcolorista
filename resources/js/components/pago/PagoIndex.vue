@@ -69,6 +69,9 @@
                             <th class="p-2">Acciones</th>
                             <th class="p-2">Cod</th>
                             <th class="p-2">Detalle - Pago</th>
+                            <th class="p-2">Nombre</th>
+                            <th class="p-2">Apellido</th>
+                            <th class="p-2">Dni</th>
                             <th class="p-2">Monto</th>
                             <th class="p-2">Detalle - Matricula</th>
                             <th class="p-2">Estado</th>
@@ -78,10 +81,17 @@
                         <tr v-for="ps in pagos" :key="ps.id" :activeShow="false">
                             <td>
                                 <row-actions :rowData="ps" @rowItemActions="rowItemActions">
+                                    <button type="button" title="Schneider" @click="generarComprobante(ps)"
+                                                class="btn btn-sm btn-outline-sch waves-effect waves-light border-0 mr-1">
+                                                <i class="fas fa-print fa-lg"></i>
+                                    </button>
                                 </row-actions>
                             </td>
                             <td v-text="ps.id"></td>
                             <td v-text="ps.detalle"></td>
+                            <td v-text="ps.matricula.alumno.nombre"></td>
+                            <td v-text="ps.matricula.alumno.apellido"></td>
+                            <td v-text="ps.matricula.alumno.dni"></td>
                             <td v-text="ps.subtotal"></td>
                             <td v-text="ps.matricula?.detalle"></td>
                             <td >
@@ -247,6 +257,11 @@
                 this.pago.matricula_id = '';
                 this.pago.concepto_id = '';
                 this.buscarPago();
+            },
+            generarComprobante(data){
+                // console.log(data);
+                let urlPdf = `${appApiUrl}/pago/comprobante/${data.id}`;
+                window.open(urlPdf,'_blank')
             },
 
         },

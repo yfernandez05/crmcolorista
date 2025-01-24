@@ -18,7 +18,7 @@ export default {
 
             if (isNaN(this.etiquetatelefonica.idetiquetatele)) {
                 this.$router.push({
-                    name: 'sisfe.etiquetaTelefonica'
+                    name: 'spa.etiquetaTelefonica'
                 });
             }
 
@@ -36,7 +36,7 @@ export default {
                             warningMessage(`No se encontró ningúna Etiqueta Telefonica con el código ${id}`, appName);
 
                             vm.$router.push({
-                                name: 'sisfe.etiquetaTelefonica'
+                                name: 'spa.etiquetaTelefonica'
                             });
                         }
                         vm.etiquetatelefonica = response.data;
@@ -46,7 +46,7 @@ export default {
                         errorMessage(appErrorMessage, appName);
 
                         vm.$router.push({
-                            name: 'sisfe.etiquetaTelefonica'
+                            name: 'spa.etiquetaTelefonica'
                         });
                         console.log(error);
                     })
@@ -65,7 +65,7 @@ export default {
                             successMessage(result.message, appName);
 
                             vm.$router.push({
-                                name: 'sisfe.etiquetaTelefonica'
+                                name: 'spa.etiquetaTelefonica'
                             });
                         } else
                             errorMessage(result.message, appName);

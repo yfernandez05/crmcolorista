@@ -42,12 +42,47 @@
                     </v-select>
                     <small class="form-control-feedback" v-if="errorExists('matricula_id')"
                         v-text="showError('matricula_id').errorDetail"></small>
-                </div>                
+                </div>
+                <div class="form-row col-12">
+                    <div class="form-group mb-1 col-sm-8 col-md-8 col-lg-4">
+                    <label class="mb-0">Nombre</label>
+                    <input type="text" class="form-control form-control-sm"
+                        v-model="selectedAlumnoNombre">
+                    </div>
+                    <div class="form-group mb-1 col-sm-8 col-md-8 col-lg-4">
+                    <label class="mb-0">Apellido</label>
+                    <input type="text" class="form-control form-control-sm"
+                        v-model="selectedAlumnoApellido">
+                    </div>
+                    <div class="form-group mb-1 col-sm-8 col-md-8 col-lg-4">
+                        <label class="mb-0">DNI</label>
+                        <input type="text" class="form-control form-control-sm"
+                            v-model="selectedAlumnoDni">
+                    </div>
+                    <div class="form-group mb-1 col-sm-8 col-md-8 col-lg-4">
+                        <label class="mb-0">Carrera</label>
+                        <input type="text" class="form-control form-control-sm"
+                            v-model="selectedAlumnoCarrera">
+                    </div>
+                    <div class="form-group mb-1 col-sm-8 col-md-8 col-lg-4">
+                        <label class="mb-0">Ciclo</label>
+                        <input type="text" class="form-control form-control-sm"
+                            v-model="selectedAlumnoCiclo">
+                    </div>
+                </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-8" :class="{'has-danger':errorExists('detalle')}">
                     <label>Detalle <small class="text-danger">(*)</small></label>
                     <textarea class="form-control mt-0" v-model="pago.detalle" @:keyup.enter="doSaveData" rows="2"></textarea>
                     <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('codcomprobante')}">
+                    <label>Comprobante <small class="text-danger">(*)</small></label>
+                    <select2 :options="tipocomprobantes" v-model="pago.codcomprobante" :selectValue="pago.codcomprobante"
+                        placeholder="Seleccione un comprobante" keyProperty="codcomprobante" textProperty="nombrecomprobante">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('codcomprobante')"
+                        v-text="showError('codcomprobante').errorDetail"></small>
                 </div>
             </div>
             <hr class="mt-2">
@@ -65,11 +100,19 @@
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('precio_unitario')}">
                     <label>Precio <small class="text-danger">(*)</small></label>
-                    <vue-numeric class="form-control" v-model="pago.precio_unitario" v-bind:precision="2" 
-                        currency="S/">
-                    </vue-numeric>
+                    <div class="d-flex align-items-center">
+                        <vue-numeric class="form-control" v-model="pago.precio_unitario" v-bind:precision="2" currency="S/">
+                        </vue-numeric>
+                        <div class="form-check ml-2 col-4">
+                            <input class="form-check-input" type="checkbox" id="costoCero" v-model="costoCero" @change="toggleCostoCero">
+                            <label class="form-check-label" for="costoCero">
+                                Costo 0
+                            </label>
+                        </div>
+
+                    </div>
                     <small class="form-control-feedback" v-if="errorExists('precio_unitario')"
-                        v-text="showError('precio_unitario').errorDetail"></small>
+                            v-text="showError('precio_unitario').errorDetail"></small>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('descuento')}">
                     <label>Descuento </label>
@@ -131,7 +174,7 @@
                 </div>
             </div>
 
-            <hr class="mt-2">    
+            <hr class="mt-2">
         </template>
 
         <template v-slot:card-body-actions>
@@ -174,7 +217,9 @@ export default {
                     concepto_id: '',
                     matricula_id: '',
                     detalles: [], // Array para los detalles del pago
-                    matricula: []
+                    matricula: [],
+                    precio_unitario: 100,
+
                 };
             }
         }
@@ -186,9 +231,20 @@ export default {
             errors: [],
             selectedMatricula: null,
             loading: false,
+            costoCero: false,
+            tipocomprobantes: [],
+            tipocomprobante: null,
+            tipocomprobanteSeleccionado: {},
         };
     },
     methods: {
+        toggleCostoCero() {
+            if (this.costoCero) {
+                this.pago.precio_unitario = 0;
+            }else{
+                this.pago.precio_unitario = 100;
+            }
+        },
         doSaveData() {
             if (this.validateFields().length > 0) {
                 return;
@@ -199,6 +255,8 @@ export default {
                 subtotal: this.subtotal,
                 matricula_id: this.pago.matricula.id,
                 //matricula_id: this.pago.matricula_id,
+                codcomprobante: this.tipocomprobanteSeleccionado.codcomprobante,
+                serie: this.tipocomprobanteSeleccionado.serie,
                 detalles: this.pago.detalles
             };
 
@@ -212,8 +270,8 @@ export default {
             if (!this.pago.detalle) {
                 this.setError('detalle', 'El campo detalle es obligatorio');
             }
-            if (!Array.isArray(this.pago.detalles) || this.pago.detalles.length === 0) {
-                this.setError('concepto_id', 'Debe seleccionar un concepto y establecer un precio.');
+            if (!Array.isArray(this.pago.detalles)) {
+                this.setError('concepto_id', 'Debe seleccionar un concepto.');
             }
 
             return this.errors;
@@ -231,8 +289,8 @@ export default {
             return this.errors.find(err => err.keyModel === keyModel);
         },
         agregarDetalle() {
-            if (!this.pago.concepto_id || !this.pago.precio_unitario) {
-                this.setError('concepto_id', 'Debe seleccionar un concepto y establecer un precio.');
+            if (!this.pago.concepto_id) {
+                this.setError('concepto_id', 'Debe seleccionar un concepto.');
                 return;
             }
             console.log(this.pago.concepto_id);
@@ -315,7 +373,21 @@ export default {
         },
         unformatNumber(value) {
             return accounting.unformat(value);
-        }
+        },
+        listarTipocoprobante() {
+                let vm = this;
+                axios.get(`${appApiUrl}/tipocomprobante/select`)
+                    .then(function (response) {
+                        vm.tipocomprobantes = response.data;
+                        if (!vm.pago.codcomprobante) {
+                            vm.pago.codcomprobante = 1;
+                        }
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    });
+            },
     },
     computed: {
         subtotal() {
@@ -326,11 +398,28 @@ export default {
         },
         total() {
             return this.subtotal; // Ajusta según tu lógica si hay otros cálculos
-        }
+        },
+        selectedAlumnoNombre() {
+            return this.pago.matricula && this.pago.matricula.alumno ? this.pago.matricula.alumno.nombre : '';
+        },
+        selectedAlumnoApellido() {
+            return this.pago.matricula && this.pago.matricula.alumno ? this.pago.matricula.alumno.apellido : '';
+        },
+        selectedAlumnoDni() {
+            return this.pago.matricula && this.pago.matricula.alumno ? this.pago.matricula.alumno.dni : '';
+        },
+        selectedAlumnoCarrera() {
+            return this.pago.matricula && this.pago.matricula.carrera ? this.pago.matricula.carrera.nombre : '';
+        },
+        selectedAlumnoCiclo(){
+            return this.pago.matricula && this.pago.matricula.ciclo ? this.pago.matricula.ciclo.nombre : '';
+        },
+
     },
     mounted() {
         //this.listarMatriculas();
         this.listarConceptos();
+        this.listarTipocoprobante();
     },
     components: {
         MainContent,

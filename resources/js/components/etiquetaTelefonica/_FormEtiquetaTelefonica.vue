@@ -29,7 +29,7 @@
         </template>
 
         <template v-slot:card-body-actions>
-            <router-link :to="{name: 'sisfe.etiquetaTelefonica'}" class="btn waves-effect waves-light btn-info mr-2">
+            <router-link :to="{name: 'spa.etiquetaTelefonica'}" class="btn waves-effect waves-light btn-info mr-2">
                 <i class="fas fa-reply"></i> <span class="button-text">Atrás</span>
             </router-link>
 

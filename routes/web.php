@@ -155,6 +155,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('matricula', 'MatriculaController');
 
     Route::resource('pago', 'PagoController');
+    Route::get('pago/comprobante/{id}', 'PagoController@comprobante');
 
     Route::get('tipocomprobante/select', 'TipocomprobanteController@select')->name('tipocomprobante.select');
     Route::resource('tipocomprobante','TipocomprobanteController')->except(['show', 'create']);

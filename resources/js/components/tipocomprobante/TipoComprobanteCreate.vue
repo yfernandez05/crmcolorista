@@ -20,7 +20,7 @@
                             successMessage(result.message, appName);
 
                             vm.$router.push({
-                                name: 'sisfe.tipocomprobante'
+                                name: 'spa.tipocomprobante'
                             });
                         } else
                             errorMessage(result.message, appName);

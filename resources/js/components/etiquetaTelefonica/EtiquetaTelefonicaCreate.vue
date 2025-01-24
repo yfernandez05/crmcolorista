@@ -21,7 +21,7 @@
                             successMessage(result.message, appName);
 
                             vm.$router.push({
-                                name: 'sisfe.etiquetaTelefonica'
+                                name: 'spa.etiquetaTelefonica'
                             });
                         } else
                             errorMessage(result.message, appName);

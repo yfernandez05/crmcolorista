@@ -175,6 +175,7 @@ class MatriculaController extends BaseController
     public function selectsearch(Request $request)
     {
         $search = $request->input('search');
+        //dd($search);
 
         $query = Matricula::where('estado', 'A')
             ->with('alumno','carrera','ciclo')

@@ -16,7 +16,7 @@
                     Limpiar
                 </span>
             </button>
-            <router-link :to="{name:'sisfe.etiquetaTelefonica.registrar'}" class="btn btn-sm btn-success waves-effect waves-light" >
+            <router-link :to="{name:'spa.etiquetaTelefonica.registrar'}" class="btn btn-sm btn-success waves-effect waves-light" >
                  <i class="fas fa-plus"></i>
                 <span class="d-none d-sm-inline-block ">
                     Nuevo
@@ -148,7 +148,7 @@
                             warningMessage(appCannotDeleteMessage, appName);
                             break;
                         }
-                        this.$router.push({ name: 'sisfe.etiquetaTelefonica.editar', params: { id: event.data.idetiquetatele } })
+                        this.$router.push({ name: 'spa.etiquetaTelefonica.editar', params: { id: event.data.idetiquetatele } })
                     break;
                     case 'delete':
                         this.eliminarEtiquetaTele(event.data);

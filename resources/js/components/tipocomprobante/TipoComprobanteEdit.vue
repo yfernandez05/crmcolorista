@@ -4,7 +4,7 @@
 </template>
 <script>
     import FormTipoComprobante from './_FormTipoComprobante';
-    
+
     export default {
         data() {
             return {
@@ -16,7 +16,7 @@
 
             if (isNaN(this.tipoComprobante.codcomprobante)) {
                 this.$router.push({
-                    name: 'sisfe.tipocomprobante'
+                    name: 'spa.tipocomprobante'
                 });
             }
 
@@ -35,7 +35,7 @@
                             warningMessage(`No se encontró ningún tipo de comprobante con el código ${id}`, appName);
 
                             vm.$router.push({
-                                name: 'sisfe.tipocomprobante'
+                                name: 'spa.tipocomprobante'
                             });
                         }
                         vm.tipoComprobante = response.data;
@@ -45,7 +45,7 @@
                         errorMessage(appErrorMessage, appName);
 
                         vm.$router.push({
-                            name: 'sisfe.tipocomprobante'
+                            name: 'spa.tipocomprobante'
                         });
                         console.log(error);
                     })
@@ -63,7 +63,7 @@
                             successMessage(result.message, appName);
 
                             vm.$router.push({
-                                name: 'sisfe.tipocomprobante'
+                                name: 'spa.tipocomprobante'
                             });
                         } else
                             errorMessage(result.message, appName);

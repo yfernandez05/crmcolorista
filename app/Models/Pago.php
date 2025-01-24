@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use App\Models\Matricula;
-use App\Models\ConceptoPago;
 use App\Util\RuleManager;
+use App\Models\ConceptoPago;
+use App\Models\Tipocomprobante;
 use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
@@ -15,9 +16,12 @@ class Pago extends Model
 
     protected $fillable = [
         'matricula_id',
-        'subtotal',        
+        'subtotal',
         'detalle',
         'user_id',
+        'codcomprobante',
+        'serie',
+        'numero',
         'estado',
     ];
 
@@ -51,6 +55,10 @@ class Pago extends Model
     public function detalles()
     {
         return $this->hasMany(DetallePago::class, 'pago_id', 'id')->with('conceptopago');
+    }
+    public function comprobante()
+    {
+        return $this->belongsTo(Tipocomprobante::class, 'codcomprobante', 'codcomprobante');
     }
 
 }

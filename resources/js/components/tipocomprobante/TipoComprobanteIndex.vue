@@ -16,7 +16,7 @@
                     Limpiar
                 </span>
             </button>
-            <router-link :to="{name: 'sisfe.tipocomprobante.registrar'}" class="btn btn-sm btn-success waves-effect waves-light">
+            <router-link :to="{name: 'spa.tipocomprobante.registrar'}" class="btn btn-sm btn-success waves-effect waves-light">
                 <i class="fas fa-plus"></i>
                 <span class="d-none d-sm-inline-block">
                     Nuevo
@@ -28,12 +28,12 @@
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>Comprobante</label>
                     <input type="text" class="form-control" v-model="tipocompro.nombrecomprobante" @keyup.enter="buscarTipocompro()">
-                                                                                                    
+
                 </div>
                  <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>Codig. Sunat</label>
                     <input type="text" class="form-control" v-model="tipocompro.codigosunat" @keyup.enter="buscarTipocompro()">
-                                                                                                    
+
                 </div>
             </div>
             <div class="table-responsive">
@@ -119,7 +119,7 @@
             rowItemActions(event) {
                 switch (event.action) {
                     case 'edit':
-                        this.$router.push({ name: 'sisfe.tipocomprobante.editar', params: { id: event.data.codcomprobante } }) 
+                        this.$router.push({ name: 'spa.tipocomprobante.editar', params: { id: event.data.codcomprobante } })
                     break;
                     case 'delete':
                         this.eliminarTipoComprobante(event.data)
@@ -152,10 +152,10 @@
                 swalAlertConfirm(`¿Seguro que quiere eliminar el tipo de comprobante <b>${param.nombrecomprobante}</b>?`, appName)
                     .then(function(optionSelected){
                         if(optionSelected.value){
-                            
+
                             showPreloader();
                             axios.delete(`${appApiUrl}/tipocomprobante/${param.codcomprobante}`)
-                                .then(function (response) {         
+                                .then(function (response) {
                                     hidePreloader();
                                     let result = response.data;
 
