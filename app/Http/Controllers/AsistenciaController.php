@@ -197,13 +197,17 @@ class AsistenciaController extends BaseController
                 'asi.fecha as asistencia_fecha',
                 DB::raw("CONCAT(al.nombre, ' ', al.apellido) as nombrecompleto"),
                 DB::raw("IF(ISNULL(asi.fecha), 'Pendiente', 'Asistencia Marcada') as asistencianame"),
-                DB::raw("IF(ISNULL(asi.fecha), false, true) as isassistance")
+                DB::raw("IF(ISNULL(asi.fecha), 0, 1) as isassistance")
             )
             ->where('al.estado', 'A') // Solo alumnos activos
             ->whereRaw("concat(al.nombre, ' ', al.apellido, ' ', al.dni) like ?", ["%{$search}%"])
             ->orderBy('al.id', 'DESC')
             ->limit(15) // Limita los resultados a 15 para evitar sobrecarga
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->isassistance = (int) $item->isassistance; // Convertir el valor a número
+                return $item;
+            });
     
         // Agregar matrículas y carreras para cada alumno
         $query->transform(function ($alumno) {
