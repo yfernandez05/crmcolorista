@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
@@ -85,6 +86,11 @@ class Alumno extends Model
             $nombreCompleto = $nombreCompleto.' '.$this->apellido;
 
         return $nombreCompleto;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 }

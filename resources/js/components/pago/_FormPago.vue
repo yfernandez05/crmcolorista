@@ -234,7 +234,8 @@ export default {
             costoCero: false,
             tipocomprobantes: [],
             tipocomprobante: null,
-            tipocomprobanteSeleccionado: {},
+            tipocomprobanteSeleccionado: {
+            },
         };
     },
     methods: {
@@ -255,12 +256,13 @@ export default {
                 subtotal: this.subtotal,
                 matricula_id: this.pago.matricula.id,
                 //matricula_id: this.pago.matricula_id,
-                codcomprobante: this.tipocomprobanteSeleccionado.codcomprobante,
-                serie: this.tipocomprobanteSeleccionado.serie,
+                codcomprobante: this.pago.codcomprobante,
+                serie: this.pago.serie,
                 detalles: this.pago.detalles
             };
 
             this.$emit('saveData', pagoData);
+            console.log('pagoData', pagoData);
         },
         validateFields() {
             this.errors = [];

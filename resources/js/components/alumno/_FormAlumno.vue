@@ -42,7 +42,7 @@
                     <small class="form-control-feedback" v-if="errorExists('correo')" v-text="showError('correo').errorDetail"></small>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('dni')}">
-                    <label>DNI </label>
+                    <label>DNI <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="alumno.dni" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('dni')" v-text="showError('dni').errorDetail"></small>
                 </div>
@@ -186,6 +186,9 @@
                     this.setError('correo', 'El campo correo es obligatorio');
                 }
 
+                if (!this.alumno.dni) {
+                    this.setError('dni', 'El campo DNI es obligatorio');
+                }
                 return this.errors;
             },
             setError(keyModel, errorDetail) {

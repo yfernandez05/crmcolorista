@@ -81,7 +81,7 @@
                         <tr v-for="ps in pagos" :key="ps.id" :activeShow="false">
                             <td>
                                 <row-actions :rowData="ps" @rowItemActions="rowItemActions">
-                                    <button type="button" title="Schneider" @click="generarComprobante(ps)"
+                                    <button type="button" title="Comprobante" @click="generarComprobante(ps)"
                                                 class="btn btn-sm btn-outline-sch waves-effect waves-light border-0 mr-1">
                                                 <i class="fas fa-print fa-lg"></i>
                                     </button>

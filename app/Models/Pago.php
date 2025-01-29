@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Matricula;
 use App\Util\RuleManager;
+use App\Models\DetallePago;
 use App\Models\ConceptoPago;
 use App\Models\Tipocomprobante;
 use Illuminate\Database\Eloquent\Model;

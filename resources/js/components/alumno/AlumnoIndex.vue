@@ -21,11 +21,11 @@
                 <span class="d-none d-sm-inline-block ">
                     Nuevo
                 </span>
-            </router-link>    
+            </router-link>
         </template>
         <template v-slot:card-body-main>
             <div class="form-row">
-                
+
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>Nombre</label>
                     <input type="text" class="form-control" v-model="alumno.nombre" @keyup.enter="alumnosBuscar()">
@@ -41,7 +41,7 @@
                 <div class="form-group col-12 col-sm-6 col-md-4 ">
                     <label>&nbsp;</label>
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="estado" 
+                        <input type="checkbox" class="custom-control-input" id="estado"
                             v-model="alumno.estado" @change="alumnosBuscar()">
                         <label class="custom-control-label" for="estado">Incluir Eliminados</label>
                     </div>
@@ -57,7 +57,6 @@
                             <th class="p-2">Nombre</th>
                             <th class="p-2">Apellido</th>
                             <th class="p-2">Correo</th>
-                            <th class="p-2">Curso</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -72,12 +71,11 @@
                                 </row-actions>
                             </td>
                             <td v-text="alum.id"></td>
-                            <td v-text="alum.nombre"></td>                            
-                            <td v-text="alum.apellido"></td>                            
-                            <td v-text="alum.correo"></td>                            
-                            <td v-text="alum.curso"></td>                            
+                            <td v-text="alum.nombre"></td>
+                            <td v-text="alum.apellido"></td>
+                            <td v-text="alum.correo"></td>
                             <td >
-                                <span class="badge badge-pill py-1 px-3" 
+                                <span class="badge badge-pill py-1 px-3"
                                     :class="alum.isactive ? 'badge-success':'badge-danger'"
                                      v-text="alum.statename">
                                 </span>
@@ -113,7 +111,7 @@
                 }
             }
         },
-        
+
         methods: {
             listarAlumno() {
                 showPreloader();
@@ -147,7 +145,7 @@
                             break;
                         }
 
-                        this.$router.push({ name: 'spa.alumno.editar', params: { id: event.data.id } }) 
+                        this.$router.push({ name: 'spa.alumno.editar', params: { id: event.data.id } })
                     break;
                     case 'delete':
                         this.eliminarAlumno(event.data);
@@ -169,7 +167,7 @@
                     this.filters.estado = this.alumno.estado;
 
 
-                this.listarAlumno();  
+                this.listarAlumno();
             },
             eliminarAlumno(param){
                 let vm = this;
@@ -182,10 +180,10 @@
                 swalAlertConfirm(`¿Seguro que quiere eliminar el alumno <b>${param.nombre}</b>?`, appName)
                     .then(function(optionSelected){
                         if(optionSelected.value){
-                            
+
                             showPreloader();
                             axios.delete(`${appApiUrl}/alumno/${param.id}`)
-                                .then(function (response) {         
+                                .then(function (response) {
                                     hidePreloader();
                                     let result = response.data;
 
@@ -202,7 +200,7 @@
                                 });
                         }
                     });
-            },             
+            },
             limpiarAlumno(){
                 this.alumno.nombre = '';
                 this.alumno.apellido = '';
