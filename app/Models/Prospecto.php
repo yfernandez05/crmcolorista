@@ -20,6 +20,7 @@ class Prospecto extends Model
         'correo',
         'procedencia',
         'fecha_registro',
+        'cursointeres',
         'user_id',
         'estado',
     ];

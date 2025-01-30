@@ -16,7 +16,6 @@ class Importacion extends Model
             'nombrearchivo', 
             'fecharegistro', 
             'cantregistros', 
-            'idcampania', 
             'iduser', 
             'uuidimportacion',
             'estado', 

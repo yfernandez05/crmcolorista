@@ -41,6 +41,11 @@
                     <input type="text" class="form-control" v-model="prospecto.procedencia" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('procedencia')" v-text="showError('procedencia').errorDetail"></small>
                 </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('cursointeres')}">
+                    <label>Curso de interes</label>
+                    <input type="text" class="form-control" v-model="prospecto.cursointeres" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('cursointeres')" v-text="showError('cursointeres').errorDetail"></small>
+                </div>
 
             </div>
             <hr class="mt-2">
@@ -84,7 +89,8 @@
                         fecha_nac: '',
                         correo: '',
                         telefono: '',
-                        procedencia: ''
+                        procedencia: '',
+                        cursointeres: '',
 
                     }
                 }
@@ -108,7 +114,8 @@
                     correo: this.prospecto.correo,
                     fecha_nac: this.prospecto.fecha_nac,
                     telefono: this.prospecto.telefono,
-                    procedencia: this.prospecto.procedencia
+                    procedencia: this.prospecto.procedencia,
+                    cursointeres: this.prospecto.cursointeres
                 }
 
                 this.$emit('saveData', rolData);

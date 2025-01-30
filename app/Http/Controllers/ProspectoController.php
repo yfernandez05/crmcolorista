@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\plantillaAlumno;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Prospecto;
@@ -11,9 +12,16 @@ use Illuminate\Http\Request;
 use App\Util\LogErrorManager;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\QueryException;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ProspectoController extends BaseController
 {
+    public function __construct()
+    {
+        parent::__construct(['index']);
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -148,6 +156,7 @@ class ProspectoController extends BaseController
         $prospecto->telefono = $request->telefono;
         $prospecto->procedencia = $request->procedencia;
         $prospecto->fecha_registro = Carbon::now();
+        $prospecto->cursointeres = $request->cursointeres;
         $prospecto->user_id = 1;
         if (!is_null($request->fecha_nac)) {
             $prospecto->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
@@ -170,5 +179,22 @@ class ProspectoController extends BaseController
 
         return $prospectos;
 
+    }
+
+    public function descargarplantilla(Request $request)
+    {
+        try {
+            $name = 'plantillaProspecto[' . Carbon::now('America/Lima')->format('d-m-Y H:i:s') . ' ].xlsx';
+            return Excel::download(new plantillaAlumno($request), $name);
+            
+        } catch (QueryException $e) {
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+
+            throw new HttpException(500);
+        } catch (Exception $e) {
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+
+            throw new HttpException(500);
+        }
     }
 }

@@ -7417,16 +7417,16 @@ module.exports = function (O, key, value, options) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
 // eslint-disable-next-line es/no-object-defineproperty -- safe
 var defineProperty = Object.defineProperty;
 
 module.exports = function (key, value) {
   try {
-    defineProperty(globalThis, key, { value: value, configurable: true, writable: true });
+    defineProperty(global, key, { value: value, configurable: true, writable: true });
   } catch (error) {
-    globalThis[key] = value;
+    global[key] = value;
   } return value;
 };
 
@@ -7462,10 +7462,10 @@ module.exports = !fails(function () {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
 
-var document = globalThis.document;
+var document = global.document;
 // typeof document.createElement is 'object' in old IE
 var EXISTS = isObject(document) && isObject(document.createElement);
 
@@ -7544,55 +7544,66 @@ module.exports = DOMTokenListPrototype === Object.prototype ? undefined : DOMTok
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/enum-bug-keys.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/core-js/internals/enum-bug-keys.js ***!
-  \*********************************************************/
+/***/ "./node_modules/core-js/internals/engine-is-browser.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-is-browser.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-// IE8- don't enum bug keys
-module.exports = [
-  'constructor',
-  'hasOwnProperty',
-  'isPrototypeOf',
-  'propertyIsEnumerable',
-  'toLocaleString',
-  'toString',
-  'valueOf'
-];
+var IS_DENO = __webpack_require__(/*! ../internals/engine-is-deno */ "./node_modules/core-js/internals/engine-is-deno.js");
+var IS_NODE = __webpack_require__(/*! ../internals/engine-is-node */ "./node_modules/core-js/internals/engine-is-node.js");
+
+module.exports = !IS_DENO && !IS_NODE
+  && typeof window == 'object'
+  && typeof document == 'object';
 
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment-is-ios-pebble.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/core-js/internals/environment-is-ios-pebble.js ***!
-  \*********************************************************************/
+/***/ "./node_modules/core-js/internals/engine-is-deno.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-is-deno.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var userAgent = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js/internals/environment-user-agent.js");
+/* global Deno -- Deno case */
+module.exports = typeof Deno == 'object' && Deno && typeof Deno.version == 'object';
+
+
+/***/ }),
+
+/***/ "./node_modules/core-js/internals/engine-is-ios-pebble.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-is-ios-pebble.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var userAgent = __webpack_require__(/*! ../internals/engine-user-agent */ "./node_modules/core-js/internals/engine-user-agent.js");
 
 module.exports = /ipad|iphone|ipod/i.test(userAgent) && typeof Pebble != 'undefined';
 
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment-is-ios.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/core-js/internals/environment-is-ios.js ***!
-  \**************************************************************/
+/***/ "./node_modules/core-js/internals/engine-is-ios.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-is-ios.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var userAgent = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js/internals/environment-user-agent.js");
+var userAgent = __webpack_require__(/*! ../internals/engine-user-agent */ "./node_modules/core-js/internals/engine-user-agent.js");
 
 // eslint-disable-next-line redos/no-vulnerable -- safe
 module.exports = /(?:ipad|iphone|ipod).*applewebkit/i.test(userAgent);
@@ -7600,71 +7611,67 @@ module.exports = /(?:ipad|iphone|ipod).*applewebkit/i.test(userAgent);
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment-is-node.js":
-/*!***************************************************************!*\
-  !*** ./node_modules/core-js/internals/environment-is-node.js ***!
-  \***************************************************************/
+/***/ "./node_modules/core-js/internals/engine-is-node.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-is-node.js ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ENVIRONMENT = __webpack_require__(/*! ../internals/environment */ "./node_modules/core-js/internals/environment.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
 
-module.exports = ENVIRONMENT === 'NODE';
+module.exports = classof(global.process) === 'process';
 
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment-is-webos-webkit.js":
-/*!***********************************************************************!*\
-  !*** ./node_modules/core-js/internals/environment-is-webos-webkit.js ***!
-  \***********************************************************************/
+/***/ "./node_modules/core-js/internals/engine-is-webos-webkit.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-is-webos-webkit.js ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var userAgent = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js/internals/environment-user-agent.js");
+var userAgent = __webpack_require__(/*! ../internals/engine-user-agent */ "./node_modules/core-js/internals/engine-user-agent.js");
 
 module.exports = /web0s(?!.*chrome)/i.test(userAgent);
 
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment-user-agent.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/core-js/internals/environment-user-agent.js ***!
-  \******************************************************************/
+/***/ "./node_modules/core-js/internals/engine-user-agent.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-user-agent.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
-
-var navigator = globalThis.navigator;
-var userAgent = navigator && navigator.userAgent;
-
-module.exports = userAgent ? String(userAgent) : '';
+module.exports = typeof navigator != 'undefined' && String(navigator.userAgent) || '';
 
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment-v8-version.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/core-js/internals/environment-v8-version.js ***!
-  \******************************************************************/
+/***/ "./node_modules/core-js/internals/engine-v8-version.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/core-js/internals/engine-v8-version.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
-var userAgent = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js/internals/environment-user-agent.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
+var userAgent = __webpack_require__(/*! ../internals/engine-user-agent */ "./node_modules/core-js/internals/engine-user-agent.js");
 
-var process = globalThis.process;
-var Deno = globalThis.Deno;
+var process = global.process;
+var Deno = global.Deno;
 var versions = process && process.versions || Deno && Deno.version;
 var v8 = versions && versions.v8;
 var match, version;
@@ -7691,35 +7698,25 @@ module.exports = version;
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/environment.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/core-js/internals/environment.js ***!
-  \*******************************************************/
+/***/ "./node_modules/core-js/internals/enum-bug-keys.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/core-js/internals/enum-bug-keys.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-/* global Bun, Deno -- detection */
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
-var userAgent = __webpack_require__(/*! ../internals/environment-user-agent */ "./node_modules/core-js/internals/environment-user-agent.js");
-var classof = __webpack_require__(/*! ../internals/classof-raw */ "./node_modules/core-js/internals/classof-raw.js");
-
-var userAgentStartsWith = function (string) {
-  return userAgent.slice(0, string.length) === string;
-};
-
-module.exports = (function () {
-  if (userAgentStartsWith('Bun/')) return 'BUN';
-  if (userAgentStartsWith('Cloudflare-Workers')) return 'CLOUDFLARE';
-  if (userAgentStartsWith('Deno/')) return 'DENO';
-  if (userAgentStartsWith('Node.js/')) return 'NODE';
-  if (globalThis.Bun && typeof Bun.version == 'string') return 'BUN';
-  if (globalThis.Deno && typeof Deno.version == 'object') return 'DENO';
-  if (classof(globalThis.process) === 'process') return 'NODE';
-  if (globalThis.window && globalThis.document) return 'BROWSER';
-  return 'REST';
-})();
+// IE8- don't enum bug keys
+module.exports = [
+  'constructor',
+  'hasOwnProperty',
+  'isPrototypeOf',
+  'propertyIsEnumerable',
+  'toLocaleString',
+  'toString',
+  'valueOf'
+];
 
 
 /***/ }),
@@ -7733,7 +7730,7 @@ module.exports = (function () {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var getOwnPropertyDescriptor = __webpack_require__(/*! ../internals/object-get-own-property-descriptor */ "./node_modules/core-js/internals/object-get-own-property-descriptor.js").f;
 var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
 var defineBuiltIn = __webpack_require__(/*! ../internals/define-built-in */ "./node_modules/core-js/internals/define-built-in.js");
@@ -7762,11 +7759,11 @@ module.exports = function (options, source) {
   var STATIC = options.stat;
   var FORCED, target, key, targetProperty, sourceProperty, descriptor;
   if (GLOBAL) {
-    target = globalThis;
+    target = global;
   } else if (STATIC) {
-    target = globalThis[TARGET] || defineGlobalProperty(TARGET, {});
+    target = global[TARGET] || defineGlobalProperty(TARGET, {});
   } else {
-    target = globalThis[TARGET] && globalThis[TARGET].prototype;
+    target = global[TARGET] && global[TARGET].prototype;
   }
   if (target) for (key in source) {
     sourceProperty = source[key];
@@ -7914,7 +7911,7 @@ var FunctionPrototype = Function.prototype;
 var apply = FunctionPrototype.apply;
 var call = FunctionPrototype.call;
 
-// eslint-disable-next-line es/no-function-prototype-bind, es/no-reflect -- safe
+// eslint-disable-next-line es/no-reflect -- safe
 module.exports = typeof Reflect == 'object' && Reflect.apply || (NATIVE_BIND ? call.bind(apply) : function () {
   return call.apply(apply, arguments);
 });
@@ -7981,7 +7978,7 @@ module.exports = !fails(function () {
 var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "./node_modules/core-js/internals/function-bind-native.js");
 
 var call = Function.prototype.call;
-// eslint-disable-next-line es/no-function-prototype-bind -- safe
+
 module.exports = NATIVE_BIND ? call.bind(call) : function () {
   return call.apply(call, arguments);
 };
@@ -8076,7 +8073,6 @@ var NATIVE_BIND = __webpack_require__(/*! ../internals/function-bind-native */ "
 
 var FunctionPrototype = Function.prototype;
 var call = FunctionPrototype.call;
-// eslint-disable-next-line es/no-function-prototype-bind -- safe
 var uncurryThisWithBind = NATIVE_BIND && FunctionPrototype.bind.bind(call, call);
 
 module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
@@ -8097,7 +8093,7 @@ module.exports = NATIVE_BIND ? uncurryThisWithBind : function (fn) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
 
 var aFunction = function (argument) {
@@ -8105,7 +8101,7 @@ var aFunction = function (argument) {
 };
 
 module.exports = function (namespace, method) {
-  return arguments.length < 2 ? aFunction(globalThis[namespace]) : globalThis[namespace] && globalThis[namespace][method];
+  return arguments.length < 2 ? aFunction(global[namespace]) : global[namespace] && global[namespace][method];
 };
 
 
@@ -8243,10 +8239,10 @@ module.exports = function (matched, str, position, captures, namedCaptures, repl
 
 /***/ }),
 
-/***/ "./node_modules/core-js/internals/global-this.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/core-js/internals/global-this.js ***!
-  \*******************************************************/
+/***/ "./node_modules/core-js/internals/global.js":
+/*!**************************************************!*\
+  !*** ./node_modules/core-js/internals/global.js ***!
+  \**************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8434,7 +8430,7 @@ module.exports = store.inspectSource;
 "use strict";
 
 var NATIVE_WEAK_MAP = __webpack_require__(/*! ../internals/weak-map-basic-detection */ "./node_modules/core-js/internals/weak-map-basic-detection.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var isObject = __webpack_require__(/*! ../internals/is-object */ "./node_modules/core-js/internals/is-object.js");
 var createNonEnumerableProperty = __webpack_require__(/*! ../internals/create-non-enumerable-property */ "./node_modules/core-js/internals/create-non-enumerable-property.js");
 var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "./node_modules/core-js/internals/has-own-property.js");
@@ -8443,8 +8439,8 @@ var sharedKey = __webpack_require__(/*! ../internals/shared-key */ "./node_modul
 var hiddenKeys = __webpack_require__(/*! ../internals/hidden-keys */ "./node_modules/core-js/internals/hidden-keys.js");
 
 var OBJECT_ALREADY_INITIALIZED = 'Object already initialized';
-var TypeError = globalThis.TypeError;
-var WeakMap = globalThis.WeakMap;
+var TypeError = global.TypeError;
+var WeakMap = global.WeakMap;
 var set, get, has;
 
 var enforce = function (it) {
@@ -9246,20 +9242,20 @@ module.exports = Math.trunc || function trunc(x) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var safeGetBuiltIn = __webpack_require__(/*! ../internals/safe-get-built-in */ "./node_modules/core-js/internals/safe-get-built-in.js");
 var bind = __webpack_require__(/*! ../internals/function-bind-context */ "./node_modules/core-js/internals/function-bind-context.js");
 var macrotask = __webpack_require__(/*! ../internals/task */ "./node_modules/core-js/internals/task.js").set;
 var Queue = __webpack_require__(/*! ../internals/queue */ "./node_modules/core-js/internals/queue.js");
-var IS_IOS = __webpack_require__(/*! ../internals/environment-is-ios */ "./node_modules/core-js/internals/environment-is-ios.js");
-var IS_IOS_PEBBLE = __webpack_require__(/*! ../internals/environment-is-ios-pebble */ "./node_modules/core-js/internals/environment-is-ios-pebble.js");
-var IS_WEBOS_WEBKIT = __webpack_require__(/*! ../internals/environment-is-webos-webkit */ "./node_modules/core-js/internals/environment-is-webos-webkit.js");
-var IS_NODE = __webpack_require__(/*! ../internals/environment-is-node */ "./node_modules/core-js/internals/environment-is-node.js");
+var IS_IOS = __webpack_require__(/*! ../internals/engine-is-ios */ "./node_modules/core-js/internals/engine-is-ios.js");
+var IS_IOS_PEBBLE = __webpack_require__(/*! ../internals/engine-is-ios-pebble */ "./node_modules/core-js/internals/engine-is-ios-pebble.js");
+var IS_WEBOS_WEBKIT = __webpack_require__(/*! ../internals/engine-is-webos-webkit */ "./node_modules/core-js/internals/engine-is-webos-webkit.js");
+var IS_NODE = __webpack_require__(/*! ../internals/engine-is-node */ "./node_modules/core-js/internals/engine-is-node.js");
 
-var MutationObserver = globalThis.MutationObserver || globalThis.WebKitMutationObserver;
-var document = globalThis.document;
-var process = globalThis.process;
-var Promise = globalThis.Promise;
+var MutationObserver = global.MutationObserver || global.WebKitMutationObserver;
+var document = global.document;
+var process = global.process;
+var Promise = global.Promise;
 var microtask = safeGetBuiltIn('queueMicrotask');
 var notify, toggle, node, promise, then;
 
@@ -9311,7 +9307,7 @@ if (!microtask) {
   // - setTimeout
   } else {
     // `webpack` dev server bug on IE global methods - use bind(fn, global)
-    macrotask = bind(macrotask, globalThis);
+    macrotask = bind(macrotask, global);
     notify = function () {
       macrotask(flush);
     };
@@ -9418,8 +9414,7 @@ var NullProtoObjectViaActiveX = function (activeXDocument) {
   activeXDocument.write(scriptTag(''));
   activeXDocument.close();
   var temp = activeXDocument.parentWindow.Object;
-  // eslint-disable-next-line no-useless-assignment -- avoid memory leak
-  activeXDocument = null;
+  activeXDocument = null; // avoid memory leak
   return temp;
 };
 
@@ -9899,20 +9894,21 @@ module.exports = function (exec) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var NativePromiseConstructor = __webpack_require__(/*! ../internals/promise-native-constructor */ "./node_modules/core-js/internals/promise-native-constructor.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
 var isForced = __webpack_require__(/*! ../internals/is-forced */ "./node_modules/core-js/internals/is-forced.js");
 var inspectSource = __webpack_require__(/*! ../internals/inspect-source */ "./node_modules/core-js/internals/inspect-source.js");
 var wellKnownSymbol = __webpack_require__(/*! ../internals/well-known-symbol */ "./node_modules/core-js/internals/well-known-symbol.js");
-var ENVIRONMENT = __webpack_require__(/*! ../internals/environment */ "./node_modules/core-js/internals/environment.js");
+var IS_BROWSER = __webpack_require__(/*! ../internals/engine-is-browser */ "./node_modules/core-js/internals/engine-is-browser.js");
+var IS_DENO = __webpack_require__(/*! ../internals/engine-is-deno */ "./node_modules/core-js/internals/engine-is-deno.js");
 var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js/internals/is-pure.js");
-var V8_VERSION = __webpack_require__(/*! ../internals/environment-v8-version */ "./node_modules/core-js/internals/environment-v8-version.js");
+var V8_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ "./node_modules/core-js/internals/engine-v8-version.js");
 
 var NativePromisePrototype = NativePromiseConstructor && NativePromiseConstructor.prototype;
 var SPECIES = wellKnownSymbol('species');
 var SUBCLASSING = false;
-var NATIVE_PROMISE_REJECTION_EVENT = isCallable(globalThis.PromiseRejectionEvent);
+var NATIVE_PROMISE_REJECTION_EVENT = isCallable(global.PromiseRejectionEvent);
 
 var FORCED_PROMISE_CONSTRUCTOR = isForced('Promise', function () {
   var PROMISE_CONSTRUCTOR_SOURCE = inspectSource(NativePromiseConstructor);
@@ -9937,7 +9933,7 @@ var FORCED_PROMISE_CONSTRUCTOR = isForced('Promise', function () {
     SUBCLASSING = promise.then(function () { /* empty */ }) instanceof FakePromise;
     if (!SUBCLASSING) return true;
   // Unhandled rejections tracking support, NodeJS Promise without it fails @@species test
-  } return !GLOBAL_CORE_JS_PROMISE && (ENVIRONMENT === 'BROWSER' || ENVIRONMENT === 'DENO') && !NATIVE_PROMISE_REJECTION_EVENT;
+  } return !GLOBAL_CORE_JS_PROMISE && (IS_BROWSER || IS_DENO) && !NATIVE_PROMISE_REJECTION_EVENT;
 });
 
 module.exports = {
@@ -9958,9 +9954,9 @@ module.exports = {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
-module.exports = globalThis.Promise;
+module.exports = global.Promise;
 
 
 /***/ }),
@@ -10274,10 +10270,10 @@ module.exports = function (R) {
 "use strict";
 
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
 // babel-minify and Closure Compiler transpiles RegExp('a', 'y') -> /a/y and it causes SyntaxError
-var $RegExp = globalThis.RegExp;
+var $RegExp = global.RegExp;
 
 var UNSUPPORTED_Y = fails(function () {
   var re = $RegExp('a', 'y');
@@ -10317,10 +10313,10 @@ module.exports = {
 "use strict";
 
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
 // babel-minify and Closure Compiler transpiles RegExp('.', 's') -> /./s and it causes SyntaxError
-var $RegExp = globalThis.RegExp;
+var $RegExp = global.RegExp;
 
 module.exports = fails(function () {
   var re = $RegExp('.', 's');
@@ -10340,10 +10336,10 @@ module.exports = fails(function () {
 "use strict";
 
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
 // babel-minify and Closure Compiler transpiles RegExp('(?<a>b)', 'g') -> /(?<a>b)/g and it causes SyntaxError
-var $RegExp = globalThis.RegExp;
+var $RegExp = global.RegExp;
 
 module.exports = fails(function () {
   var re = $RegExp('(?<a>b)', 'g');
@@ -10386,7 +10382,7 @@ module.exports = function (it) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var DESCRIPTORS = __webpack_require__(/*! ../internals/descriptors */ "./node_modules/core-js/internals/descriptors.js");
 
 // eslint-disable-next-line es/no-object-getownpropertydescriptor -- safe
@@ -10394,8 +10390,8 @@ var getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
 
 // Avoid NodeJS experimental warning
 module.exports = function (name) {
-  if (!DESCRIPTORS) return globalThis[name];
-  var descriptor = getOwnPropertyDescriptor(globalThis, name);
+  if (!DESCRIPTORS) return global[name];
+  var descriptor = getOwnPropertyDescriptor(global, name);
   return descriptor && descriptor.value;
 };
 
@@ -10488,17 +10484,17 @@ module.exports = function (key) {
 "use strict";
 
 var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js/internals/is-pure.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var globalThis = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var defineGlobalProperty = __webpack_require__(/*! ../internals/define-global-property */ "./node_modules/core-js/internals/define-global-property.js");
 
 var SHARED = '__core-js_shared__';
 var store = module.exports = globalThis[SHARED] || defineGlobalProperty(SHARED, {});
 
 (store.versions || (store.versions = [])).push({
-  version: '3.40.0',
+  version: '3.37.1',
   mode: IS_PURE ? 'pure' : 'global',
-  copyright: '© 2014-2025 Denis Pushkarev (zloirock.ru)',
-  license: 'https://github.com/zloirock/core-js/blob/v3.40.0/LICENSE',
+  copyright: '© 2014-2024 Denis Pushkarev (zloirock.ru)',
+  license: 'https://github.com/zloirock/core-js/blob/v3.37.1/LICENSE',
   source: 'https://github.com/zloirock/core-js'
 });
 
@@ -10680,11 +10676,11 @@ module.exports = {
 "use strict";
 
 /* eslint-disable es/no-symbol -- required for testing */
-var V8_VERSION = __webpack_require__(/*! ../internals/environment-v8-version */ "./node_modules/core-js/internals/environment-v8-version.js");
+var V8_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ "./node_modules/core-js/internals/engine-v8-version.js");
 var fails = __webpack_require__(/*! ../internals/fails */ "./node_modules/core-js/internals/fails.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 
-var $String = globalThis.String;
+var $String = global.String;
 
 // eslint-disable-next-line es/no-object-getownpropertysymbols -- required for testing
 module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
@@ -10710,7 +10706,7 @@ module.exports = !!Object.getOwnPropertySymbols && !fails(function () {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var apply = __webpack_require__(/*! ../internals/function-apply */ "./node_modules/core-js/internals/function-apply.js");
 var bind = __webpack_require__(/*! ../internals/function-bind-context */ "./node_modules/core-js/internals/function-bind-context.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
@@ -10720,16 +10716,16 @@ var html = __webpack_require__(/*! ../internals/html */ "./node_modules/core-js/
 var arraySlice = __webpack_require__(/*! ../internals/array-slice */ "./node_modules/core-js/internals/array-slice.js");
 var createElement = __webpack_require__(/*! ../internals/document-create-element */ "./node_modules/core-js/internals/document-create-element.js");
 var validateArgumentsLength = __webpack_require__(/*! ../internals/validate-arguments-length */ "./node_modules/core-js/internals/validate-arguments-length.js");
-var IS_IOS = __webpack_require__(/*! ../internals/environment-is-ios */ "./node_modules/core-js/internals/environment-is-ios.js");
-var IS_NODE = __webpack_require__(/*! ../internals/environment-is-node */ "./node_modules/core-js/internals/environment-is-node.js");
+var IS_IOS = __webpack_require__(/*! ../internals/engine-is-ios */ "./node_modules/core-js/internals/engine-is-ios.js");
+var IS_NODE = __webpack_require__(/*! ../internals/engine-is-node */ "./node_modules/core-js/internals/engine-is-node.js");
 
-var set = globalThis.setImmediate;
-var clear = globalThis.clearImmediate;
-var process = globalThis.process;
-var Dispatch = globalThis.Dispatch;
-var Function = globalThis.Function;
-var MessageChannel = globalThis.MessageChannel;
-var String = globalThis.String;
+var set = global.setImmediate;
+var clear = global.clearImmediate;
+var process = global.process;
+var Dispatch = global.Dispatch;
+var Function = global.Function;
+var MessageChannel = global.MessageChannel;
+var String = global.String;
 var counter = 0;
 var queue = {};
 var ONREADYSTATECHANGE = 'onreadystatechange';
@@ -10737,7 +10733,7 @@ var $location, defer, channel, port;
 
 fails(function () {
   // Deno throws a ReferenceError on `location` access without `--location` flag
-  $location = globalThis.location;
+  $location = global.location;
 });
 
 var run = function (id) {
@@ -10760,7 +10756,7 @@ var eventListener = function (event) {
 
 var globalPostMessageDefer = function (id) {
   // old engines have not location.origin
-  globalThis.postMessage(String(id), $location.protocol + '//' + $location.host);
+  global.postMessage(String(id), $location.protocol + '//' + $location.host);
 };
 
 // Node.js 0.9+ & IE10+ has setImmediate, otherwise:
@@ -10798,14 +10794,14 @@ if (!set || !clear) {
   // Browsers with postMessage, skip WebWorkers
   // IE8 has postMessage, but it's sync & typeof its postMessage is 'object'
   } else if (
-    globalThis.addEventListener &&
-    isCallable(globalThis.postMessage) &&
-    !globalThis.importScripts &&
+    global.addEventListener &&
+    isCallable(global.postMessage) &&
+    !global.importScripts &&
     $location && $location.protocol !== 'file:' &&
     !fails(globalPostMessageDefer)
   ) {
     defer = globalPostMessageDefer;
-    globalThis.addEventListener('message', eventListener, false);
+    global.addEventListener('message', eventListener, false);
   // IE8-
   } else if (ONREADYSTATECHANGE in createElement('script')) {
     defer = function (id) {
@@ -11100,9 +11096,9 @@ module.exports = function (key) {
 /* eslint-disable es/no-symbol -- required for testing */
 var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/symbol-constructor-detection */ "./node_modules/core-js/internals/symbol-constructor-detection.js");
 
-module.exports = NATIVE_SYMBOL &&
-  !Symbol.sham &&
-  typeof Symbol.iterator == 'symbol';
+module.exports = NATIVE_SYMBOL
+  && !Symbol.sham
+  && typeof Symbol.iterator == 'symbol';
 
 
 /***/ }),
@@ -11160,10 +11156,10 @@ module.exports = function (passed, required) {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var isCallable = __webpack_require__(/*! ../internals/is-callable */ "./node_modules/core-js/internals/is-callable.js");
 
-var WeakMap = globalThis.WeakMap;
+var WeakMap = global.WeakMap;
 
 module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
 
@@ -11179,14 +11175,14 @@ module.exports = isCallable(WeakMap) && /native code/.test(String(WeakMap));
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var shared = __webpack_require__(/*! ../internals/shared */ "./node_modules/core-js/internals/shared.js");
 var hasOwn = __webpack_require__(/*! ../internals/has-own-property */ "./node_modules/core-js/internals/has-own-property.js");
 var uid = __webpack_require__(/*! ../internals/uid */ "./node_modules/core-js/internals/uid.js");
 var NATIVE_SYMBOL = __webpack_require__(/*! ../internals/symbol-constructor-detection */ "./node_modules/core-js/internals/symbol-constructor-detection.js");
 var USE_SYMBOL_AS_UID = __webpack_require__(/*! ../internals/use-symbol-as-uid */ "./node_modules/core-js/internals/use-symbol-as-uid.js");
 
-var Symbol = globalThis.Symbol;
+var Symbol = global.Symbol;
 var WellKnownSymbolsStore = shared('wks');
 var createWellKnownSymbol = USE_SYMBOL_AS_UID ? Symbol['for'] || Symbol : Symbol && Symbol.withoutSetter || uid;
 
@@ -11299,7 +11295,7 @@ module.exports = defineIterator(Array, 'Array', function (iterated, kind) {
   var target = state.target;
   var index = state.index++;
   if (!target || index >= target.length) {
-    state.target = null;
+    state.target = undefined;
     return createIterResultObject(undefined, true);
   }
   switch (state.kind) {
@@ -11338,8 +11334,8 @@ if (!IS_PURE && DESCRIPTORS && values.name !== 'values') try {
 var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
 var $reduce = __webpack_require__(/*! ../internals/array-reduce */ "./node_modules/core-js/internals/array-reduce.js").left;
 var arrayMethodIsStrict = __webpack_require__(/*! ../internals/array-method-is-strict */ "./node_modules/core-js/internals/array-method-is-strict.js");
-var CHROME_VERSION = __webpack_require__(/*! ../internals/environment-v8-version */ "./node_modules/core-js/internals/environment-v8-version.js");
-var IS_NODE = __webpack_require__(/*! ../internals/environment-is-node */ "./node_modules/core-js/internals/environment-is-node.js");
+var CHROME_VERSION = __webpack_require__(/*! ../internals/engine-v8-version */ "./node_modules/core-js/internals/engine-v8-version.js");
+var IS_NODE = __webpack_require__(/*! ../internals/engine-is-node */ "./node_modules/core-js/internals/engine-is-node.js");
 
 // Chrome 80-82 has a critical bug
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1049982
@@ -11489,8 +11485,8 @@ if (!IS_PURE && isCallable(NativePromiseConstructor)) {
 
 var $ = __webpack_require__(/*! ../internals/export */ "./node_modules/core-js/internals/export.js");
 var IS_PURE = __webpack_require__(/*! ../internals/is-pure */ "./node_modules/core-js/internals/is-pure.js");
-var IS_NODE = __webpack_require__(/*! ../internals/environment-is-node */ "./node_modules/core-js/internals/environment-is-node.js");
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var IS_NODE = __webpack_require__(/*! ../internals/engine-is-node */ "./node_modules/core-js/internals/engine-is-node.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var call = __webpack_require__(/*! ../internals/function-call */ "./node_modules/core-js/internals/function-call.js");
 var defineBuiltIn = __webpack_require__(/*! ../internals/define-built-in */ "./node_modules/core-js/internals/define-built-in.js");
 var setPrototypeOf = __webpack_require__(/*! ../internals/object-set-prototype-of */ "./node_modules/core-js/internals/object-set-prototype-of.js");
@@ -11520,13 +11516,13 @@ var setInternalState = InternalStateModule.set;
 var NativePromisePrototype = NativePromiseConstructor && NativePromiseConstructor.prototype;
 var PromiseConstructor = NativePromiseConstructor;
 var PromisePrototype = NativePromisePrototype;
-var TypeError = globalThis.TypeError;
-var document = globalThis.document;
-var process = globalThis.process;
+var TypeError = global.TypeError;
+var document = global.document;
+var process = global.process;
 var newPromiseCapability = newPromiseCapabilityModule.f;
 var newGenericPromiseCapability = newPromiseCapability;
 
-var DISPATCH_EVENT = !!(document && document.createEvent && globalThis.dispatchEvent);
+var DISPATCH_EVENT = !!(document && document.createEvent && global.dispatchEvent);
 var UNHANDLED_REJECTION = 'unhandledrejection';
 var REJECTION_HANDLED = 'rejectionhandled';
 var PENDING = 0;
@@ -11599,14 +11595,14 @@ var dispatchEvent = function (name, promise, reason) {
     event.promise = promise;
     event.reason = reason;
     event.initEvent(name, false, true);
-    globalThis.dispatchEvent(event);
+    global.dispatchEvent(event);
   } else event = { promise: promise, reason: reason };
-  if (!NATIVE_PROMISE_REJECTION_EVENT && (handler = globalThis['on' + name])) handler(event);
+  if (!NATIVE_PROMISE_REJECTION_EVENT && (handler = global['on' + name])) handler(event);
   else if (name === UNHANDLED_REJECTION) hostReportErrors('Unhandled promise rejection', reason);
 };
 
 var onUnhandled = function (state) {
-  call(task, globalThis, function () {
+  call(task, global, function () {
     var promise = state.facade;
     var value = state.value;
     var IS_UNHANDLED = isUnhandled(state);
@@ -11629,7 +11625,7 @@ var isUnhandled = function (state) {
 };
 
 var onHandleUnhandled = function (state) {
-  call(task, globalThis, function () {
+  call(task, global, function () {
     var promise = state.facade;
     if (IS_NODE) {
       process.emit('rejectionHandled', promise);
@@ -11708,7 +11704,7 @@ if (FORCED_PROMISE_CONSTRUCTOR) {
       reactions: new Queue(),
       rejection: false,
       state: PENDING,
-      value: null
+      value: undefined
     });
   };
 
@@ -11768,8 +11764,6 @@ if (FORCED_PROMISE_CONSTRUCTOR) {
   }
 }
 
-// `Promise` constructor
-// https://tc39.es/ecma262/#sec-promise-executor
 $({ global: true, constructor: true, wrap: true, forced: FORCED_PROMISE_CONSTRUCTOR }, {
   Promise: PromiseConstructor
 });
@@ -12447,7 +12441,7 @@ $({ target: 'String', proto: true, forced: forcedStringTrimMethod('trim') }, {
 
 "use strict";
 
-var globalThis = __webpack_require__(/*! ../internals/global-this */ "./node_modules/core-js/internals/global-this.js");
+var global = __webpack_require__(/*! ../internals/global */ "./node_modules/core-js/internals/global.js");
 var DOMIterables = __webpack_require__(/*! ../internals/dom-iterables */ "./node_modules/core-js/internals/dom-iterables.js");
 var DOMTokenListPrototype = __webpack_require__(/*! ../internals/dom-token-list-prototype */ "./node_modules/core-js/internals/dom-token-list-prototype.js");
 var ArrayIteratorMethods = __webpack_require__(/*! ../modules/es.array.iterator */ "./node_modules/core-js/modules/es.array.iterator.js");
@@ -12479,7 +12473,7 @@ var handlePrototype = function (CollectionPrototype, COLLECTION_NAME) {
 };
 
 for (var COLLECTION_NAME in DOMIterables) {
-  handlePrototype(globalThis[COLLECTION_NAME] && globalThis[COLLECTION_NAME].prototype, COLLECTION_NAME);
+  handlePrototype(global[COLLECTION_NAME] && global[COLLECTION_NAME].prototype, COLLECTION_NAME);
 }
 
 handlePrototype(DOMTokenListPrototype, 'DOMTokenList');

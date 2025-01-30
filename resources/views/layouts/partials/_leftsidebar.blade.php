@@ -146,9 +146,9 @@
                         <span class="hide-menu">Prospecto</span>
                     </a>
                     <ul aria-expanded="false" class="collapse">
-
+                        <li><router-link :to="{name: 'spa.import'}">Importar Prospecto</router-link></li>
                         <li><router-link :to="{name: 'spa.prospecto'}">Prospecto</router-link></li>
-                        <li><router-link :to="{name: 'spa.atencion'}">seguimientos</router-link></li>
+                        <li><router-link :to="{name: 'spa.atencion'}">Seguimientos</router-link></li>
 
                     </ul>
                 </li>
@@ -170,8 +170,7 @@
                 </li>
 
 
-                <!-- <li><router-link :to="{name: 'spa.import'}"><i class="fas fa-file-import"></i><span class="hide-menu">Importar Registros</span></li></router-link>
-                <li>
+                <!-- <li>
                     <router-link class="waves-effect waves-dark" :to="{name: 'spa.cliente'}" aria-expanded="false">
                         <i class="fas fa-user-edit"></i>
                         <span class="hide-menu">Registros</span>

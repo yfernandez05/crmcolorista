@@ -748,3 +748,27 @@ DELIMITER ;
 
 
 
+-- -------------------------------------
+-- -------------------------------------
+-- -------------------------------------
+
+ALTER TABLE prospectos
+ADD COLUMN cursointeres varchar(100) NULL after fecha_registro;
+
+
+CREATE TABLE `importaciones` (
+  `idimportacion` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `nombrearchivo` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `cantregistros` int NOT NULL DEFAULT '0',
+  `iduser` bigint UNSIGNED NOT NULL,
+  `uuidimportacion` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `estado` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idimportacion`),
+  KEY `fk_iduser_importaciones` (`iduser`),
+  CONSTRAINT `fk_iduser_importaciones` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -10,8 +10,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Util\LogErrorManager;
 use App\Imports\ClientesImport;
-
+use App\Imports\ProspectoImport;
 use App\Models\Evento;
+use App\Models\Prospecto;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 
@@ -61,37 +62,34 @@ class ImportacionController extends BaseController
             
             $file = $request->file('file');
 
-            $importacion = new Importacion();
-            $importacion->nombrearchivo = $file->getClientOriginalName(); 
-            $importacion->fecharegistro = Carbon::now();
-            $importacion->iduser = $this->user->id; 
-            $importacion->uuidimportacion = Str::uuid();
-            $importacion->idcampania = $request->idcampania;
+            $impotacion = new Importacion();
+            $impotacion->nombrearchivo = $file->getClientOriginalName(); 
+            $impotacion->fecharegistro = Carbon::now();
+            $impotacion->iduser = $this->user->id; 
+            $impotacion->uuidimportacion = Str::uuid();
 
-            $evento = $request->idevento;
+            $prospectoImport = new ProspectoImport($impotacion);
+            Excel::import($prospectoImport, $file);
 
-            $clientImport = new ClientesImport($importacion, $evento);
-            Excel::import($clientImport, $file);
-
-            /* return dd($clientImport->errors); */
+            /* return dd($prospectoImport->errors); */
             
             // Verificar errores
-            if (!empty($clientImport->errors)) {
+            if (!empty($prospectoImport->errors)) {
                 $errorMessages = '';
-                foreach ($clientImport->errors as $error) {
+                foreach ($prospectoImport->errors as $error) {
                     $errorMessages .= 'Fila ' . $error['row'] . ': ' . $error['message'] . "</br>";
                 }
                 return ResultManager::warningMessage("<span class='text-dark font-weight-bold'>Registros no importados corregir en:</span></br> <span class='text-dark'>" . $errorMessages);
             }
             
-            $importacion->cantregistros = $clientImport->getRowCount(); 
-            $importacion->save();
+            $impotacion->cantregistros = $prospectoImport->getRowCount(); 
+            $impotacion->save();
 
             $result = ResultManager::genericSuccessMessage();
         
          } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-
+            //dd($e);
             $duplicateEntry = 1062; // registro duplicado
 
             if (count($e->errorInfo)) {
@@ -107,7 +105,7 @@ class ImportacionController extends BaseController
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            return dd($e);
+            //dd($e);
             $result = ResultManager::gerericErrorMessage();
         }
 

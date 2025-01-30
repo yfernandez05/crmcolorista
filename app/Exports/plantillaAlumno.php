@@ -10,34 +10,34 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 
-class plantillaCliente implements WithHeadings, WithStyles, ShouldAutoSize, WithEvents
+class plantillaAlumno implements WithHeadings, WithStyles, ShouldAutoSize, WithEvents
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function headings(): array
     {
+        $currentDate = now()->format('Y-m-d');
+
         $cabecera = [
-            'Nombre',
-            'Apellido Paterno',
-            'Apellido Materno',
-            'Correo',
-            'Telefono',
-            'Carreras',
-            'Sede',
-            'Año Egreso',
+            'Nombre *',
+            'Apellidos *',
+            'Fecha Nacimiento',
+            'Correo *',
+            'Celular *',
+            'Procedencia *',
+            'Curso de Interes',
 
         ];
 
         $guia = [
             'Laura Elizabeth',
             'Aguilar',
-            'Rivera',
-            'Correo@cientifica.com',
-            '999999999',
-            'Administración y Dirección de Empresas',
-            'Campus Ate',
-            '2024',
+            $currentDate,
+            'Correo@gmail.com',
+            '912345678',
+            'Órganico',
+            'Diseño capilar',
         ];
 
         return array($cabecera,$guia);
@@ -55,7 +55,7 @@ class plantillaCliente implements WithHeadings, WithStyles, ShouldAutoSize, With
                 ],
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                    'color' => ['argb' => 'FF1d428a'],
+                    'color' => ['argb' => '835da0'],
                 ],                
             ],                
         ];
@@ -74,12 +74,10 @@ class plantillaCliente implements WithHeadings, WithStyles, ShouldAutoSize, With
             AfterSheet::class => function(AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
-                // Aplicar validación de datos para "Sede"
-                $this->applyDataValidation($sheet, 'G', '"Campus Aramburu,Campus Ate,Campus Norte,Campus Villa"', 2, 900);
-
-                // Aplicar validación de datos para "Año Egreso"
-                $this->applyDataValidation($sheet, 'H', '"2021,2022,2023,2024,2025"', 2, 900);
-
+                // Aplicar formato personalizado para fechas en la columna "I"
+                $sheet->getStyle('C2:C900')
+                    ->getNumberFormat()
+                    ->setFormatCode('yyyy-mm-dd');
                 
             },
         ];

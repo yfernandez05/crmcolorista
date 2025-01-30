@@ -47,7 +47,7 @@
                             confirm :editable="false" placeholder="Seleccione un rango de fecha" @input="buscarImportaciones()">
                             <template v-slot:footer="{ emit }">
                                 <button class="mx-btn" @click="selectToday(emit)">
-                                    Today
+                                    Hoy
                                 </button>
                             </template>                        
                         </v-date-picker>
@@ -203,7 +203,7 @@
 
             descargarPlantillaCliente() {
                 //this.addFiltersRole();
-                let urlexcel = `${appApiUrl}/cliente/descargarplantilla`;
+                let urlexcel = `${appApiUrl}/prospecto/descargarplantilla`;
                 window.location = urlexcel;
             },
 
