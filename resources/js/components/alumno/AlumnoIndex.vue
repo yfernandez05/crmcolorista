@@ -57,6 +57,18 @@
                             <th class="p-2">Nombre</th>
                             <th class="p-2">Apellido</th>
                             <th class="p-2">Correo</th>
+                            <th class="p-2">Fech. Nacimiento</th>
+                            <th class="p-2">DNI</th>
+                            <th class="p-2">Direccion</th>
+                            <th class="p-2">Distrito</th>
+                            <th class="p-2">Celular</th>
+                            <th class="p-2">Empresa</th>
+                            <th class="p-2">Cargo Desempeña</th>
+                            <th class="p-2">Colegio</th>
+                            <th class="p-2">Trabajo</th>
+                            <th class="p-2">Contacto Emerge</th>
+                            <th class="p-2">Edad</th>
+                            <th class="p-2">Sexo</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -74,6 +86,18 @@
                             <td v-text="alum.nombre"></td>
                             <td v-text="alum.apellido"></td>
                             <td v-text="alum.correo"></td>
+                            <td v-text="alum.fechanacimiento"></td>
+                            <td v-text="alum.dni"></td>
+                            <td v-text="alum.direccion"></td>
+                            <td v-text="alum.distrito"></td>
+                            <td v-text="alum.celular"></td>
+                            <td v-text="alum.empresa"></td>
+                            <td v-text="alum.cargodesempenia"></td>
+                            <td v-text="alum.colegiosegundario"></td>
+                            <td v-text="alum.trabajo"></td>
+                            <td v-text="alum.contactoemergencia"></td>
+                            <td v-text="alum.edad"></td>
+                            <td v-text="alum.sexo"></td>
                             <td >
                                 <span class="badge badge-pill py-1 px-3"
                                     :class="alum.isactive ? 'badge-success':'badge-danger'"

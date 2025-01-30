@@ -132,6 +132,9 @@
                 <!-- ============================================================== -->
                 <!-- User Profile -->
                 <!-- ============================================================== -->
+
+                <agenda></agenda>
+                
                 <li class="nav-item dropdown u-pro">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark profile-pic" href=""
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img

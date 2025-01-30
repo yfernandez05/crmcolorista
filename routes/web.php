@@ -164,4 +164,6 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('etiquetaTelefonica/select', 'EtiquetaTelefonicaController@select')->name('etiquetaTelefonica.select');
     Route::resource('etiquetaTelefonica', 'EtiquetaTelefonicaController');
 
+    Route::resource('agenda', AgendaController::class);
+
 });

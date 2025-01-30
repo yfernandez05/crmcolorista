@@ -13,6 +13,7 @@ window.appCannotDeleteMessage = 'No se puede editar un registro eliminado.';
 window.appRecordIsDeletedMessage = 'El registro ya está eliminado.';
 window.showPreloader = () => {$(".preloader").show();};
 window.hidePreloader = () => {$(".preloader").fadeOut();};
+Vue.component('agenda', require('./components/agenda/AgendaIndex.vue').default);
 window.playSoundScanner = (() => {
     const beepSound = new Audio(window.location.origin+'/sound/scanner-beep.wav');
     return () => {
@@ -45,6 +46,15 @@ import auth from './auth';
  */
 
 Vue.mixin(auth)
+
+
+export const bus = new Vue({
+    methods: {
+        actualizaragendas(){
+            this.$emit('actualizaragendas');
+        },
+    }
+});
 
 const app = new Vue({
     el: '#main-wrapper',

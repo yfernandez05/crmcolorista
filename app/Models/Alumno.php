@@ -32,6 +32,10 @@ class Alumno extends Model
         //'pago',
         'fecha_inscripcion',
         //'curso',
+        'sexo',
+        'trabajo',
+        'contactoemergencia',
+        'edad',
         'estado',
     ];
 

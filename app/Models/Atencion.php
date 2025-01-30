@@ -20,6 +20,7 @@ class Atencion extends Model
         'fechaatencion',
         'comentario',
         'idtipoatencion',
+        'fechaagenda',
         'estado'
     ];
 
@@ -31,6 +32,7 @@ class Atencion extends Model
     ];
     protected $casts = [
         'fechaatencion' => 'datetime:Y-m-d H:i:s',
+        'fechaagenda' => 'datetime:Y-m-d H:i:s',
     ];
 
     protected $appends = [
@@ -38,6 +40,7 @@ class Atencion extends Model
         'statename',
         'fecha',
         'isattended',
+        'fechaagendada',
     ];
 
     public function getIsactiveAttribute(){
@@ -74,6 +77,10 @@ class Atencion extends Model
 
     public function etiquetatelefonica(){
         return $this->belongsTo(Etiquetatele::class, 'idetiquetatele', 'idetiquetatele');
+    }
+    public function getFechaagendadaAttribute()
+    {
+        return optional($this->fechaagenda)->format('d-m-Y H:i:s');
     }
 
 }

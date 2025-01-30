@@ -44,6 +44,18 @@
                     <small class="form-control-feedback" v-if="errorExists('comentario')" v-text="showError('comentario').errorDetail"></small>
                 </div>
 
+                <div class="form-group col-12 col-md-4" :class="{'has-danger':errorExists('fechaagenda')}">
+                    <label>Fecha programada de atención</label>
+                    <v-date-picker v-model="atencion.fechaagenda"
+                        type="datetime"
+                        format="DD-MM-YYYY HH:mm:ss"
+                        value-type="format"
+                        placeholder="Seccione una fecha">
+                    </v-date-picker>
+                    <small class="form-control-feedback" v-if="errorExists('fechaagenda')" v-text="showError('fechaagenda').errorDetail"></small>
+                </div>
+
+
                 <div class="form-group col-12 d-flex no-block align-items-init justify-content-init">
                     <button type="button" class="btn btn-success waves-effect waves-light" @click="saveData">
                         <i class="fa fa-save"></i>
@@ -86,23 +98,6 @@
                 </div>
                 <small class="form-control-feedback" v-if="errorExists('celular')" v-text="showError('celular').errorDetail"></small>
                 </div>
-                            <!-- <div class="form-group form-group-sm col-12 col-sm-6 col-md-4 col-xl-3">
-                    <label class="mb-0">Nro Documento</label>
-                    <span class="form-control form-control-sm d-block text-truncate text-muted"
-                        v-text="prospecto.nrodocumento"></span>
-                </div>
-                <div class="form-group form-group-sm col-12 col-sm-6 col-md-4 col-xl-3">
-                    <label class="mb-0">Email</label>
-                    <span class="form-control form-control-sm d-block text-truncate text-muted"
-                        v-text="prospecto.email"></span>
-                </div>
-
-                <div class="form-group form-group-sm col-12 col-sm-6 col-md-4 col-xl-3">
-                    <label class="mb-0">Telefono</label>
-                    <span class="form-control form-control-sm d-block text-truncate text-muted"
-                        v-text="prospecto.telefono"></span>
-                </div> -->
-
             </div>
 
             <div class="table-responsive">
@@ -156,6 +151,7 @@
     import 'vue2-datepicker/locale/es';
     import Select2 from './../../utils/Select2';
     import VueNumeric from 'vue-numeric';
+    import {bus} from '../../app';
     import ContactButtonyf from './../../utils/ContactButtonyf';
 
     export default {
@@ -167,6 +163,7 @@
                     idetiquetatele:'',
                     fechaatencion: this.formatDate(new Date(),'DD-MM-YYYY'),
                     comentario: '',
+                    fechaagenda:'',
 
                 },
                 tipoatenciones:[],
@@ -268,6 +265,7 @@
                     prospecto_id: this.prospecto.id,
                     idtipoatencion: this.atencion.idtipoatencion,
                     idetiquetatele: this.atencion.idetiquetatele,
+                    fechaagenda:this.atencion.fechaagenda
 
                 };
 
@@ -279,6 +277,7 @@
                         if (result.status) {
                             successMessage(result.message, appName);
                             vm.obtenerAtenciones(vm.prospecto.id);
+                            bus.actualizaragendas();
 
                         } else
                             errorMessage(result.message, appName);

@@ -47,6 +47,9 @@ class AtencionController extends BaseController
 
             $atencion = $this->setModel(new Atencion(), $request);
             $atencion->iduser = $this->user->id;
+            if (!is_null($request->fechaagenda)) {
+                $atencion->fechaagenda = Carbon::createFromFormat('d-m-Y H:i:s', $request->fechaagenda);
+            }
             $atencion->userinsert = $this->user->email;
 
             $atencion->save();

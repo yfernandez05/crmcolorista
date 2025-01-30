@@ -162,6 +162,10 @@ class AlumnoController extends BaseController
             $alumno->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
         }
         $alumno->fecha_inscripcion = Carbon::now();
+        $alumno->sexo = $request->sexo;
+        $alumno->trabajo = $request->trabajo;
+        $alumno->contactoemergencia = $request->contactoemergencia;
+        $alumno->edad = $request->edad;
 
         return $alumno;
     }
@@ -175,7 +179,7 @@ class AlumnoController extends BaseController
 
         $qrCodeDataUri = 'data:image/svg+xml;base64,' . base64_encode($qryf);//local
         $pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno, 'qryf' => $qrCodeDataUri]); //local
-        
+
         //$qrCodeDataUri = 'data:image/png;base64,' . base64_encode($qryf);//prod
         //$pdf = Pdf::loadView('card.cardaccess', ['alumno' => $alumno, 'qryf' => $qrCodeDataUri]); //prod
 
@@ -196,14 +200,14 @@ class AlumnoController extends BaseController
         //$datosJSON = json_encode($datos);
 
         // "Cifrar" los datos utilizando base64_encode()
-        //$datosCifrados = base64_encode($datosJSON); 
-        
+        //$datosCifrados = base64_encode($datosJSON);
+
         // Generar código QR con los datos "cifrados"
         //$qrCodePNG = QrCode::format('png')->size(400)->generate($datosCifrados); //prod
         //$qqWithPadding = $this->paddinQRpng($qrCodePNG, 50); //prod
-        
+
         $qrCodePNG = QrCode::size(400)->generate($dataalunos); //local
-        $qqWithPadding = $this->agregarPaddingSVG($qrCodePNG, '20px'); //local      
+        $qqWithPadding = $this->agregarPaddingSVG($qrCodePNG, '20px'); //local
 
         /* if (!$issendmail){
             Mail::to($alumno->email)->send(new MessageReceived($alumno, $qqWithPadding));
@@ -231,9 +235,9 @@ class AlumnoController extends BaseController
         $canvas = Image::canvas($canvasWidth, $canvasHeight, '#ffffff');
 
         $canvas->insert($qrImage, 'center');
-        
+
         return $canvas->encode('png');
-        
+
     }
 
 

@@ -121,7 +121,7 @@ $value in $ui-max-sizes {
 .v-select-lg {
     .vs__dropdown-toggle {
         padding: 4px 0 6px 0;
-    
+
         .vs__selected {
             font-size: .9rem;
         }
@@ -185,4 +185,9 @@ html .qr-scanner-container #video-container .code-outline-highlight {
 .form-control:focus {
     border-color: rgba(0, 0, 0, 0.352);
     box-shadow: 0 0 2px 0.05rem rgb(52 58 64 / 13%);
+}
+.modal-backdrop.fade.show {
+    z-index: 30 !important;
+    width: 100vw;
+    height: 100vh;
 }

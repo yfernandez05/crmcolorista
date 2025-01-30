@@ -77,6 +77,52 @@
                     <small class="form-control-feedback" v-if="errorExists('colegiosegundario')" v-text="showError('colegiosegundario').errorDetail"></small>
                 </div>
 
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('trabajo')}"  style=" padding-left: 36px;">
+                    <label>¿Actualmente se encuentra trabajando?</label>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" v-model="alumno.trabajo" value="Si">
+                            Si
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" v-model="alumno.trabajo" value="No">
+                            NO
+                        </label>
+                    </div>
+                    <small class="form-control-feedback" v-if="errorExists('trabajo')" v-text="showError('trabajo').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('contactoemergencia')}">
+                    <label>Contacto de emergencia </label>
+                    <input type="text" class="form-control" v-model="alumno.contactoemergencia" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('contactoemergencia')" v-text="showError('contactoemergencia').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('edad')}">
+                    <label>Edad</label>
+                    <input type="text" class="form-control" v-model="alumno.edad" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('edad')" v-text="showError('edad').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('sexo')}" style=" padding-left: 36px;">
+                    <label>Sexo</label>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" v-model="alumno.sexo" value="Femenino">
+                            Femenino
+                        </label>
+                    </div>
+                    <div>
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" v-model="alumno.sexo" value="Masculino">
+                            Masculino
+                        </label>
+                    </div>
+                    <small class="form-control-feedback" v-if="errorExists('sexo')" v-text="showError('sexo').errorDetail"></small>
+                </div>
+
             </div>
             <hr class="mt-2">
         </template>
@@ -133,6 +179,10 @@
                         empresa: '',
                         cargodesempenia: '',
                         colegiosegundario: '',
+                        trabajo: '',
+                        contactoemergencia: '',
+                        edad: '',
+                        sexo: '',
 
                     }
                 }
@@ -168,6 +218,10 @@
                     empresa: this.alumno.empresa,
                     cargodesempenia: this.alumno.cargodesempenia,
                     colegiosegundario: this.alumno.colegiosegundario,
+                    trabajo: this.alumno.trabajo,
+                    contactoemergencia: this.alumno.contactoemergencia,
+                    edad: this.alumno.edad,
+                    sexo: this.alumno.sexo,
                 }
 
                 this.$emit('saveData', rolData);
