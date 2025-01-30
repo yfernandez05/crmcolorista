@@ -34,17 +34,17 @@ ALTER TABLE `atenciones`
   ADD KEY `fk_iduser_atenciones` (`iduser`),
   ADD KEY `fk_idtipoatencion_atenciones` (`idtipoatencion`),
   ADD KEY `fk_idcliente_atenciones` (`idcliente`);
-  
+
 ALTER TABLE `atenciones`
   MODIFY `idatencion` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `tipoatenciones`
   ADD PRIMARY KEY (`idtipoatencion`),
   ADD UNIQUE KEY `ak_tipoatencion_tipoatenciones` (`tipoatencion`,`estado`);
-  
+
 ALTER TABLE `tipoatenciones`
   MODIFY `idtipoatencion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-  
+
 ALTER TABLE `atenciones`
   ADD CONSTRAINT `fk_idcliente_atenciones` FOREIGN KEY (`idcliente`) REFERENCES `clientes` (`idcliente`),
   ADD CONSTRAINT `fk_idtipoatencion_atenciones` FOREIGN KEY (`idtipoatencion`) REFERENCES `tipoatenciones` (`idtipoatencion`),
@@ -68,8 +68,8 @@ DELIMITER ;;
 )
 BEGIN
 	IF p_idevento > 0 THEN
-		SELECT 
-			cl.anioegreso, COUNT(ec.idcliente) AS total 
+		SELECT
+			cl.anioegreso, COUNT(ec.idcliente) AS total
 			FROM clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
 			WHERE 	cl.estado = 'A'
@@ -79,7 +79,7 @@ BEGIN
 			AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY cl.anioegreso;
     ELSE
-		SELECT 
+		SELECT
 			anioegreso, COUNT(idcliente) AS total
 			FROM clientes
 			WHERE 	estado = 'A'
@@ -90,7 +90,7 @@ BEGIN
 		GROUP BY anioegreso;
 	END IF;
 END ;;
-DELIMITER ; 
+DELIMITER ;
 
 DROP procedure IF EXISTS `SP_RP_REGISTROS_SEDES`;
 DELIMITER ;;
@@ -103,8 +103,8 @@ CREATE  PROCEDURE `SP_RP_REGISTROS_SEDES`(
 )
 BEGIN
 	IF p_idevento > 0 THEN
-		SELECT 
-			cl.colegio, COUNT(ec.idcliente) AS total 
+		SELECT
+			cl.colegio, COUNT(ec.idcliente) AS total
 			FROM clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
 			WHERE 	cl.estado = 'A'
@@ -113,9 +113,9 @@ BEGIN
             AND ec.idevento = p_idevento
 			AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY cl.colegio;
-    
+
     ELSE
-		SELECT 
+		SELECT
 			colegio, COUNT(idcliente) AS total
 			FROM clientes
 			WHERE 	estado = 'A'
@@ -140,40 +140,40 @@ CREATE PROCEDURE `SP_REGSITROSFECHAS_CLIENTES`(
 BEGIN
     IF p_idevento > 0 THEN
         -- Consulta con filtro por p_idevento
-        SELECT 
+        SELECT
             cl.colegio,
             DATE_FORMAT(ec.fecharegistro, "%Y-%m-%d %H:00:00") AS fechaGeneral,
             COUNT(ec.idcliente) AS total
-        FROM 
+        FROM
             clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
-        WHERE 
+        WHERE
             cl.estado = 'A'
             AND cl.idcampania = p_idcampania
             AND (p_asistencia = 0 OR ec.asistencia = p_asistencia)
             AND ec.idevento = p_idevento
             AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
-        GROUP BY 
+        GROUP BY
             cl.colegio, DATE_FORMAT(ec.fecharegistro, "%Y-%m-%d %H:00:00")
-        ORDER BY 
+        ORDER BY
             fechaGeneral ASC;
     ELSE
         -- Consulta sin filtro por p_idevento
-        SELECT 
+        SELECT
             cl.colegio,
             DATE_FORMAT(cl.fecharegistro, "%Y-%m-%d %H:00:00") AS fechaGeneral,
             COUNT(cl.idcliente) AS total
-        FROM 
+        FROM
             clientes cl
-        WHERE 
+        WHERE
             cl.estado = 'A'
             AND cl.idcampania = p_idcampania
             AND (p_asistencia = 0 OR asistencia = p_asistencia)
             AND (p_asistencia = 1 OR (p_import = 0 OR (p_import = 1 AND uuidimportacion IS NULL)) )
             AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
-        GROUP BY 
+        GROUP BY
             cl.colegio, DATE_FORMAT(cl.fecharegistro, "%Y-%m-%d %H:00:00")
-        ORDER BY 
+        ORDER BY
             fechaGeneral ASC;
     END IF;
 END ;;
@@ -191,40 +191,40 @@ CREATE PROCEDURE `SP_REGSITROSFECHAS_CLIENTES_ASISTIDO`(
 BEGIN
     IF p_idevento > 0 THEN
         -- Consulta con filtro por p_idevento
-        SELECT 
+        SELECT
             cl.colegio,
             DATE_FORMAT(ec.fechaasistencia, "%Y-%m-%d %H:00:00") AS fechaGeneral,
             COUNT(ec.idcliente) AS total
-        FROM 
+        FROM
             clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
-        WHERE 
+        WHERE
             cl.estado = 'A'
             AND cl.idcampania = p_idcampania
             AND (p_asistencia = 0 OR ec.asistencia = p_asistencia)
             AND ec.idevento = p_idevento
             AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
-        GROUP BY 
+        GROUP BY
             cl.colegio, DATE_FORMAT(ec.fechaasistencia, "%Y-%m-%d %H:00:00")
-        ORDER BY 
+        ORDER BY
             fechaGeneral ASC;
     ELSE
         -- Consulta sin filtro por p_idevento
-        SELECT 
+        SELECT
             cl.colegio,
             DATE_FORMAT(cl.fechaasistencia, "%Y-%m-%d %H:00:00") AS fechaGeneral,
             COUNT(cl.idcliente) AS total
-        FROM 
+        FROM
             clientes cl
-        WHERE 
+        WHERE
             cl.estado = 'A'
             AND cl.idcampania = p_idcampania
             AND (p_asistencia = 0 OR asistencia = p_asistencia)
             AND (p_asistencia = 1 OR (p_import = 0 OR (p_import = 1 AND uuidimportacion IS NULL)) )
             AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
-        GROUP BY 
+        GROUP BY
             cl.colegio, DATE_FORMAT(cl.fechaasistencia, "%Y-%m-%d %H:00:00")
-        ORDER BY 
+        ORDER BY
             fechaGeneral ASC;
     END IF;
 END ;;
@@ -240,8 +240,8 @@ CREATE PROCEDURE `SP_RP_REGISTROS_CARRERAS`(
 )
 BEGIN
 	IF p_idevento > 0 THEN
-    
-        SELECT 
+
+        SELECT
 			cl.carrera, COUNT(ec.idcliente) AS total
 			FROM clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
@@ -251,9 +251,9 @@ BEGIN
             AND ec.idevento = p_idevento
 			AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY cl.carrera;
-    
+
     ELSE
-		SELECT 
+		SELECT
 			carrera, COUNT(idcliente) AS total
 			FROM clientes
 			WHERE 	estado = 'A'
@@ -296,23 +296,23 @@ CREATE PROCEDURE `SP_RP_REGISTROS_ENVIONOTIFACION`(
     IN p_idcampania INT
 )
 BEGIN
-    SELECT 
+    SELECT
         ta.tipoatencion,
-        DATE_FORMAT(a.fechaatencion, '%Y-%m-%d') AS fecha_atencion, 
+        DATE_FORMAT(a.fechaatencion, '%Y-%m-%d') AS fecha_atencion,
         COUNT(a.idatencion) AS total_atenciones
-    FROM 
+    FROM
         atenciones a
-    JOIN 
+    JOIN
         clientes c ON a.idcliente = c.idcliente
-    JOIN 
+    JOIN
         tipoatenciones ta ON a.idtipoatencion = ta.idtipoatencion
-    WHERE 
+    WHERE
         a.idtipoatencion = 2
         AND c.idcampania = p_idcampania
         AND c.estado = 'A'
-    GROUP BY 
+    GROUP BY
         fecha_atencion, ta.tipoatencion
-    ORDER BY 
+    ORDER BY
         fecha_atencion ASC, ta.tipoatencion ASC;
 END ;;
 DELIMITER ;
@@ -325,10 +325,10 @@ CREATE DEFINER=`proveedor_rds`@`%` PROCEDURE `SP_RP_ASISTENCIA_SEDE`(
     IN p_colegio VARCHAR(100)
 )
 BEGIN
-	
+
     IF p_idevento > 0 THEN
         -- Consulta con filtro por p_idevento
-        SELECT 
+        SELECT
 			cl.colegio, COUNT(CASE WHEN ec.asistencia = '1' THEN 1 END) AS cantidad_asistencias
 		FROM clientes cl INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
 		WHERE cl.estado = 'A'
@@ -336,9 +336,9 @@ BEGIN
             AND ec.idevento = p_idevento
             AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY colegio;
-        
+
     ELSE
-		SELECT 
+		SELECT
 			colegio, COUNT(CASE WHEN asistencia = '1' THEN 1 END) AS cantidad_asistencias
 		FROM clientes
 		WHERE 	estado = 'A'
@@ -346,7 +346,7 @@ BEGIN
             AND (p_colegio IS NULL OR p_colegio = '' OR colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY colegio;
     END IF;
-    
+
 END ;;
 DELIMITER ;;
 
@@ -366,8 +366,8 @@ CREATE PROCEDURE `SP_RP_REGISTROS_PROCEDENCIAS`(
 )
 BEGIN
 	IF p_idevento > 0 THEN
-    
-        SELECT 
+
+        SELECT
 			cl.procedencia, COUNT(ec.idcliente) AS total
 			FROM clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
@@ -377,9 +377,9 @@ BEGIN
             AND ec.idevento = p_idevento
 			AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY cl.procedencia;
-    
+
     ELSE
-		SELECT 
+		SELECT
 			procedencia, COUNT(idcliente) AS total
 			FROM clientes
 			WHERE 	estado = 'A'
@@ -415,8 +415,8 @@ CREATE PROCEDURE `SP_RP_REGISTROS_CAMPAINRESOURCE`(
 )
 BEGIN
 	IF p_idevento > 0 THEN
-    
-        SELECT 
+
+        SELECT
 			cl.campaign_source, COUNT(ec.idcliente) AS total
 			FROM clientes cl
             INNER JOIN evento_cliente ec ON cl.idcliente = ec.idcliente
@@ -427,9 +427,9 @@ BEGIN
             AND ec.idevento = p_idevento
 			AND (p_colegio IS NULL OR p_colegio = '' OR cl.colegio COLLATE utf8mb4_unicode_ci = p_colegio COLLATE utf8mb4_unicode_ci)
 		GROUP BY cl.campaign_source;
-    
+
     ELSE
-		SELECT 
+		SELECT
 			campaign_source, COUNT(idcliente) AS total
 			FROM clientes
 			WHERE 	estado = 'A'
@@ -457,21 +457,21 @@ CREATE PROCEDURE `SP_RP_REGISTROSSTANDVENTA`(
 )
 BEGIN
     IF p_idcampania > 0 THEN
-        SELECT 
+        SELECT
             e.idevento,
             e.nombreevento,
             COUNT(ec.ideventocliente) AS total
-        FROM 
+        FROM
             eventos e
-        JOIN 
+        JOIN
             evento_cliente ec ON e.idevento = ec.idevento
-        WHERE 
+        WHERE
             e.estado = 'A'
             AND ec.estado = 'A'
             AND e.idcampania = p_idcampania
             AND  ec.asistencia = p_asistencia
             AND e.nombreevento LIKE '%venta%'
-        GROUP BY 
+        GROUP BY
             e.idevento, e.nombreevento;
     ELSE
         SELECT 'Error: idcampania debe ser mayor que 0' AS mensaje_error;
@@ -492,21 +492,21 @@ CREATE PROCEDURE `SP_RP_REGISTROSSTANDBECA`(
 )
 BEGIN
     IF p_idcampania > 0 THEN
-        SELECT 
+        SELECT
             e.idevento,
             e.nombreevento,
             COUNT(ec.ideventocliente) AS total
-        FROM 
+        FROM
             eventos e
-        JOIN 
+        JOIN
             evento_cliente ec ON e.idevento = ec.idevento
-        WHERE 
+        WHERE
             e.estado = 'A'
             AND ec.estado = 'A'
             AND e.idcampania = p_idcampania
             AND  ec.asistencia = p_asistencia
             AND e.nombreevento LIKE '%beca%'
-        GROUP BY 
+        GROUP BY
             e.idevento, e.nombreevento;
     ELSE
         SELECT 'Error: idcampania debe ser mayor que 0' AS mensaje_error;
@@ -527,22 +527,22 @@ CREATE PROCEDURE `SP_RP_CANTIDADASISTENCIASEDES`(
 )
 BEGIN
     IF p_idcampania > 0 THEN
-        SELECT 
+        SELECT
             e.idevento,
             e.nombreevento,
             COUNT(ec.ideventocliente) AS total
-        FROM 
+        FROM
             eventos e
-        JOIN 
+        JOIN
             evento_cliente ec ON e.idevento = ec.idevento
-        WHERE 
+        WHERE
             e.estado = 'A'
             AND ec.estado = 'A'
             AND e.idcampania = p_idcampania
             AND  ec.asistencia = p_asistencia
             AND e.nombreevento NOT LIKE '%venta%'
             AND e.nombreevento NOT LIKE '%beca%'
-        GROUP BY 
+        GROUP BY
             e.idevento, e.nombreevento;
     ELSE
         SELECT 'Error: idcampania debe ser mayor que 0' AS mensaje_error;
@@ -652,7 +652,7 @@ INSERT INTO `tipocomprobantes` (`codcomprobante`, `nombrecomprobante`, `codigosu
 ALTER TABLE cursos
 ADD COLUMN duracion_meses int NOT NULL;
 
--- atencion 
+-- atencion
 CREATE TABLE `tipoatenciones` (
   `idtipoatencion` int(11) NOT NULL AUTO_INCREMENT,
   `tipoatencion` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -735,11 +735,11 @@ DELIMITER $$
 CREATE TRIGGER `pago_before_insert_add_serienumero` BEFORE INSERT ON `pagos` FOR EACH ROW BEGIN
 
     declare v_correlativo int;
-    
+
     set v_correlativo = (select (correlativo + 1) from tipocomprobantes where codcomprobante = new.codcomprobante);
-    
+
     set new.numero = v_correlativo;
-    
+
     update tipocomprobantes set correlativo = v_correlativo where codcomprobante = new.codcomprobante;
 
 END
@@ -772,3 +772,10 @@ CREATE TABLE `importaciones` (
   KEY `fk_iduser_importaciones` (`iduser`),
   CONSTRAINT `fk_iduser_importaciones` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+alter table atenciones add fechaagenda timestamp DEFAULT NULL AFTER idetiquetatele;
+
+ALTER TABLE alumnos ADD COLUMN sexo VARCHAR(10) DEFAULT NULL AFTER fecha_inscripcion;
+ALTER TABLE alumnos ADD COLUMN trabajo VARCHAR(10) DEFAULT NULL AFTER sexo;
+ALTER TABLE alumnos ADD COLUMN contactoemergencia VARCHAR(10) DEFAULT NULL AFTER trabajo;
+ALTER TABLE alumnos ADD COLUMN edad VARCHAR(10) DEFAULT NULL AFTER contactoemergencia;
