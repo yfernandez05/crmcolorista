@@ -12,15 +12,17 @@ class Ciclo extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'nombre', 
-        'descripcion', 
-        'estado', 
+        'nombre',
+        'duracion',
+        'preciomes',
+        'descripcion',
+        'estado',
     ];
 
     protected $hidden = [
-        'created_usr', 
-        'created_at', 
-        'updated_usr', 
+        'created_usr',
+        'created_at',
+        'updated_usr',
         'updated_at',
     ];
 

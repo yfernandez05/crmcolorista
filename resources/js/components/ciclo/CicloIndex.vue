@@ -51,6 +51,8 @@
                             <th class="p-2">Acciones</th>
                             <th class="p-2">Cod</th>
                             <th class="p-2">Nombre</th>
+                            <th class="p-2">Duracion meses</th>
+                            <th class="p-2">Precio por Mes</th>
                             <th class="p-2">Descripción</th>
                             <th class="p-2">Estado</th>
                         </tr>
@@ -63,6 +65,9 @@
                             </td>
                             <td v-text="cic.id"></td>
                             <td v-text="cic.nombre"></td>
+
+                            <td v-text="cic.duracion"></td>
+                            <td v-text="cic.preciomes"></td>
                             <td v-text="cic.descripcion"></td>
                             <td >
                                 <span class="badge badge-pill py-1 px-3"

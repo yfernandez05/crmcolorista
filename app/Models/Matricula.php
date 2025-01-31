@@ -3,15 +3,16 @@
 namespace App\Models;
 
 use App\User;
-use App\Models\Condicion;
-use App\Models\Periodo;
-use App\Models\Ciclo;
-use App\Models\Carrera;
-use App\Models\Turno;
-use App\Util\RuleManager;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Ciclo;
+use App\Models\Turno;
+use App\Models\Carrera;
+use App\Models\Periodo;
+use App\Models\Condicion;
+use App\Util\RuleManager;
+use App\Models\DetalleMatricula;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Matricula extends Model
 {
@@ -86,6 +87,11 @@ class Matricula extends Model
 
     public function scopeFecha(Builder $query,$fecha){
         $query->whereDate('fecha', Carbon::createFromFormat('d-m-Y', $fecha)->toDateString());
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetalleMatricula::class, 'matricula_id', 'id');
     }
 
 }

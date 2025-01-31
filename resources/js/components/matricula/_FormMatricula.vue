@@ -27,27 +27,31 @@
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('ciclo_id')}">
                     <label>Modulo <small class="text-danger">(*)</small></label>
                     <select2 :options="ciclos" v-model="matricula.ciclo_id" :selectValue="matricula.ciclo_id"
-                        placeholder="Seleccione un Modulo" keyProperty="id" textProperty="nombre">
+                        placeholder="Seleccione un Modulo" keyProperty="id" textProperty="nombre" @input="onCicloChange">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('ciclo_id')"
                         v-text="showError('ciclo_id').errorDetail"></small>
                 </div>
-                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('periodo_id')}">
-                    <label>Periodo <small class="text-danger">(*)</small></label>
-                    <select2 :options="periodos" v-model="matricula.periodo_id" :selectValue="matricula.periodo_id"
-                        placeholder="Seleccione un periodo" keyProperty="id" textProperty="nombre">
-                    </select2>
-                    <small class="form-control-feedback" v-if="errorExists('periodo_id')"
-                        v-text="showError('periodo_id').errorDetail"></small>
-                </div>               -->
-                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('condicion_id')}">
-                    <label>Condicion <small class="text-danger">(*)</small></label>
-                    <select2 :options="condiciones" v-model="matricula.condicion_id" :selectValue="matricula.condicion_id"
-                        placeholder="Seleccione una condicion" keyProperty="id" textProperty="nombre">
-                    </select2>
-                    <small class="form-control-feedback" v-if="errorExists('condicion_id')"
-                        v-text="showError('condicion_id').errorDetail"></small>
-                </div> -->
+
+        <!-- <table v-if="selectedCiclo">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Duración</th>
+              <th>Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in tableRows" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ selectedCiclo.nombre }}</td>
+              <td>{{ selectedCiclo.duracion }}</td>
+              <td>{{ selectedCiclo.precio }}</td>
+            </tr>
+          </tbody>
+        </table> -->
+
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('turno_id')}">
                     <label>Turno <small class="text-danger">(*)</small></label>
                     <select2 :options="turnos" v-model="matricula.turno_id" :selectValue="matricula.turno_id"
@@ -72,7 +76,30 @@
                     <small class="form-control-feedback" v-if="errorExists('fecha')" v-text="showError('fecha').errorDetail"></small>
                 </div>
             </div>
+
             <hr class="mt-2">
+            <div class="row mt-2">
+                    <div class="form-group col-12">
+                        <table class="table table-sm table-hover table-striped table-bordered mb-2">
+                        <thead class="thead-dark">
+                            <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Duración</th>
+                            <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, index) in detalles" :key="index">
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ item.nombre }}</td>
+                            <td>1 Mes</td>
+                            <td>{{ item.preciomes }}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+            </div>
         </template>
 
         <template v-slot:card-body-actions>
@@ -118,6 +145,7 @@
                        // periodo_id: '',
                        // condicion_id: '',
                         turno_id: '',
+                        detalles: [] // Asegúrate de que detalles esté definido aquí
                     }
                 }
             }
@@ -130,7 +158,20 @@
                 //periodos: [],
                // condiciones: [],
                 turnos: [],
-                errors: []
+                errors: [],
+                selectedCiclo: null,
+                detalles: [] // Estructura de datos para los detalles
+            }
+        },
+        computed: {
+            tableRows() {
+                if (this.selectedCiclo) {
+                    return Array.from({ length: this.selectedCiclo.duracion }, (_, index) => ({
+                        ...this.selectedCiclo,
+                        index: index + 1
+                    }));
+                }
+                return [];
             }
         },
         methods: {
@@ -149,6 +190,7 @@
                    // periodo_id: this.matricula.periodo_id,
                    // condicion_id: this.matricula.condicion_id,
                     turno_id: this.matricula.turno_id,
+                    detalles: this.detalles // Enviar los detalles
                 }
 
                 this.$emit('saveData', matriculaData);
@@ -237,6 +279,41 @@
                     ? ''
                     : moment(value, 'YYYY-MM-DD HH:mm:ss').format(fmt)
             },
+            onCicloChange() {
+                console.log('matricula.ciclo_id:', this.matricula.ciclo_id);
+                console.log('Ciclos:', this.ciclos);
+                if (this.ciclos && this.ciclos.length > 0) {
+                    const cicloId = parseInt(this.matricula.ciclo_id, 10); // Asegúrate de que ambos valores sean del mismo tipo
+                    const ciclo = this.ciclos.find(ciclo => ciclo.id === cicloId);
+                    if (ciclo) {
+                        this.selectedCiclo = ciclo;
+                        console.log('Selected Ciclo:', this.selectedCiclo);
+                        this.updateDetalles(); // Actualizar los detalles cuando cambie el ciclo
+                    } else {
+                        console.log('No se encontró un ciclo con el id:', this.matricula.ciclo_id);
+                        console.log('Ciclos disponibles:', this.ciclos.map(c => c.id));
+                    }
+                } else {
+                    console.log('Ciclos no están definidos o están vacíos.');
+                }
+            },
+            updateDetalles() {
+
+                console.log('updateDetalles called');
+                if (this.selectedCiclo) {
+                    console.log('selectedCiclo:', this.selectedCiclo);
+                    // Limpiar los detalles existentes usando splice
+                    this.detalles.splice(0, this.detalles.length);
+                    // Forzar la reactividad asignando un nuevo array
+                    this.detalles = Array.from({ length: this.selectedCiclo.duracion }, (_, index) => ({
+                        nombre: this.selectedCiclo.nombre,
+                        duracion: this.selectedCiclo.duracion,
+                        preciomes: this.selectedCiclo.preciomes,
+                        index: index + 1
+                    }));
+                    console.log('detalles updated:', this.detalles);
+                }
+            },
 
         },
         mounted(){
@@ -246,6 +323,21 @@
             this.listarTurno();
             this.matricula.fecha = this.formatDate(new Date(),'DD-MM-YYYY');
 
+            // Asegúrar de que los detalles se carguen correctamente al montar el componente
+            if (this.matricula.detalles && this.matricula.detalles.length > 0) {
+                this.detalles = this.matricula.detalles;
+            }
+
+        },
+        watch: {
+            matricula: {
+                handler(newVal) {
+                    if (newVal.detalles && newVal.detalles.length > 0) {
+                        this.detalles = newVal.detalles;
+                    }
+                },
+                deep: true
+            }
         },
         components: {
             MainContent,

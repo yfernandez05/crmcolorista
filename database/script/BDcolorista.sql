@@ -46,15 +46,6 @@ CREATE TABLE `alumnos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `alumnos`
---
-
-LOCK TABLES `alumnos` WRITE;
-/*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
-INSERT INTO `alumnos` VALUES (1,'Mervin','Beier','1981-10-05','stanton.henderson@wyman.com',11,22,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'Judy','Hahn','1994-12-31','harry25@bogan.com',12,24,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'Guiseppe','Mann','1992-03-07','hjohnson@yahoo.com',13,29,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'Floyd','Willms','2013-01-30','crooks.bryana@smith.com',14,31,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'Jessyca','Abernathy','1984-05-24','lockman.jacquelyn@yahoo.com',15,36,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'Bennie','Schiller','2005-11-19','nicholas.dietrich@rempel.com',16,38,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'Elyssa','Kreiger','1996-04-24','nick.torp@gmail.com',17,43,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'Lenny','Crist','1983-04-06','stark.sabrina@medhurst.com',18,45,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'Grady','Doyle','2020-12-04','ellis96@gmail.com',19,50,'E',NULL,NULL,'2022-01-13 01:46:09','2022-01-18 05:31:22'),(10,'Clair','Frami','2012-07-13','xzboncak@gmail.com',20,52,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(11,'Kimberly','Stoltenberg','1984-08-26','upton.palma@rice.com',21,57,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(12,'Aaron','Kihn','1998-02-02','franecki.marcellus@gmail.com',22,62,'E',NULL,'sistemas@padinsolutions.com','2022-01-13 01:46:09','2022-01-13 01:46:09'),(13,'Stanton','Paucek','2017-12-24','borer.zula@gmail.com',23,67,'E',NULL,NULL,'2022-01-13 01:46:09','2022-01-18 05:31:17'),(14,'Myriam','Tremblay','1971-02-13','schneider.xzavier@satterfield.biz',24,72,'E',NULL,NULL,'2022-01-13 01:46:09','2022-01-18 05:31:27'),(15,'Mose','Wolff','2001-06-05','feeney.aimee@ohara.com',25,77,'E',NULL,NULL,'2022-01-13 01:46:10','2022-01-18 05:17:24'),(16,'Abel J.','Palomino Rojas','1987-08-12','abel@gmail.com',NULL,1,'E',NULL,NULL,'2022-01-18 02:41:39','2022-01-18 05:31:09'),(17,'J. Abel','Palomino','1987-08-17','palomino@gmail.com',NULL,1,'A',NULL,NULL,'2022-01-18 04:29:01','2022-01-18 04:29:01'),(18,'Yhonatan updae','Fernandez','1999-05-10','yhonatanfernadezcardenas@gmail.com',NULL,1,'E','sistemas@padinsolutions.com','sistemas@padinsolutions.com',NULL,NULL);
-/*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `calificaciones`
@@ -92,16 +83,6 @@ CREATE TABLE `calificaciones` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `calificaciones`
---
-
-LOCK TABLES `calificaciones` WRITE;
-/*!40000 ALTER TABLE `calificaciones` DISABLE KEYS */;
-INSERT INTO `calificaciones` VALUES (1,45.00,43.00,70.00,44.00,53.00,1,1,1,27,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,76.00,98.00,91.00,86.00,13.00,3,2,2,34,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,69.00,72.00,94.00,15.00,16.00,5,3,3,41,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,92.00,33.00,29.00,96.00,71.00,7,4,4,48,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,28.00,23.00,82.00,40.00,33.00,9,5,5,55,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09');
-/*!40000 ALTER TABLE `calificaciones` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `carreras`
 --
 
@@ -124,16 +105,6 @@ CREATE TABLE `carreras` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `carreras`
---
-
-LOCK TABLES `carreras` WRITE;
-/*!40000 ALTER TABLE `carreras` DISABLE KEYS */;
-INSERT INTO `carreras` VALUES (1,'Prof. Max Block Sr.','ratione sit temporibus assumenda',70,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'Jada Cormier','nemo enim doloribus exercitationem',58,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'Prof. Brant Murray','qui ullam non dolore',34,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'Esther Hand','quia dolores enim commodi',17,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'Miss Autumn Franecki Sr.','accusantium fugit illo culpa',49,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'Demarcus Leannon','perspiciatis vero aut sint',73,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'Charity Eichmann Sr.','ut vero quidem aut',75,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'Ora Beier','qui enim quae est',56,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'Tamia Quitzon','est sint minus est',16,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'Giles Deckow I','est et ut aliquam',61,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(11,'Rebecca Parisian','expedita neque omnis dolore',37,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(12,'Mazie Mertz','velit optio nihil sit',84,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(13,'Lavada Keebler','culpa quod omnis qui',85,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(14,'Roma Balistreri','eos consequatur rem quia',13,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(15,'Brown Smith III','quis temporibus quas tempore',38,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(16,'Caleigh Bernhard','eos voluptas quae est',52,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(17,'Yasmine Breitenberg','et accusantium et qui',81,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(18,'Abdullah Kihn','voluptatem est culpa expedita',19,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(19,'Mrs. Ebba Cremin','soluta quibusdam molestias dolorem',65,'E',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(20,'Janae Langworth Jr.','corrupti cupiditate dolor dolores',55,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(21,'Nueva carrea update','dEscricpion carrera update',15,'A','sistemas@padinsolutions.com',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `carreras` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `ciclos`
 --
 
@@ -154,15 +125,6 @@ CREATE TABLE `ciclos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `ciclos`
---
-
-LOCK TABLES `ciclos` WRITE;
-/*!40000 ALTER TABLE `ciclos` DISABLE KEYS */;
-INSERT INTO `ciclos` VALUES (1,'recusandae atque','praesentium saepe in ea','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'aperiam ducimus','in natus sed corrupti','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'consequuntur accusamus','beatae quasi sit dolorum','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'ut et','magnam est illo id','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'atque ut','voluptas illo perferendis omnis','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'id magnam','totam aut quod ut','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'earum nam','expedita dolor in dolores','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'expedita id','ut temporibus enim occaecati','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'minima earum','est excepturi quod ea','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'nemo voluptas','voluptatibus maxime voluptas sequi','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(11,'eum enim','earum et eveniet dolore','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(12,'cumque et','earum placeat unde dignissimos','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(13,'dolorum corrupti','quo aut ullam sed','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(14,'voluptatem inventore','soluta rerum maiores labore','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(15,'voluptas possimus','consectetur quisquam corporis esse','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(16,'nisi qui','facilis aut placeat aut','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(17,'quos veniam','a et deserunt fugit','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(18,'recusandae sunt','dolor excepturi commodi quidem','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(19,'et quia','et facilis aliquam possimus','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(20,'qui vel','sed aliquam est consequuntur','E',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(21,'nuevo ciclo update','nuevocilo descripcion','A','sistemas@padinsolutions.com',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `ciclos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `concepto_pagos`
@@ -186,16 +148,6 @@ CREATE TABLE `concepto_pagos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `concepto_pagos`
---
-
-LOCK TABLES `concepto_pagos` WRITE;
-/*!40000 ALTER TABLE `concepto_pagos` DISABLE KEYS */;
-INSERT INTO `concepto_pagos` VALUES (1,'tempore','quam expedita qui quisquam','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'voluptas','a dolorem consequatur sint','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'neque','aspernatur quam pariatur impedit','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'blanditiis','fugit reiciendis dignissimos molestias','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'facilis','aliquam totam in dolorem','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `concepto_pagos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `condiciones`
 --
 
@@ -214,15 +166,6 @@ CREATE TABLE `condiciones` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `condiciones`
---
-
-LOCK TABLES `condiciones` WRITE;
-/*!40000 ALTER TABLE `condiciones` DISABLE KEYS */;
-INSERT INTO `condiciones` VALUES (1,'Lysanne Metz Jr.','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'Donny Hartmann','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'Dr. Constantin Cormier II','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'Martin Rowe','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'Matteo Rempel Sr.','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'Mr. Sofia Lehner Jr.','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'Samanta Cummings DDS','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'Karli Rolfson','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'Ms. Elyssa Prosacco MD','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'Hilda Weissnat','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(11,'nuevo nombre update','A','sistemas@padinsolutions.com','sistemas@padinsolutions.com',NULL,NULL),(12,'nueva condifionc update','E','sistemas@padinsolutions.com','sistemas@padinsolutions.com',NULL,NULL);
-/*!40000 ALTER TABLE `condiciones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cursos`
@@ -245,15 +188,6 @@ CREATE TABLE `cursos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `cursos`
---
-
-LOCK TABLES `cursos` WRITE;
-/*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
-INSERT INTO `cursos` VALUES (1,'unde','corporis ipsa ipsa molestias','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'maxime','est quasi omnis et','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'accusantium','quod aut ut a','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'fuga','ut maiores ipsum molestiae','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'sed','quisquam dolores architecto sit','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'officia','praesentium fugiat autem ipsum','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(7,'sapiente','optio ad nisi amet','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(8,'quod','rerum vel impedit velit','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(9,'rem','sunt dolorem error sunt','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(10,'minus','laborum nihil debitis et','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(11,'provident','itaque recusandae tempora perferendis','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(12,'debitis','quam beatae enim possimus','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(13,'architecto','fugiat ipsam ipsam perferendis','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(14,'fugiat','eos nihil aut id','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(15,'incidunt','a aliquid quia placeat','E',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(16,'Nuevo Cursoupdaye','nuevo curso desccripcion','A','sistemas@padinsolutions.com',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `detalle_planes`
@@ -276,15 +210,6 @@ CREATE TABLE `detalle_planes` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `detalle_planes`
---
-
-LOCK TABLES `detalle_planes` WRITE;
-/*!40000 ALTER TABLE `detalle_planes` DISABLE KEYS */;
-INSERT INTO `detalle_planes` VALUES (1,1,6,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(2,2,7,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(3,3,8,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(4,4,9,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(5,5,10,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(6,6,11,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(7,7,12,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(8,8,13,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(9,9,14,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(10,10,15,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `detalle_planes` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `failed_jobs`
@@ -344,15 +269,6 @@ CREATE TABLE `inscripciones` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `inscripciones`
---
-
-LOCK TABLES `inscripciones` WRITE;
-/*!40000 ALTER TABLE `inscripciones` DISABLE KEYS */;
-INSERT INTO `inscripciones` VALUES (1,'in veritatis voluptas molestiae','2022-01-13 01:46:09',2,1,25,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'qui est quo dolorem','2022-01-13 01:46:09',4,2,32,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'quos reiciendis sed voluptas','2022-01-13 01:46:09',6,3,39,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'culpa accusantium sit officiis','2022-01-13 01:46:09',8,4,46,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'quibusdam nisi est error','2022-01-13 01:46:09',10,5,53,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'consequatur perferendis et magni','2022-01-13 01:46:09',11,6,58,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'beatae nostrum ut nisi','2022-01-13 01:46:09',12,7,63,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'odit nihil deserunt reprehenderit','2022-01-13 01:46:09',13,8,68,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'debitis nobis modi molestias','2022-01-13 01:46:09',14,9,73,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'et ex ut tempora','2022-01-13 01:46:10',15,10,78,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `inscripciones` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `logerrors`
@@ -419,15 +335,6 @@ CREATE TABLE `matriculas` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `matriculas`
---
-
-LOCK TABLES `matriculas` WRITE;
-/*!40000 ALTER TABLE `matriculas` DISABLE KEYS */;
-INSERT INTO `matriculas` VALUES (1,'ea fugiat unde praesentium','2022-01-13 01:46:09',1,1,1,1,1,26,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'harum odio qui eius','2022-01-13 01:46:09',2,2,2,2,2,33,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'earum enim aut reprehenderit','2022-01-13 01:46:09',3,3,3,3,3,40,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'recusandae iste harum enim','2022-01-13 01:46:09',4,4,4,4,4,47,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'ipsum autem ut occaecati','2022-01-13 01:46:09',5,5,5,5,5,54,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'quod doloribus sit voluptatem','2022-01-13 01:46:09',6,6,6,6,6,59,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'velit facilis mollitia sequi','2022-01-13 01:46:09',7,7,7,7,7,64,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'voluptate officia sit sit','2022-01-13 01:46:09',8,8,8,8,8,69,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'saepe voluptas a ducimus','2022-01-13 01:46:09',9,9,9,9,9,74,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'eum aut fugit error','2022-01-13 01:46:10',10,10,10,10,10,79,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `matriculas` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `migrations`
@@ -483,15 +390,7 @@ CREATE TABLE `pagos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `pagos`
---
 
-LOCK TABLES `pagos` WRITE;
-/*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-INSERT INTO `pagos` VALUES (1,6,1,87.00,'ab qui voluptatem sint',60,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(2,7,2,89.00,'voluptatem dignissimos deleniti fugit',65,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(3,8,3,26.00,'aut atque rerum ut',70,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(4,9,4,72.00,'sed laborum non porro',75,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(5,10,5,97.00,'delectus non perspiciatis facere',80,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `password_resets`
@@ -537,16 +436,6 @@ CREATE TABLE `periodos` (
   UNIQUE KEY `periodos_nombre_unique` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `periodos`
---
-
-LOCK TABLES `periodos` WRITE;
-/*!40000 ALTER TABLE `periodos` DISABLE KEYS */;
-INSERT INTO `periodos` VALUES (1,'ipsa','eius in nulla minus','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'necessitatibus','consectetur veritatis quos aperiam','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'eveniet','nisi laboriosam placeat alias','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'similique','vel et ea eaque','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'vero','repudiandae amet laboriosam perspiciatis','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'nihil','id ex error sed','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'cum','autem cum quia cupiditate','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'modi','blanditiis qui rerum ea','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'labore','eum consectetur eveniet ut','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'ab','tempora ducimus minus aut','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `periodos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `personal_access_tokens`
@@ -606,15 +495,7 @@ CREATE TABLE `plan_estudios` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `plan_estudios`
---
 
-LOCK TABLES `plan_estudios` WRITE;
-/*!40000 ALTER TABLE `plan_estudios` DISABLE KEYS */;
-INSERT INTO `plan_estudios` VALUES (1,93.00,27,11,11,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(2,73.00,11,12,12,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(3,71.00,93,13,13,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(4,25.00,81,14,14,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(5,42.00,48,15,15,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(6,98.00,29,16,16,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(7,39.00,12,17,17,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(8,82.00,42,18,18,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(9,95.00,76,19,19,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(10,37.00,71,20,20,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(11,10.00,15,21,20,'A','sistemas@padinsolutions.com',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `plan_estudios` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `prospectos`
@@ -646,35 +527,6 @@ CREATE TABLE `prospectos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `prospectos`
---
-
-LOCK TABLES `prospectos` WRITE;
-/*!40000 ALTER TABLE `prospectos` DISABLE KEYS */;
-INSERT INTO `prospectos` VALUES (1,'Danny','Kiehn','1970-02-11','+12564973952','joanie.beatty@example.org','et minima explicabo incidunt fuga consequatur','2022-01-13 01:46:09',2,'A',
-NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),
-(2,'Mathias','Kessler','1982-11-27','1-769-709-5790','homenick.ibrahim@example.net','temporibus nobis unde et dolorum eos','2022-01-13 01:46:09'
-,4,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'Alvera','Sauer','2010-05-10','260.207.3476','gerson.moore@example.net',
-'odit dolor ut asperiores nemo eveniet','2022-01-13 01:46:09',6,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),
-(4,'Lue','Balistreri','1971-07-31','984.381.9015','prohaska.marcelina@example.com','ut aut impedit aut et et',
-'2022-01-13 01:46:09',8,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),
-(5,'Miles','Koch','2010-09-28','678.247.1478','zachery85@example.net','cupiditate rem eaque omnis quidem repellat','2022-01-13 01:46:09',10,'A',NULL,
-NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),
-(6,'Vladimir','Mann','1976-04-19','(725) 414-8111','harvey.viola@example.net','enim aperiam rerum laudantium occaecati laudantium',
-'2022-01-13 01:46:09',12,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'Minerva','Skiles','2011-09-02',
-'+15649804709','wbauch@example.org','quia praesentium corrupti vel velit sit','2022-01-13 01:46:09',14,'A',NULL,NULL,
-'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'Else','Ritchie','1971-04-07','802.435.5889','maryse.mcglynn@example.org',
-'aut omnis tempora animi sint quo','2022-01-13 01:46:09',16,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),
-(9,'Wilfrid','Rowe','1978-12-01','325-943-3490','alexandrea70@example.net','nihil quae architecto tenetur non autem','2022-01-13 01:46:09',18,'A',
-NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'Omer','Schumm','2012-04-16','762-250-5595','lyla.wuckert@example.org',
-'doloremque et eos pariatur aut provident','2022-01-13 01:46:09',20,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),
-(11,'Tamara','Tremblay','1998-04-11','+1-904-764-5279','carley.waelchi@example.net','labore ducimus eos dolores voluptatem necessitatibus',
-'2022-01-13 01:46:09',21,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(12,'Everette','Huel','1982-11-22','203.526.3970',
-'oscar.williamson@example.org','est numquam eum ut qui consequuntur','2022-01-13 01:46:09',23,'A',NULL,NULL,
-'2022-01-13 01:46:09','2022-01-13 01:46:09'),(13,'Virgie','Connell','1995-08-05','484.315.4710','ghickle@example.com','vero soluta non delectus ut id','2022-01-13 01:46:09',28,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(14,'Damon','Blick','1994-07-21','+1-214-650-4273','krohan@example.net','sit fugiat et non enim est','2022-01-13 01:46:09',30,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(15,'Saige','Watsica','1974-01-07','1-717-592-1353','benton.wolff@example.org','temporibus soluta veniam quam similique sunt','2022-01-13 01:46:09',35,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(16,'Bernie','Dietrich','1992-08-18','1-541-920-1000','krunolfsdottir@example.net','ut qui dolorem voluptas delectus et','2022-01-13 01:46:09',37,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(17,'Porter','Kilback','1984-09-03','+1-820-846-6191','destiney.lowe@example.net','ut at repudiandae est sint aut','2022-01-13 01:46:09',42,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(18,'Destany','Walsh','2022-01-12','+1-918-933-7122','ziemann.parker@example.com','temporibus voluptas corporis voluptatibus rem molestiae','2022-01-13 01:46:09',44,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(19,'Madie','Little','1975-12-15','+1-816-738-8850','herminia04@example.org','qui quisquam occaecati incidunt corrupti omnis','2022-01-13 01:46:09',49,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(20,'Amely','Kiehn','1998-06-17','+1-507-503-6015','cristina.collier@example.net','rerum non ullam et corrupti aperiam','2022-01-13 01:46:09',51,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(21,'Camryn','Yost','2014-09-10','+1-351-392-5498','wveum@example.org','nobis quis autem quasi provident ab','2022-01-13 01:46:09',56,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(22,'Sharon','Carter','1989-01-18','(878) 803-2849','russel68@example.net','quam autem repellat ex at sequi','2022-01-13 01:46:09',61,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(23,'Carolyne','Cartwright','2012-04-14','(712) 355-2433','arne.hermiston@example.org','natus voluptatibus nobis ipsam quas ea','2022-01-13 01:46:09',66,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(24,'Enos','Simonis','2000-08-16','857-466-1586','cornelius60@example.net','et nulla quos quia est corrupti','2022-01-13 01:46:09',71,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(25,'Sebastian','Herzog','2017-05-03','301.514.7434','aisha.langosh@example.net','eum eos qui ab molestiae qui','2022-01-13 01:46:10',76,'A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10');
-/*!40000 ALTER TABLE `prospectos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `roles`
@@ -735,15 +587,6 @@ CREATE TABLE `seguimientos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `seguimientos`
---
-
-LOCK TABLES `seguimientos` WRITE;
-/*!40000 ALTER TABLE `seguimientos` DISABLE KEYS */;
-INSERT INTO `seguimientos` VALUES (1,'consequatur et nostrum dicta','veritatis asperiores repellat magnam','voluptas consequatur numquam voluptatibus occaecati non hic perspiciatis','2022-01-13 01:46:09',1,1,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'pariatur sit est quasi','officia reprehenderit recusandae aut','et quasi veritatis totam sit totam inventore omnis','2022-01-13 01:46:09',2,3,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'reprehenderit vel nesciunt nemo','vel aut architecto fugiat','nisi aut qui minima qui vel laboriosam aspernatur','2022-01-13 01:46:09',3,5,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'mollitia autem ut quam','praesentium sunt nostrum odio','alias ex qui et nostrum occaecati et et','2022-01-13 01:46:09',4,7,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'et distinctio iste expedita','officiis dolorem fugit rerum','iste officiis et ipsam voluptas eum veritatis neque','2022-01-13 01:46:09',5,9,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'in dolorem inventore quo','repellendus necessitatibus voluptates et','ducimus quas sunt dolorem minima deserunt nemo non','2022-01-13 01:46:09',6,11,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'dolore voluptas omnis labore','odit repellat maxime cupiditate','aut repellat ex sed quis qui ipsum nisi','2022-01-13 01:46:09',7,13,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'ipsam in enim harum','ut omnis laboriosam asperiores','doloribus repudiandae unde necessitatibus in fuga error velit','2022-01-13 01:46:09',8,15,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'libero modi ad totam','tenetur optio earum sit','rerum et deserunt aut tempore repellendus sit nemo','2022-01-13 01:46:09',9,17,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'tenetur dolore id et','impedit officiis error asperiores','ut quaerat maiores sit magni est cupiditate assumenda','2022-01-13 01:46:09',10,19,'A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09');
-/*!40000 ALTER TABLE `seguimientos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `turnos`
@@ -766,15 +609,6 @@ CREATE TABLE `turnos` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `turnos`
---
-
-LOCK TABLES `turnos` WRITE;
-/*!40000 ALTER TABLE `turnos` DISABLE KEYS */;
-INSERT INTO `turnos` VALUES (1,'ut cum','numquam deserunt aut nobis','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(2,'similique modi','sunt voluptatem beatae accusamus','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(3,'in alias','error neque quo ea','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(4,'quia laboriosam','nemo laborum modi reprehenderit','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(5,'sit rerum','qui accusamus totam itaque','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(6,'ut porro','beatae iste consequuntur dignissimos','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(7,'reiciendis amet','porro sint illum molestiae','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(8,'dicta excepturi','aut velit optio animi','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(9,'iure optio','maxime veniam enim rerum','A',NULL,NULL,'2022-01-13 01:46:09','2022-01-13 01:46:09'),(10,'ea repellendus','porro et nulla recusandae','A',NULL,NULL,'2022-01-13 01:46:10','2022-01-13 01:46:10'),(11,'Mañana','Alumnos que estudian en la mañana','E',NULL,NULL,'2022-01-13 03:58:37','2022-01-13 03:58:37'),(12,'Noche update','Turno noche','A','sistemas@padinsolutions.com',NULL,NULL,NULL);
-/*!40000 ALTER TABLE `turnos` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -832,11 +666,6 @@ UNLOCK TABLES;
 
 -- Dump completed on 2025-01-08 16:37:18
 
--- --------- tabla asistencias
--- ---------
--- ---------
--- ---------
-
 CREATE TABLE `asistencias` (
   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `alumno_id` BIGINT UNSIGNED NOT NULL,
@@ -849,7 +678,6 @@ CREATE TABLE `asistencias` (
   PRIMARY KEY (`id`),
   FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`id`) ON DELETE CASCADE
 );
-
 
 ALTER TABLE alumnos
 ADD COLUMN `curso` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
@@ -866,7 +694,6 @@ ADD COLUMN `turno` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 ADD COLUMN `pago` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
 ADD COLUMN `fecha_inscripcion` date NULL;
 
-
 ALTER TABLE asistencias ADD COLUMN fecha timestamp DEFAULT NULL AFTER fecha_asistencia;
 
 ALTER TABLE `alumnos`
@@ -875,5 +702,208 @@ CHANGE COLUMN `fecha_nac` `fecha_nac` DATE NULL ;
 -- 13-01-2025
 ALTER TABLE `prospectos`
 CHANGE COLUMN `fecha_nac` `fecha_nac` DATE NULL ;
+
+ALTER TABLE matriculas
+ADD COLUMN alumno_id BIGINT UNSIGNED NOT NULL AFTER turno_id,
+ADD COLUMN carrera_id BIGINT UNSIGNED NOT NULL AFTER alumno_id,
+ADD KEY matriculas_alumno_id_foreign (alumno_id),
+ADD KEY matriculas_carrera_id_foreign (carrera_id),
+ADD CONSTRAINT matriculas_alumno_id_foreign FOREIGN KEY (alumno_id) REFERENCES alumnos (id),
+ADD CONSTRAINT matriculas_carrera_id_foreign FOREIGN KEY (carrera_id) REFERENCES carreras (id);
+
+ALTER TABLE matriculas
+DROP FOREIGN KEY matriculas_inscripcion_id_foreign;
+
+ALTER TABLE matriculas
+DROP INDEX matriculas_inscripcion_id_foreign;
+
+ALTER TABLE matriculas
+DROP COLUMN inscripcion_id;
+
+
+CREATE TABLE `tipocomprobantes` (
+  `codcomprobante` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `nombrecomprobante` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `codigosunat` char(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `serie` char(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `correlativo` int NOT NULL DEFAULT '0',
+  `agregarigv` int DEFAULT '0',
+  `estado` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A',
+  `userIng` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fechaIng` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userUpd` varchar(60) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fechaUpd` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`codcomprobante`),
+  UNIQUE KEY `ak_nombrecomprobante` (`nombrecomprobante`,`estado`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `tipocomprobantes` (`codcomprobante`, `nombrecomprobante`, `codigosunat`, `serie`, `correlativo`, `agregarigv`, `estado`, `userIng`, `fechaIng`, `userUpd`, `fechaUpd`) VALUES
+(1, 'Boleta de Venta', '03', 'B001', 1, 0, 'A', 'sistemas@padinsolutions.com', '2018-07-10 13:26:15', 'sistemas@padinsolutions.com', '2018-08-04 20:17:44');
+
+ALTER TABLE cursos
+ADD COLUMN duracion_meses int NOT NULL;
+
+-- atencion
+CREATE TABLE `tipoatenciones` (
+  `idtipoatencion` int(11) NOT NULL AUTO_INCREMENT,
+  `tipoatencion` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `backgroundColor` varchar(500) default '#d3d3d3',
+  `textColor` varchar(500) default '#000',
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idtipoatencion`),
+  UNIQUE KEY `ak_tipoatencion_tipoatenciones` (`tipoatencion`,`estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `tipoatenciones` (`idtipoatencion`, `tipoatencion`, `backgroundColor`, `textColor`, `estado`, `userinsert`, `dateinsert`, `userupdate`, `dateupdate`) VALUES
+(1, 'Sin Atender', '#ff0000', '#fff','A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:06'),
+(2, 'Inubicable', '#000000', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:22'),
+(3, 'Cliente no perfilado', '#a636e2', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-10 18:27:27'),
+(4, 'Pago realizado', '#077413', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(5, 'Venta finalizada', '#36c482', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(6, 'Negociación', '#fae500', '#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(7, 'Cliente perfilado', '#f05400', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(8, 'Contacto Inicial', '#4a4545', '#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09');
+
+CREATE TABLE `etiquetatelefonica` (
+  `idetiquetatele` int(11) NOT NULL AUTO_INCREMENT,
+  `etiquetatele` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `backgroundColor` varchar(500) default '#d3d3d3',
+  `textColor` varchar(500) default '#000',
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idetiquetatele`),
+  UNIQUE KEY `ak_etiquetatele_etiquetatelefonica` (`idetiquetatele`,`estado`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `etiquetatelefonica` (`idetiquetatele`, `etiquetatele`, `backgroundColor`, `textColor`,`estado`, `userinsert`, `dateinsert`, `userupdate`, `dateupdate`) VALUES
+(1, 'Sin Atender', '#ff0000','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:06'),
+(2, 'Número errado', '#d3d3d3','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:20:55'),
+(3, 'Contesta tercero', '#fae500','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(4, 'Buzón de voz', '#a636e2','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(5, 'No contesta', '#000000','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(6, 'Seguimiento', '#fae500','#000', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09'),
+(7, 'Contactado', '#077413','#fff', 'A', 'sistemas@padinsolutions.com', '2020-06-27 06:11:50', NULL, '2020-07-06 03:21:09');
+
+
+CREATE TABLE `atenciones` (
+  `idatencion` int(11) NOT NULL AUTO_INCREMENT,
+  `iduser` bigint unsigned NOT NULL,
+  `prospecto_id` bigint unsigned NOT NULL,
+  `fechaatencion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `comentario` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `idtipoatencion` int(11) NOT NULL,
+  `idetiquetatele` int(11) NOT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`idatencion`),
+  KEY `fk_iduser_atenciones` (`iduser`),
+  KEY `fk_idtipoatencion_atenciones` (`idtipoatencion`),
+  KEY `fk_idetiquetatele_atenciones` (`idetiquetatele`),
+  KEY `fk_alumno_id_atenciones` (`prospecto_id`),
+  CONSTRAINT `fk_prospecto_id_atenciones` FOREIGN KEY (`prospecto_id`) REFERENCES `prospectos` (`id`),
+  CONSTRAINT `fk_idtipoatencion_atenciones` FOREIGN KEY (`idtipoatencion`) REFERENCES `tipoatenciones` (`idtipoatencion`),
+   CONSTRAINT `fk_idetiquetatele_atenciones` FOREIGN KEY (`idetiquetatele`) REFERENCES `etiquetatelefonica` (`idetiquetatele`),
+  CONSTRAINT `fk_iduser_atenciones` FOREIGN KEY (`iduser`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `pagos`;
+CREATE TABLE `pagos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `matricula_id` bigint unsigned NOT NULL,
+  `subtotal` decimal(18,2) NOT NULL,
+  `detalle` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pagos_matricula_id_foreign` (`matricula_id`),
+  KEY `pagos_user_id_foreign` (`user_id`),
+  CONSTRAINT `pagos_matricula_id_foreign` FOREIGN KEY (`matricula_id`) REFERENCES `matriculas` (`id`),
+  CONSTRAINT `pagos_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `detallepagos`;
+CREATE TABLE `detallepagos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `pago_id` bigint unsigned NOT NULL, -- Relación con la tabla `pagos`
+  `concepto_id` bigint unsigned NOT NULL, -- Relación con los conceptos de pago
+  `precio_unitario` decimal(18,2) NOT NULL, -- Precio por unidad
+  `descuento` decimal(18,2) NOT NULL DEFAULT 0.00,
+  `importe` decimal(18,2) NOT NULL, -- el total de la suma
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pago_detalles_pago_id_foreign` (`pago_id`),
+  KEY `pago_detalles_concepto_id_foreign` (`concepto_id`),
+  CONSTRAINT `pago_detalles_pago_id_foreign` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `pago_detalles_concepto_id_foreign` FOREIGN KEY (`concepto_id`) REFERENCES `concepto_pagos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE matriculas DROP FOREIGN KEY matriculas_condicion_id_foreign;
+ALTER TABLE matriculas DROP FOREIGN KEY matriculas_periodo_id_foreign;
+alter table matriculas drop periodo_id, drop condicion_id;
+
+
+alter table pagos add codcomprobante int DEFAULT NULL AFTER user_id;
+alter table pagos add serie varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL AFTER codcomprobante;
+alter table pagos add numero varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL AFTER serie;
+
+DELIMITER $$
+CREATE TRIGGER `pago_before_insert_add_serienumero` BEFORE INSERT ON `pagos` FOR EACH ROW BEGIN
+
+    declare v_correlativo int;
+
+    set v_correlativo = (select (correlativo + 1) from tipocomprobantes where codcomprobante = new.codcomprobante);
+
+    set new.numero = v_correlativo;
+
+    update tipocomprobantes set correlativo = v_correlativo where codcomprobante = new.codcomprobante;
+
+END
+$$
+DELIMITER ;
+
+alter table atenciones add fechaagenda timestamp DEFAULT NULL AFTER idetiquetatele;
+
+ALTER TABLE alumnos ADD COLUMN sexo VARCHAR(10) DEFAULT NULL AFTER fecha_inscripcion;
+ALTER TABLE alumnos ADD COLUMN trabajo VARCHAR(10) DEFAULT NULL AFTER sexo;
+ALTER TABLE alumnos ADD COLUMN contactoemergencia VARCHAR(10) DEFAULT NULL AFTER trabajo;
+ALTER TABLE alumnos ADD COLUMN edad VARCHAR(10) DEFAULT NULL AFTER contactoemergencia;
+
+-- ----------------------------------------
+ALTER TABLE ciclos ADD COLUMN duracion VARCHAR(10) DEFAULT NULL AFTER descripcion;
+ALTER TABLE ciclos ADD COLUMN preciomes decimal(18,2) DEFAULT NULL AFTER duracion;
+
+-- ---------------------------------------
+
+CREATE TABLE detalle_matriculas (
+    id bigint unsigned NOT NULL AUTO_INCREMENT,
+    matricula_id bigint unsigned NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    duracion INT NOT NULL,
+    preciomes DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     PRIMARY KEY (id),
+    KEY detalle_matricula_id_foreign (matricula_id),
+   CONSTRAINT detalle_matricula_id_foreign FOREIGN KEY (matricula_id) REFERENCES matriculas (id)
+);
 
 

@@ -25,7 +25,7 @@ class CicloController extends BaseController
         $ciclo = Ciclo::where($filters)
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
-            
+
         return $ciclo;
     }
 
@@ -119,7 +119,7 @@ class CicloController extends BaseController
             $ciclo->update();
 
             $result = ResultManager::successMessage('Ciclo eliminado correctamente.');
-            
+
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
@@ -135,6 +135,8 @@ class CicloController extends BaseController
     private function setModel(Ciclo $ciclo, Request $request): Ciclo
     {
         $ciclo->nombre = $request->nombre;
+        $ciclo->duracion = $request->duracion;
+        $ciclo->preciomes = $request->preciomes;
         $ciclo->descripcion = $request->descripcion;
         return $ciclo;
     }

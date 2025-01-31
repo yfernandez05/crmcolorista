@@ -10,12 +10,22 @@
                     <label>Nombre <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="ciclo.nombre" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('nombre')" v-text="showError('nombre').errorDetail"></small>
-                </div>                
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('duracion')}">
+                    <label>Duracion meses <small class="text-danger">(*)</small></label>
+                    <input type="number" class="form-control" v-model="ciclo.duracion" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('duracion')" v-text="showError('duracion').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('preciomes')}">
+                    <label>Precio por Mes <small class="text-danger">(*)</small></label>
+                    <input type="text" class="form-control" v-model="ciclo.preciomes" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('preciomes')" v-text="showError('preciomes').errorDetail"></small>
+                </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('descripcion')}">
                     <label>Descripción</label>
                     <input type="text" class="form-control" v-model="ciclo.descripcion" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('descripcion')" v-text="showError('descripcion').errorDetail"></small>
-                </div>                
+                </div>
             </div>
             <hr class="mt-2">
         </template>
@@ -53,6 +63,8 @@
                     return {
                         nombre: '',
                         descripcion: '',
+                        duracion: 0,
+                        preciomes: 0.00,
                     }
                 }
             }
@@ -72,6 +84,8 @@
                 let rolData = {
                     nombre: this.ciclo.nombre,
                     descripcion: this.ciclo.descripcion,
+                    duracion: this.ciclo.duracion,
+                    preciomes: this.ciclo.preciomes,
                 }
 
                 this.$emit('saveData', rolData);
@@ -82,6 +96,14 @@
 
                 if (!this.ciclo.nombre) {
                     this.setError('nombre', 'El campo nombre es obligatorio');
+                }
+
+                if (!this.ciclo.duracion) {
+                    this.setError('duracion', 'El campo duracion es obligatorio');
+                }
+
+                if (!this.ciclo.preciomes) {
+                    this.setError('preciomes', 'El campo precio por mes es obligatorio');
                 }
 
                 return this.errors;

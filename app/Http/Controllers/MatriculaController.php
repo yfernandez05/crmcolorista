@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\Alumno;
 use App\Models\Matricula;
-use App\Util\LogErrorManager;
-use App\Util\ResultManager;
 use App\Util\RuleManager;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Database\QueryException;
+use App\Util\ResultManager;
 use Illuminate\Http\Request;
+use App\Util\LogErrorManager;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DetalleMatricula;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class MatriculaController extends BaseController
 {
@@ -53,19 +55,38 @@ class MatriculaController extends BaseController
     public function store(Request $request)
     {
         $result = "";
+        DB::beginTransaction();
         try {
-
+            // Guardar la matrícula
             $matricula = $this->setModel(new Matricula(), $request);
             $matricula->created_usr = $this->user->email;
             $matricula->save();
 
+            // Guardar los detalles de la matrícula
+            $detalleMatriculas = [];
+            foreach ($request->detalles as $detalle) {
+                $detalleMatricula = new DetalleMatricula();
+                $detalleMatricula->nombre = $detalle['nombre'];
+                $detalleMatricula->duracion = $detalle['duracion'];
+                $detalleMatricula->preciomes = $detalle['preciomes'];
+                $detalleMatricula->matricula_id = $matricula->id;
+                $detalleMatriculas[] = $detalleMatricula;  // Agregar al array
+            }
+
+            // Guardar todos los detalles de una vez usando saveMany
+            $matricula->detalles()->saveMany($detalleMatriculas);
+
+            DB::commit();
             $result = ResultManager::genericSuccessMessage();
+
         } catch (QueryException $e) {
+            DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
-            $result = ResultManager::errorMessage('Es posible que hay un matricula registrado con el mismo correo.');
+            $result = ResultManager::errorMessage('Es posible que haya una matrícula registrada con el mismo correo.');
 
         } catch (Exception $e) {
+            DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             dd($e);
             $result = ResultManager::gerericErrorMessage();
@@ -82,7 +103,8 @@ class MatriculaController extends BaseController
      */
     public function show($id)
     {
-        return Matricula::find($id);
+        $matriculas = Matricula::with('detalles')->find($id);
+        return $matriculas;
     }
 
     /**
@@ -95,18 +117,42 @@ class MatriculaController extends BaseController
     public function update(Request $request, $id)
     {
         $result = "";
+        DB::beginTransaction();
         try {
 
-            $matricula = $this->setModel(Matricula::findOrFail($id), $request);
+            // Obtener la matrícula a actualizar
+            $matricula = Matricula::findOrFail($id);
             $matricula->updated_usr = $this->user->email;
-            $matricula->update();
+            $matricula->detalle = $request->detalle;
+            $matricula->fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
+            $matricula->alumno_id = $request->alumno_id;
+            $matricula->carrera_id = $request->carrera_id;
+            $matricula->ciclo_id = $request->ciclo_id;
+            $matricula->turno_id = $request->turno_id;
+            $matricula->save();
 
+            // Eliminar los detalles existentes
+            DetalleMatricula::where('matricula_id', $matricula->id)->delete();
+
+            // Ahora creamos los nuevos detalles
+            foreach ($request->detalles as $detalle) {
+                $detalleMatricula = new DetalleMatricula();
+                $detalleMatricula->nombre = $detalle['nombre'];
+                $detalleMatricula->duracion = $detalle['duracion'];
+                $detalleMatricula->preciomes = $detalle['preciomes'];
+                $detalleMatricula->matricula_id = $matricula->id;
+                $detalleMatricula->save();
+            }
+
+            // Confirmar la transacción si todo fue exitoso
+            DB::commit();
             $result = ResultManager::genericSuccessMessage();
         } catch (QueryException $e) {
+            DB::rollBack(); // Revertir en caso de error
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            $result = ResultManager::errorMessage('Es posible que hay un matricula registrada con el mismo correo.');
-
+            $result = ResultManager::errorMessage('Es posible que haya una matrícula registrada con el mismo correo.');
         } catch (Exception $e) {
+            DB::rollBack(); // Revertir en caso de error
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
         }
