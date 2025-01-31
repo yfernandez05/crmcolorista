@@ -101,7 +101,7 @@
                     <tbody>
                         @foreach($factura->detalles as $key=> $detalle)
                         <tr>
-                            <td>{{$detalle->conceptopago->nombre}}</td>
+                            <td>{{$detalle->conceptopago->nombre}} @if($detalle->nombre_numero_mensualidad) -  {{$detalle->nombre_numero_mensualidad}} @endif</td>
 
                             <td class="text-rigth">{{$detalle->precio_unitario}}</td>
                             <td class="text-rigth">{{$detalle->importe}}</td>

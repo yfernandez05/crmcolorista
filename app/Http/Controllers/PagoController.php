@@ -64,6 +64,7 @@ class PagoController extends BaseController
                 $detallePago->precio_unitario = $detalle['precio_unitario'];
                 $detallePago->descuento = isset($detalle['descuento']) ? $detalle['descuento'] : 0.00;
                 $detallePago->importe = $detalle['importe'];
+                $detallePago->nombre_numero_mensualidad = $detalle['nombre_numero_mensualidad'];
                 $detallePago->created_usr = $this->user->email;
 
                 $detallePago->pago_id = $pago->id;
@@ -102,7 +103,7 @@ class PagoController extends BaseController
     {
        /* $pago = Pago::with('matricula','detalles','alumno')->find($id);
         return $pago;*/
-        $pago = Pago::with(['matricula.alumno', 'detalles','matricula.carrera','matricula.ciclo','comprobante'])->find($id);
+        $pago = Pago::with(['matricula.alumno', 'detalles','matricula.detalles','matricula.carrera','matricula.ciclo','comprobante'])->find($id);
         return $pago;
     }
 
@@ -151,6 +152,7 @@ class PagoController extends BaseController
                         'precio_unitario' => $detalle['precio_unitario'],
                         'descuento' => $detalle['descuento'] ?? 0.00,
                         'importe' => $detalle['importe'],
+                        'nombre_numero_mensualidad' => $detalle['nombre_numero_mensualidad'],
                         'updated_usr' => $this->user->email,
                         'pago_id' => $pago->id, // Relacionar con el pago actualizado
                     ]
