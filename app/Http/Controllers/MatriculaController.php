@@ -69,6 +69,7 @@ class MatriculaController extends BaseController
                 $detalleMatricula->nombre = $detalle['nombre'];
                 $detalleMatricula->duracion = $detalle['duracion'];
                 $detalleMatricula->preciomes = $detalle['preciomes'];
+                $detalleMatricula->fechapago = Carbon::createFromFormat('d-m-Y', $detalle['fechapago'])->format('Y-m-d');
                 $detalleMatricula->matricula_id = $matricula->id;
                 $detalleMatriculas[] = $detalleMatricula;  // Agregar al array
             }
@@ -140,6 +141,7 @@ class MatriculaController extends BaseController
                 $detalleMatricula->nombre = $detalle['nombre'];
                 $detalleMatricula->duracion = $detalle['duracion'];
                 $detalleMatricula->preciomes = $detalle['preciomes'];
+                $detalleMatricula->fechapago = Carbon::createFromFormat('d-m-Y', $detalle['fechapago'])->format('Y-m-d');
                 $detalleMatricula->matricula_id = $matricula->id;
                 $detalleMatricula->save();
             }

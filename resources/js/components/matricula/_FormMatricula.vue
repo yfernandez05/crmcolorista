@@ -87,6 +87,7 @@
                             <th>Nombre</th>
                             <th>Duración</th>
                             <th>Precio</th>
+                            <th>Fecha de Pago</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,6 +96,13 @@
                             <td>{{ item.nombre }}</td>
                             <td>1 Mes</td>
                             <td>{{ item.preciomes }}</td>
+                            <td>
+                                    <v-date-picker v-model="item.fechapago"
+                                        format="DD-MM-YYYY"
+                                        value-type="format"
+                                        placeholder="Seleccione una fecha">
+                                    </v-date-picker>
+                            </td>
                             </tr>
                         </tbody>
                         </table>
@@ -160,7 +168,10 @@
                 turnos: [],
                 errors: [],
                 selectedCiclo: null,
-                detalles: [] // Estructura de datos para los detalles
+                detalles: [], // Estructura de datos para los detalles
+                currentYear : new Date().getFullYear(),
+                currentMonth : new Date().getMonth(),
+                today: moment().format('DD-MM-YYYY')
             }
         },
         computed: {
@@ -283,12 +294,12 @@
                 console.log('matricula.ciclo_id:', this.matricula.ciclo_id);
                 console.log('Ciclos:', this.ciclos);
                 if (this.ciclos && this.ciclos.length > 0) {
-                    const cicloId = parseInt(this.matricula.ciclo_id, 10); // Asegúrate de que ambos valores sean del mismo tipo
+                    const cicloId = parseInt(this.matricula.ciclo_id, 10);
                     const ciclo = this.ciclos.find(ciclo => ciclo.id === cicloId);
                     if (ciclo) {
                         this.selectedCiclo = ciclo;
                         console.log('Selected Ciclo:', this.selectedCiclo);
-                        this.updateDetalles(); // Actualizar los detalles cuando cambie el ciclo
+                        this.updateDetalles();
                     } else {
                         console.log('No se encontró un ciclo con el id:', this.matricula.ciclo_id);
                         console.log('Ciclos disponibles:', this.ciclos.map(c => c.id));
@@ -302,15 +313,14 @@
                 console.log('updateDetalles called');
                 if (this.selectedCiclo) {
                     console.log('selectedCiclo:', this.selectedCiclo);
-                    // Limpiar los detalles existentes usando splice
-                    this.detalles.splice(0, this.detalles.length);
-                    // Forzar la reactividad asignando un nuevo array
-                    this.detalles = Array.from({ length: this.selectedCiclo.duracion }, (_, index) => ({
-                        nombre: this.selectedCiclo.nombre,
+                    const nuevosDetalles = Array.from({ length: this.selectedCiclo.duracion }, (_, index) => ({
+                        nombre: `${this.selectedCiclo.nombre} pago ${index + 1}`,
                         duracion: this.selectedCiclo.duracion,
                         preciomes: this.selectedCiclo.preciomes,
+                        fechapago: this.today,
                         index: index + 1
                     }));
+                    this.detalles = nuevosDetalles;
                     console.log('detalles updated:', this.detalles);
                 }
             },
@@ -323,9 +333,11 @@
             this.listarTurno();
             this.matricula.fecha = this.formatDate(new Date(),'DD-MM-YYYY');
 
-            // Asegúrar de que los detalles se carguen correctamente al montar el componente
             if (this.matricula.detalles && this.matricula.detalles.length > 0) {
-                this.detalles = this.matricula.detalles;
+                this.detalles = this.matricula.detalles.map(detalle => ({
+                    ...detalle,
+                    fechapago: moment(detalle.fechapago, 'YYYY-MM-DD').format('DD-MM-YYYY')
+                }));
             }
 
         },
@@ -333,10 +345,16 @@
             matricula: {
                 handler(newVal) {
                     if (newVal.detalles && newVal.detalles.length > 0) {
-                        this.detalles = newVal.detalles;
+                        this.detalles = newVal.detalles.map(detalle => ({
+                            ...detalle,
+                            fechapago: moment(detalle.fechapago, 'YYYY-MM-DD').format('DD-MM-YYYY')
+                        }));
                     }
                 },
                 deep: true
+            },
+            'matricula.ciclo_id': function(newVal) {
+                this.onCicloChange();
             }
         },
         components: {

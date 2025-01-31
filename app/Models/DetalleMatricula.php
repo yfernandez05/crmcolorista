@@ -16,6 +16,7 @@ class DetalleMatricula extends Model
         'nombre',
         'duracion',
         'preciomes',
+        'fechapago',
 
     ];
 
@@ -23,9 +24,15 @@ class DetalleMatricula extends Model
         'created_at',
         'updated_at',
     ];
-
+    protected $casts = [
+        'fecha' => 'datetime',
+    ];
     public function matricula()
     {
         return $this->belongsTo(Matricula::class, 'matricula_id', 'id');
+    }
+
+    public function scopeFecha(Builder $query,$fecha){
+        $query->whereDate('fecha', Carbon::createFromFormat('d-m-Y', $fecha)->toDateString());
     }
 }
