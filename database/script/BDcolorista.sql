@@ -925,4 +925,6 @@ CREATE TABLE detalle_matriculas (
    CONSTRAINT detalle_matricula_id_foreign FOREIGN KEY (matricula_id) REFERENCES matriculas (id)
 );
 
+ALTER TABLE detalle_matriculas ADD COLUMN fechapago DATE DEFAULT NULL AFTER preciomes;
+
 
