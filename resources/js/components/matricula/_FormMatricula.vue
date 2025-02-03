@@ -32,26 +32,6 @@
                     <small class="form-control-feedback" v-if="errorExists('ciclo_id')"
                         v-text="showError('ciclo_id').errorDetail"></small>
                 </div>
-
-        <!-- <table v-if="selectedCiclo">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Duración</th>
-              <th>Precio</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in tableRows" :key="index">
-              <td>{{ index + 1 }}</td>
-              <td>{{ selectedCiclo.nombre }}</td>
-              <td>{{ selectedCiclo.duracion }}</td>
-              <td>{{ selectedCiclo.precio }}</td>
-            </tr>
-          </tbody>
-        </table> -->
-
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('turno_id')}">
                     <label>Turno <small class="text-danger">(*)</small></label>
                     <select2 :options="turnos" v-model="matricula.turno_id" :selectValue="matricula.turno_id"
@@ -62,7 +42,8 @@
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle')}">
                     <label>Detalle <small class="text-danger">(*)</small></label>
-                    <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/>
+                    <!-- <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/> -->
+                    <input type="text" class="form-control" v-model="matriculaDetalle" @keyup.enter="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
                 </div>
 
@@ -183,6 +164,35 @@
                     }));
                 }
                 return [];
+            },
+            matriculaDetalle: {
+                get() {
+                    //const alumno = this.alumnos.find(a => a.id === alumno_id);
+                    const alumnoId = parseInt(this.matricula.alumno_id, 10);
+                    const alumno = this.alumnos.find(alum => alum.id === alumnoId);
+                    console.log('Selected Alumno:', alumno);
+
+                    const carreraId = parseInt(this.matricula.carrera_id, 10);
+                    const carrera = this.carreras.find(carre => carre.id === carreraId);
+                    console.log('Selected Carrera:', carrera);
+
+                    const alumnoNombre = alumno ? alumno.nombrecompleto : '';
+                    const carreraNombre = carrera ? carrera.nombre : '';
+                    return `${alumnoNombre} - ${carreraNombre} - ${this.matricula.fecha}`;
+                },
+                set(newValue) {
+                    const parts = newValue.split(' - ');
+                    const alumnoNombre = parts[0] || '';
+                    const carreraNombre = parts[1] || '';
+                    const fecha = parts[2] || '';
+
+                    const alumno = this.alumnos.find(a => a.nombrecompleto === alumnoNombre);
+                    const carrera = this.carreras.find(c => c.nombre === carreraNombre);
+
+                    this.matricula.alumno_id = alumno ? alumno.id : '';
+                    this.matricula.carrera_id = carrera ? carrera.id : '';
+                    this.matricula.fecha = fecha;
+                }
             }
         },
         methods: {
@@ -193,7 +203,7 @@
                 }
 
                 let matriculaData = {
-                    detalle: this.matricula.detalle,
+                    detalle: this.matriculaDetalle,
                     fecha: this.matricula.fecha,
                     alumno_id: this.matricula.alumno_id,
                     carrera_id: this.matricula.carrera_id,
@@ -210,7 +220,7 @@
             validateFields() {
                 this.errors = [];
 
-                if (!this.matricula.detalle) {
+                if (!this.matriculaDetalle) {
                     this.setError('detalle', 'El campo detalle es obligatorio');
                 }
                 if (!this.matricula.fecha) {
@@ -340,6 +350,8 @@
                 }));
             }
 
+
+
         },
         watch: {
             matricula: {
@@ -355,7 +367,8 @@
             },
             'matricula.ciclo_id': function(newVal) {
                 this.onCicloChange();
-            }
+            },
+
         },
         components: {
             MainContent,

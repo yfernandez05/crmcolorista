@@ -926,5 +926,10 @@ CREATE TABLE detalle_matriculas (
 );
 
 ALTER TABLE detalle_matriculas ADD COLUMN fechapago DATE DEFAULT NULL AFTER preciomes;
+-- -----
+ALTER TABLE alumnos DROP COLUMN colegiosegundario;
+
+ALTER TABLE prospectos DROP COLUMN cursointeres;
+ALTER TABLE prospectos ADD COLUMN carrera_id  bigint unsigned DEFAULT NULL AFTER fecha_regist
 
 

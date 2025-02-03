@@ -71,11 +71,11 @@
                     <input type="text" class="form-control" v-model="alumno.cargodesempenia" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('cargodesempenia')" v-text="showError('cargodesempenia').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('colegiosegundario')}">
+                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('colegiosegundario')}">
                     <label>Colegio segundario </label>
                     <input type="text" class="form-control" v-model="alumno.colegiosegundario" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('colegiosegundario')" v-text="showError('colegiosegundario').errorDetail"></small>
-                </div>
+                </div> -->
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('trabajo')}"  style=" padding-left: 36px;">
                     <label>¿Actualmente se encuentra trabajando?</label>
@@ -95,7 +95,7 @@
                 </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('contactoemergencia')}">
-                    <label>Contacto de emergencia </label>
+                    <label>Contacto de emergencia (Teléfono)</label>
                     <input type="text" class="form-control" v-model="alumno.contactoemergencia" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('contactoemergencia')" v-text="showError('contactoemergencia').errorDetail"></small>
                 </div>
@@ -178,7 +178,7 @@
                         celular: '',
                         empresa: '',
                         cargodesempenia: '',
-                        colegiosegundario: '',
+                       // colegiosegundario: '',
                         trabajo: '',
                         contactoemergencia: '',
                         edad: '',
@@ -217,7 +217,7 @@
                     celular: this.alumno.celular,
                     empresa: this.alumno.empresa,
                     cargodesempenia: this.alumno.cargodesempenia,
-                    colegiosegundario: this.alumno.colegiosegundario,
+                    //colegiosegundario: this.alumno.colegiosegundario,
                     trabajo: this.alumno.trabajo,
                     contactoemergencia: this.alumno.contactoemergencia,
                     edad: this.alumno.edad,

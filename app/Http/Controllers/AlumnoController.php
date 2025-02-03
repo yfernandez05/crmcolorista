@@ -152,7 +152,7 @@ class AlumnoController extends BaseController
         $alumno->celular = $request->celular;
         $alumno->empresa = $request->empresa;
         $alumno->cargodesempenia = $request->cargodesempenia;
-        $alumno->colegiosegundario = $request->colegiosegundario;
+        // $alumno->colegiosegundario = $request->colegiosegundario;
         $alumno->inicioclases = $request->inicioclases;
         //$alumno->turno = $request->turno;
         //$alumno->pago = $request->pago;

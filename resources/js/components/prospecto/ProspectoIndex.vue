@@ -60,7 +60,7 @@
                             <th class="p-2">Correo</th>
                             <th class="p-2">Telefono</th>
                             <th class="p-2">Procedencia</th>
-                            <th class="p-2">Curso de Interes</th>
+                            <th class="p-2">Carrera de Interes</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -77,7 +77,7 @@
                             <td v-text="pros.correo"></td>
                             <td v-text="pros.telefono"></td>
                             <td v-text="pros.procedencia"></td>
-                            <td v-text="pros.cursointeres"></td>
+                            <td v-text="pros.carrera?.nombre"></td>
                             <td >
                                 <span class="badge badge-pill py-1 px-3"
                                     :class="pros.isactive ? 'badge-success':'badge-danger'"

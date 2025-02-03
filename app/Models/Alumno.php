@@ -26,7 +26,7 @@ class Alumno extends Model
         'celular',
         'empresa',
         'cargodesempenia',
-        'colegiosegundario',
+        // 'colegiosegundario',
         //'inicioclases',
         //'turno',
         //'pago',

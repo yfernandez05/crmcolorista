@@ -21,7 +21,7 @@ class ProspectoController extends BaseController
     {
         parent::__construct(['index']);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +32,8 @@ class ProspectoController extends BaseController
         $filters = $this->getFilters($request, new Prospecto());
         $perpage = $this->getLimitPagination($request);
 
-        $query = Prospecto::where($filters);
+        $query = Prospecto::where($filters)
+        ->with('carrera');
 
 
         $prospectos = $query-> orderBy('id', 'DESC')
@@ -156,8 +157,9 @@ class ProspectoController extends BaseController
         $prospecto->telefono = $request->telefono;
         $prospecto->procedencia = $request->procedencia;
         $prospecto->fecha_registro = Carbon::now();
-        $prospecto->cursointeres = $request->cursointeres;
-        $prospecto->user_id = 1;
+        //$prospecto->cursointeres = $request->cursointeres;
+        $prospecto->carrera_id = $request->carrera_id;
+        $prospecto->user_id = $this->user->id;
         if (!is_null($request->fecha_nac)) {
             $prospecto->fecha_nac = Carbon::createFromFormat('d-m-Y', $request->fecha_nac);
         }
@@ -186,7 +188,7 @@ class ProspectoController extends BaseController
         try {
             $name = 'plantillaProspecto[' . Carbon::now('America/Lima')->format('d-m-Y H:i:s') . ' ].xlsx';
             return Excel::download(new plantillaAlumno($request), $name);
-            
+
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
 

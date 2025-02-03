@@ -24,7 +24,7 @@
                     <tr>
                         <td>
                             <img src="{{public_path('/images/comprobante/logo.png')}}" alt="Logo">
-                            {{-- <img src="{{asset('images/logo-comprobante.png')}}" alt="Logo" > --}}
+                            {{-- <img src="{{asset('/images/comprobante/logo.png')}}" alt="Logo" > --}}
                         </td>
 
                     </tr>

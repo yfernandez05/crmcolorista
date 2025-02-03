@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Carrera;
 use App\Models\Atencion;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
@@ -20,8 +21,9 @@ class Prospecto extends Model
         'correo',
         'procedencia',
         'fecha_registro',
-        'cursointeres',
+        //'cursointeres',
         'user_id',
+        'carrera_id',
         'estado',
     ];
 
@@ -94,6 +96,11 @@ class Prospecto extends Model
             ])
             ->with('tipoatencion','etiquetatelefonica','user')
             ->orderBy('idatencion', 'desc');
+    }
+
+    public function carrera()
+    {
+        return $this->belongsTo(Carrera::class, 'carrera_id', 'id');
     }
 
 }

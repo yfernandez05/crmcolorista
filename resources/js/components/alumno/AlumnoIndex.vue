@@ -64,7 +64,7 @@
                             <th class="p-2">Celular</th>
                             <th class="p-2">Empresa</th>
                             <th class="p-2">Cargo Desempeña</th>
-                            <th class="p-2">Colegio</th>
+                            <!-- <th class="p-2">Colegio</th> -->
                             <th class="p-2">Trabajo</th>
                             <th class="p-2">Contacto Emerge</th>
                             <th class="p-2">Edad</th>
@@ -93,7 +93,7 @@
                             <td v-text="alum.celular"></td>
                             <td v-text="alum.empresa"></td>
                             <td v-text="alum.cargodesempenia"></td>
-                            <td v-text="alum.colegiosegundario"></td>
+                            <!-- <td v-text="alum.colegiosegundario"></td> -->
                             <td v-text="alum.trabajo"></td>
                             <td v-text="alum.contactoemergencia"></td>
                             <td v-text="alum.edad"></td>

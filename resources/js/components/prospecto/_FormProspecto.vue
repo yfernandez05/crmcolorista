@@ -41,10 +41,19 @@
                     <input type="text" class="form-control" v-model="prospecto.procedencia" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('procedencia')" v-text="showError('procedencia').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('cursointeres')}">
+                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('cursointeres')}">
                     <label>Curso de interes</label>
                     <input type="text" class="form-control" v-model="prospecto.cursointeres" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('cursointeres')" v-text="showError('cursointeres').errorDetail"></small>
+                </div> -->
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('carrera_id')}">
+                    <label>Carrera de interes<small class="text-danger">(*)</small></label>
+                    <select2 :options="carreras" v-model="prospecto.carrera_id" :selectValue="prospecto.carrera_id"
+                        placeholder="Seleccione un turno" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('carrera_id')"
+                        v-text="showError('carrera_id').errorDetail"></small>
                 </div>
 
             </div>
@@ -74,6 +83,7 @@
     import MainContent from './../../utils/MainContent';
     import VDatePicker from 'vue2-datepicker';
     import 'vue2-datepicker/locale/es';
+    import Select2 from './../../utils/Select2';
 
     export default {
         props: {
@@ -98,7 +108,8 @@
         },
         data(){
             return {
-                errors:[]
+                errors:[],
+                carreras: []
             }
         },
         methods: {
@@ -115,7 +126,8 @@
                     fecha_nac: this.prospecto.fecha_nac,
                     telefono: this.prospecto.telefono,
                     procedencia: this.prospecto.procedencia,
-                    cursointeres: this.prospecto.cursointeres
+                    cursointeres: this.prospecto.cursointeres,
+                    carrera_id: this.prospecto.carrera_id,
                 }
 
                 this.$emit('saveData', rolData);
@@ -155,11 +167,27 @@
             showError(keyModel){
                 return this.errors.find(err => err.keyModel === keyModel);
             },
+            listarCarreras() {
+                let vm = this;
+                axios.get(`${appApiUrl}/carrera/select`)
+                    .then(function (response) {
+                        vm.carreras = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+
+        },
+        mounted(){
+            this.listarCarreras();
+
 
         },
         components: {
             MainContent,
-            VDatePicker
+            VDatePicker,
+            Select2
         }
     }
 
