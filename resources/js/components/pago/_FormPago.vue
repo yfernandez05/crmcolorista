@@ -23,15 +23,16 @@
                         <template #option="data">
                             <div class="my-1">
                                 <div class="d-flex no-block text-truncate">
-                                    <h5 class="font-weight-bolder mb-0"><strong>{{ data.alumno.nombre }} {{ data.alumno.apellido }} - {{ data.detalle }}</strong></h5>
+                                    <h5 class="font-weight-bolder mb-0"><strong>{{ data.detalle }}</strong></h5>
                                 </div>
                                 <div class="d-flex no-block text-truncate">
+                                    <span>Nombre: </span><span class="font-weight-bolder pl-1 pr-3">{{ data.alumno.nombre }} {{ data.alumno.apellido }}</span>
                                     <span>DNI: </span><span class="font-weight-bolder pl-1 pr-3"
                                         v-text="data.alumno.dni"></span>
-                                    <span>CARRERA: </span><span class="font-weight-bolder pl-1 pr-3"
-                                        v-text="data.carrera.nombre"></span>
                                 </div>
                                 <div class="d-flex no-block text-truncate">
+                                    <span>CARRERA: </span><span class="font-weight-bolder pl-1 pr-3"
+                                        v-text="data.carrera.nombre"></span>
                                     <span>CICLO: </span><span class="font-weight-bolder pl-1 pr-3"
                                         v-text="data.ciclo.nombre"></span>
                                 </div>
