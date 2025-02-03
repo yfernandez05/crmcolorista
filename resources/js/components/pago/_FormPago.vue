@@ -73,8 +73,8 @@
                 </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-8" :class="{'has-danger':errorExists('detalle')}">
-                    <label>Detalle <small class="text-danger">(*)</small></label>
-                    <textarea class="form-control mt-0" v-model="pago.detalle" @:keyup.enter="doSaveData" rows="2"></textarea>
+                    <label>Detalle </label>
+                    <textarea style="opacity: 1;" class="form-control mt-0 bg-white"  :disabled="true" v-model="pago.detalle" @:keyup.enter="doSaveData" rows="2"></textarea>
                     <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('codcomprobante')}">
@@ -99,10 +99,10 @@
                     <small class="form-control-feedback" v-if="errorExists('concepto_id')"
                         v-text="showError('concepto_id').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-md-9 col-lg-9 col-xl-4" :class="{'has-danger':errorExists('id_detalle_matricula')}">
+                <div v-if="pago.concepto_id >= 3" class="form-group col-12 col-md-9 col-lg-9 col-xl-4" :class="{'has-danger':errorExists('id_detalle_matricula')}">
                     <label>Pensiones </label>
                     <select2 
-                        :options="selectedDetalleMatricula" 
+                        :options="pago.matricula.detalles" 
                         v-model="pago.id_detalle_matricula"
                         placeholder="Seleccione una pension" 
                         keyProperty="id" 
@@ -116,7 +116,7 @@
                     <div class="d-flex align-items-center">
                         <vue-numeric class="form-control"  v-model="pago.precio_unitario" v-bind:precision="2" currency="S/" :disabled="pago.concepto_id && pago.concepto_id != 1">
                         </vue-numeric>
-                        <div class="form-check ml-2 col-4">
+                        <div v-if="pago.concepto_id < 2" class="form-check ml-2 col-4">
                             <input class="form-check-input" type="checkbox" id="costoCero" v-model="costoCero" @change="toggleCostoCero">
                             <label class="form-check-label" for="costoCero">
                                 Costo 0
@@ -227,7 +227,7 @@ export default {
             type: Object,
             default() {
                 return {
-                    detalle: '',
+                    detalle: '-',
                     subtotal: '',
                     concepto_id: '',
                     matricula_id: '',
@@ -284,9 +284,9 @@ export default {
             if (!this.pago.matricula || Object.keys(this.pago.matricula).length === 0) {
                 this.setError('matricula_id', 'El campo matrícula es obligatorio');
             }
-            if (!this.pago.detalle) {
+            /* if (!this.pago.detalle) {
                 this.setError('detalle', 'El campo detalle es obligatorio');
-            }
+            } */
             if (!Array.isArray(this.pago.detalles)) {
                 this.setError('concepto_id', 'Debe seleccionar un concepto.');
             }
@@ -324,6 +324,11 @@ export default {
                 this.setError('concepto_id', 'Debe seleccionar un concepto.');
                 return;
             }
+
+            if (this.pago.concepto_id >= 3 && !this.pago.id_detalle_matricula) {
+                this.setError('id_detalle_matricula', 'Debe seleccionar una mensualidad.');
+                return;
+            }
             console.log(this.pago.concepto_id);
             /* const concepto = this.conceptopagos.find(c => c.id == 4);
             if (!concepto) {
@@ -352,6 +357,7 @@ export default {
             this.pago.precio_unitario = '';
             this.pago.descuento = '';
             this.pago.concepto_id = '';
+            this.pago.id_detalle_matricula = '';
         },
         eliminarDetalle(index) {
             this.pago.detalles.splice(index, 1);
@@ -378,7 +384,15 @@ export default {
         }, 500),
 
         onSelectMatricula(matricula) {
+            this.pago.concepto_id = '';
+            this.selectConcepto();
             this.pago.matricula = matricula;
+            this.pago.detalles = [];
+            this.costoCero = false;
+            this.toggleCostoCero();
+            this.pago.detalle = `PAGO - ${matricula.detalle}`;
+
+            console.log(this.pago.matricula.detalles);
         },
 
         listarMatriculas(search) {
@@ -423,7 +437,7 @@ export default {
             },
 
             updatePrecioUnitario() {
-
+                console.log(this.pago.id_detalle_matricula);
                 // Solo actualiza si `pago.id_detalle_matricula` tiene valor
                 if (this.pago.id_detalle_matricula) {
                     console.log(this.pago.id_detalle_matricula);
@@ -436,10 +450,32 @@ export default {
                 }
             },
 
+            sumaModulosPrecioDetalleMatricula(){
+                if (this.pago.matricula?.detalles?.length > 0) {
+                    const total = this.pago.matricula.detalles.reduce((suma, detalle) => {
+                        const precio = Number(detalle.preciomes) || 0;
+                        return suma + precio;
+                    }, 0);
+
+                    this.pago.precio_unitario = total;
+                    console.log('Total calculado:', total); 
+                }
+            },
+
             selectConcepto(){
-                if(this.pago.concepto_id == 1){
+                console.log(this.pago.concepto_id);
+                
+                if(this.pago.concepto_id == 1 || !this.pago.concepto_id.length){
                     this.pago.id_detalle_matricula = '';
                     this.pago.precio_unitario = 100;
+                }
+                if(this.pago.concepto_id == 3 || !this.pago.concepto_id.length){
+                    this.costoCero = false;
+                    this.toggleCostoCero();
+                }
+                if(this.pago.concepto_id == 2){
+                    this.pago.id_detalle_matricula = '';
+                    this.sumaModulosPrecioDetalleMatricula();
                 }
             }
     },
@@ -468,20 +504,21 @@ export default {
         selectedAlumnoCiclo(){
             return this.pago.matricula && this.pago.matricula.ciclo ? this.pago.matricula.ciclo.nombre : '';
         },
-        selectedDetalleMatricula(){
+        /* selectedDetalleMatricula(){
             return this.pago.matricula && Array.isArray(this.pago.matricula.detalles) && this.pago.matricula.detalles.length > 0 ? this.pago.matricula.detalles : [];
-        },
+        }, */
 
     },
-    watch: {
+    /* watch: {
         'pago.matricula': {
             handler(newVal) {
                 // Opcional: Reinicia el concepto si la matrícula cambia
-                this.pago.concepto_id = "";
+                console.log('Cambio en matrícula:', newVal);
+                this.pago.concepto_id = '';
             },
             deep: true,
         },
-    },
+    }, */
     mounted() {
         //this.listarMatriculas();
         this.listarConceptos();
