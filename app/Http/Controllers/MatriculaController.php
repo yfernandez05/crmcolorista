@@ -226,7 +226,7 @@ class MatriculaController extends BaseController
         //dd($search);
 
         $query = Matricula::where('estado', 'A')
-            ->with('alumno','carrera','ciclo')
+            ->with('detalles','alumno','carrera','ciclo')
             ->whereHas('alumno', function ($query) use ($search) {
                 $query->whereRaw("concat(dni, ' ', nombre, ' ', apellido) like ?", "%{$search}%");
             })
