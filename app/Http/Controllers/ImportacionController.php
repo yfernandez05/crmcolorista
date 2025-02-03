@@ -94,7 +94,7 @@ class ImportacionController extends BaseController
 
             if (count($e->errorInfo)) {
                 if ($e->errorInfo[1] == $duplicateEntry) {
-                    $result = ResultManager::warningMessage('No se puede importar datos duplicados en el sistema, verficar el <strong>email</strong>.');
+                    $result = ResultManager::warningMessage('No se puede importar datos duplicados en el sistema, verficar el <strong>email ó celular</strong>.');
                 } else {
                     $result = ResultManager::errorMessage('Intente nuevamente más tarde.');
                 }

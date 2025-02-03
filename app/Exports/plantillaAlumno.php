@@ -26,7 +26,7 @@ class plantillaAlumno implements WithHeadings, WithStyles, ShouldAutoSize, WithE
             'Correo *',
             'Celular *',
             'Procedencia *',
-            'Curso de Interes',
+            'Carrera de Interes',
 
         ];
 
@@ -37,7 +37,7 @@ class plantillaAlumno implements WithHeadings, WithStyles, ShouldAutoSize, WithE
             'Correo@gmail.com',
             '912345678',
             'Órganico',
-            'Diseño capilar',
+            '',
         ];
 
         return array($cabecera,$guia);
@@ -74,11 +74,19 @@ class plantillaAlumno implements WithHeadings, WithStyles, ShouldAutoSize, WithE
             AfterSheet::class => function(AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
-                // Aplicar formato personalizado para fechas en la columna "I"
-                $sheet->getStyle('C2:C900')
-                    ->getNumberFormat()
-                    ->setFormatCode('yyyy-mm-dd');
-                
+                // Obtener los nombres de las carreras
+                $carreras = \App\Models\Carrera::pluck('nombre')->toArray();
+
+                // Crear una lista separada por comas para la validación
+                $carrerasList = '"' . implode(',', $carreras) . '"';
+
+                // Preseleccionar la primera carrera en la celda G2
+                if (!empty($carreras)) {
+                    $sheet->setCellValue('G2', $carreras[0]);
+                }
+
+                // Aplicar la validación de datos a la columna "G" (Carrera de Interes)
+                $this->applyDataValidation($sheet, 'G', $carrerasList, 2, 900);
             },
         ];
     }
