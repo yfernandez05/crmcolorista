@@ -908,12 +908,6 @@ CREATE TABLE detalle_matriculas (
 );
 
 ALTER TABLE detalle_matriculas ADD COLUMN fechapago DATE DEFAULT NULL AFTER preciomes;
--- -----
-ALTER TABLE alumnos DROP COLUMN colegiosegundario;
-
-ALTER TABLE prospectos DROP COLUMN cursointeres;
-ALTER TABLE prospectos ADD COLUMN carrera_id  bigint unsigned DEFAULT NULL AFTER fecha_regist
-
 
 CREATE TABLE `importaciones` (
   `idimportacion` int UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -937,3 +931,10 @@ ADD COLUMN cursointeres varchar(100) NULL after fecha_registro;
 
 ALTER TABLE detallepagos
 ADD COLUMN nombre_numero_mensualidad varchar(100) NULL after concepto_id;
+
+-- -----
+
+ALTER TABLE alumnos DROP COLUMN colegiosegundario;
+
+ALTER TABLE prospectos DROP COLUMN cursointeres;
+ALTER TABLE prospectos ADD COLUMN carrera_id  bigint unsigned DEFAULT NULL AFTER fecha_registro;
