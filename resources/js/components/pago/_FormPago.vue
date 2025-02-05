@@ -351,6 +351,7 @@ export default {
                 descuento: parseFloat(this.pago.descuento || 0),
                 cantidad: 1,
                 nombre_numero_mensualidad: this.pago.matricula.detalles.find(dtm => dtm.id === Number(this.pago.id_detalle_matricula))?.nombre || "",
+                id_detalle_matricula: this.pago.id_detalle_matricula,
             };
 
             // Calcular el subtotal para el detalle

@@ -62,6 +62,7 @@ class PagoController extends BaseController
                 $detallePago->descuento = isset($detalle['descuento']) ? $detalle['descuento'] : 0.00;
                 $detallePago->importe = $detalle['importe'];
                 $detallePago->nombre_numero_mensualidad = $detalle['nombre_numero_mensualidad'];
+                $detallePago->id_detalle_matricula = isset($detalle['id_detalle_matricula']) && !empty($detalle['id_detalle_matricula']) ? $detalle['id_detalle_matricula'] : null;
                 $detallePago->created_usr = $this->user->email;
 
                 $detallePago->pago_id = $pago->id;

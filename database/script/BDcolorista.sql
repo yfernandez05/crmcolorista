@@ -942,3 +942,5 @@ ALTER TABLE prospectos ADD COLUMN carrera_id  bigint unsigned DEFAULT NULL AFTER
 
 ALTER TABLE detalle_matriculas ADD COLUMN pagado int NOT NULL DEFAULT '0' after fechapago;
 ALTER TABLE detalle_matriculas  ADD COLUMN fecha_confirmacion_pago timestamp NULL DEFAULT NULL after pagado;
+
+ ALTER TABLE detallepagos ADD COLUMN `id_detalle_matricula` bigint unsigned NULL AFTER concepto_id;
