@@ -53,9 +53,6 @@ class PagoController extends BaseController
             $pago->numero = $request->numero;
             $pago->save();
 
-            //dd($request->detalles);
-
-            //details
             $detallePagos = [];
 
             foreach ($request->detalles as $detalle) {
@@ -68,10 +65,9 @@ class PagoController extends BaseController
                 $detallePago->created_usr = $this->user->email;
 
                 $detallePago->pago_id = $pago->id;
-                $detallePagos[] = $detallePago;  // Agregar al array
+                $detallePagos[] = $detallePago;
             }
 
-            // Guardar todos los detalles a la vez usando saveMany
             $pago->detalles()->saveMany($detallePagos);
 
             DB::commit();
@@ -80,13 +76,13 @@ class PagoController extends BaseController
         } catch (QueryException $e) {
             DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            dd($e);
+            //dd($e);
             $result = ResultManager::gerericErrorMessage();
 
         } catch (Exception $e) {
             DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            dd($e);
+            //dd($e);
             $result = ResultManager::gerericErrorMessage();
         }
 
@@ -119,34 +115,27 @@ class PagoController extends BaseController
         $result = "";
         DB::beginTransaction();
         try {
-            // Obtener el pago a actualizar
             $pago = Pago::findOrFail($id);
             $pago->updated_usr = $this->user->email;
-            $pago->subtotal = $request->subtotal; // Actualizar otros campos principales
-            $pago->matricula_id = $request->matricula_id; // Actualizar matrícula
+            $pago->subtotal = $request->subtotal;
+            $pago->matricula_id = $request->matricula_id;
             $pago->codcomprobante = $request->codcomprobante;
             $pago->serie = $request->serie;
-            $pago->update(); // Actualizar el pago
+            $pago->update();
 
-            // Obtener todos los detalles actuales de este pago
             $detallesExistentes = $pago->detalles()->get();
 
-            // Obtener los IDs de los detalles enviados en la solicitud
             $detallesRecibidosIds = collect($request->detalles)->pluck('id')->filter();
 
-            // Eliminar los detalles que no están en la solicitud (detalles que fueron eliminados)
             foreach ($detallesExistentes as $detalleExistente) {
                 if (!in_array($detalleExistente->id, $detallesRecibidosIds->toArray())) {
-                    // Eliminar el detalle que no está en la solicitud
                     $detalleExistente->delete();
                 }
             }
 
-            // Ahora actualizamos o creamos los detalles
             foreach ($request->detalles as $detalle) {
-                // Usamos updateOrCreate para actualizar o crear el detalle
                 DetallePago::updateOrCreate(
-                    ['id' => $detalle['id'] ?? null], // Si existe 'id', actualiza; si no, crea un nuevo detalle
+                    ['id' => $detalle['id'] ?? null],
                     [
                         'concepto_id' => $detalle['concepto_id'],
                         'precio_unitario' => $detalle['precio_unitario'],
@@ -154,20 +143,19 @@ class PagoController extends BaseController
                         'importe' => $detalle['importe'],
                         'nombre_numero_mensualidad' => $detalle['nombre_numero_mensualidad'],
                         'updated_usr' => $this->user->email,
-                        'pago_id' => $pago->id, // Relacionar con el pago actualizado
+                        'pago_id' => $pago->id,
                     ]
                 );
             }
 
-            // Confirmar la transacción si todo fue exitoso
             DB::commit();
             $result = ResultManager::genericSuccessMessage();
         } catch (QueryException $e) {
-            DB::rollBack(); // Revertir en caso de error
+            DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
         } catch (Exception $e) {
-            DB::rollBack(); // Revertir en caso de error
+            DB::rollBack(); 
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
         }

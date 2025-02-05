@@ -938,3 +938,7 @@ ALTER TABLE alumnos DROP COLUMN colegiosegundario;
 
 ALTER TABLE prospectos DROP COLUMN cursointeres;
 ALTER TABLE prospectos ADD COLUMN carrera_id  bigint unsigned DEFAULT NULL AFTER fecha_registro;
+
+
+ALTER TABLE detalle_matriculas ADD COLUMN pagado int NOT NULL DEFAULT '0' after fechapago;
+ALTER TABLE detalle_matriculas  ADD COLUMN fecha_confirmacion_pago timestamp NULL DEFAULT NULL after pagado;

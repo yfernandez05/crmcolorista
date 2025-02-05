@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Pago;
+use App\Observers\PagoObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -25,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Pago::observe(PagoObserver::class);
     }
 }

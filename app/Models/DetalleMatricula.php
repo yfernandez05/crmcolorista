@@ -17,6 +17,8 @@ class DetalleMatricula extends Model
         'duracion',
         'preciomes',
         'fechapago',
+        'pagado',
+        'fecha_confirmacion_pago',
 
     ];
 

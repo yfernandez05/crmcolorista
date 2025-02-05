@@ -235,7 +235,7 @@ export default {
                     detalles: [], // Array para los detalles del pago
                     matricula: [],
                     precio_unitario: 100,
-
+                    ids_detalles_matricula : []
                 };
             }
         }
@@ -271,7 +271,7 @@ export default {
                 detalle: this.pago.detalle,
                 subtotal: this.subtotal,
                 matricula_id: this.pago.matricula.id,
-                //matricula_id: this.pago.matricula_id,
+                ids_detalles_matricula: this.pago.ids_detalles_matricula,
                 codcomprobante: this.pago.codcomprobante,
                 serie: this.pago.serie,
                 detalles: this.pago.detalles
@@ -343,8 +343,7 @@ export default {
                 conceptopago: this.conceptopagos.find(c => c.id === Number(this.pago.concepto_id)),
                 precio_unitario: parseFloat(this.pago.precio_unitario || 0),
                 descuento: parseFloat(this.pago.descuento || 0),
-                cantidad: 1, 
-                id_detalle_matricula: this.pago.id_detalle_matricula,
+                cantidad: 1,                
                 nombre_numero_mensualidad: this.pago.matricula.detalles.find(dtm => dtm.id === Number(this.pago.id_detalle_matricula))?.nombre || "",
             };
 
@@ -353,6 +352,10 @@ export default {
 
             // Agregar el detalle a la lista
             this.pago.detalles.push(detalle);
+
+            if (this.pago.id_detalle_matricula) {
+                this.pago.ids_detalles_matricula.push(this.pago.id_detalle_matricula);
+            }
 
             // Limpiar los campos de detalle después de añadirlos
             this.pago.precio_unitario = '';
