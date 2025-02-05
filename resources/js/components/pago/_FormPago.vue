@@ -167,7 +167,7 @@
                                 <td v-text="formatNumber(detalle.descuento)"></td>
                                 <td v-text="formatNumber(detalle.importe)"></td>
                                 <td>
-                                    <button class="btn btn-danger" @click="eliminarDetalle(index)">Eliminar</button>
+                                    <button class="btn btn-danger" @click="eliminarDetalle(index, detalle.id_detalle_matricula)">Eliminar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -257,7 +257,8 @@ export default {
             tipocomprobante: null,
             tipocomprobanteSeleccionado: {
             },
-            isDisabled: false
+            isDisabled: false,
+            idsDetalleMatriculaDelete: [],
         };
     },
     methods: {
@@ -280,7 +281,8 @@ export default {
                 ids_detalles_matricula: this.pago.ids_detalles_matricula,
                 codcomprobante: this.pago.codcomprobante,
                 serie: this.pago.serie,
-                detalles: this.pago.detalles
+                detalles: this.pago.detalles,
+                idsDetalleMatriculaDelete: this.idsDetalleMatriculaDelete.slice()
             };
 
             this.$emit('saveData', pagoData);
@@ -370,9 +372,20 @@ export default {
             this.pago.concepto_id = '';
             this.pago.id_detalle_matricula = '';
         },
-        eliminarDetalle(index) {
+        eliminarDetalle(index,id_detalle_matricula) {
             this.pago.detalles.splice(index, 1);
+            if (this.isEditing && id_detalle_matricula) {
+                this.addIdsDetalleMatriculaDelete(id_detalle_matricula);
+            }
         },
+
+        addIdsDetalleMatriculaDelete(id) {
+            if (id && !this.idsDetalleMatriculaDelete.includes(id)) {
+                this.idsDetalleMatriculaDelete.push(id);
+                /* console.log(this.idsDetalleMatriculaDelete.slice()); */
+            }
+        },
+
         calcularSubtotal(detalle) {
                 // Calcula el subtotal con el descuento aplicado
             let precio = parseFloat(detalle.precio_unitario || 0);

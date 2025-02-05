@@ -55,30 +55,55 @@ class PagoObserver
      */
     public function updated(Pago $pago)
     {
+        DB::beginTransaction();
         try {
             $matricula_id = $pago->matricula_id;
 
-            $ids_pago_detalle_matricula = DetallePago::where('pago_id', $pago->id)->pluck('id_detalle_matricula');
+            // Verificamos si existe el array 'idsDetalleMatriculaDelete' y si no está vacío
+            $idsDetalleMatriculaDelete = Request::instance()->input('idsDetalleMatriculaDelete', []);
+            
+            // Si el array no está vacío, actualizamos solo esos registros
+            if (!empty($idsDetalleMatriculaDelete)) {
+                $this->updateDetalleMatricula($matricula_id, $idsDetalleMatriculaDelete);
+            } else {
+                // Si el array está vacío, actualizamos todos los registros relacionados con el pago
+                $this->updateAllDetalleMatricula($matricula_id, $pago->id);
+            }
 
-            $ids_matricula_detalle = DetalleMatricula::where('matricula_id', $matricula_id)
-            ->whereIn('id', $ids_pago_detalle_matricula)
-            ->pluck('id');
-
-            DetalleMatricula::whereIn('id', $ids_matricula_detalle)
-            ->update([
-                'pagado' => 0,
-                'fecha_confirmacion_pago' => null,
-            ]);
+            DB::commit();
 
         } catch (QueryException $e) {
             DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            //dd($e);
         } catch (Exception $e) {
             DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            //dd($e);
         }
+    }
+
+    protected function updateDetalleMatricula($matricula_id, array $idsDetalleMatriculaDelete)
+    {
+        DetalleMatricula::where('matricula_id', $matricula_id)
+            ->whereIn('id', $idsDetalleMatriculaDelete)
+            ->update([
+                'pagado' => 0,
+                'fecha_confirmacion_pago' => null,
+            ]);
+    }
+
+    /**
+     * Actualiza todos los detalles de matrícula relacionados con el pago
+     */
+    protected function updateAllDetalleMatricula($matricula_id, $pago_id)
+    {
+        $ids_pago_detalle_matricula = DetallePago::where('pago_id', $pago_id)->pluck('id_detalle_matricula');
+
+        DetalleMatricula::where('matricula_id', $matricula_id)
+            ->whereIn('id', $ids_pago_detalle_matricula)
+            ->update([
+                'pagado' => 0,
+                'fecha_confirmacion_pago' => null,
+            ]);
     }
 
     /**
