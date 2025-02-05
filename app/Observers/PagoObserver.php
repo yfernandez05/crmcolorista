@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\DetalleMatricula;
+use App\Models\DetallePago;
 use App\Models\Pago;
 use App\Util\LogErrorManager;
 use Carbon\Carbon;
@@ -54,7 +55,30 @@ class PagoObserver
      */
     public function updated(Pago $pago)
     {
-        //
+        try {
+            $matricula_id = $pago->matricula_id;
+
+            $ids_pago_detalle_matricula = DetallePago::where('pago_id', $pago->id)->pluck('id_detalle_matricula');
+
+            $ids_matricula_detalle = DetalleMatricula::where('matricula_id', $matricula_id)
+            ->whereIn('id', $ids_pago_detalle_matricula)
+            ->pluck('id');
+
+            DetalleMatricula::whereIn('id', $ids_matricula_detalle)
+            ->update([
+                'pagado' => 0,
+                'fecha_confirmacion_pago' => null,
+            ]);
+
+        } catch (QueryException $e) {
+            DB::rollBack();
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            //dd($e);
+        } catch (Exception $e) {
+            DB::rollBack();
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            //dd($e);
+        }
     }
 
     /**

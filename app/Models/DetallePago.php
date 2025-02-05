@@ -15,6 +15,7 @@ class DetallePago extends Model
         'concepto_id', 
         'precio_unitario', 
         'descuento', 
+        'id_detalle_matricula', 
         'nombre_numero_mensualidad', 
         'importe',
         'created_usr',
