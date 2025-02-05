@@ -1,5 +1,5 @@
 <template>
-    <form-pago cardTitle="Editar Pago" :pago="pago" @saveData="saveData">
+    <form-pago cardTitle="Editar Pago" :pago="pago" :isEditing="isEditing" @saveData="saveData">
     </form-pago>
 </template>
 
@@ -10,7 +10,8 @@
     export default {
         data() {
             return {
-                pago: {}
+                pago: {},
+                isEditing: true
             }
         },
         created() {

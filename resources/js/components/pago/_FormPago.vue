@@ -88,7 +88,7 @@
                 </div>
             </div>
             <hr class="mt-2">
-            <div class="row">
+            <div class="row" v-if="!isEditing">
                 <div class="col-12 col-md-3 col-lg-3 col-xl-4 d-none d-md-block">
                     <h3 class="card-title mb-1">Concepto de pago:</h3>
                 </div>
@@ -102,12 +102,13 @@
                 </div>
                 <div v-if="pago.concepto_id >= 3" class="form-group col-12 col-md-9 col-lg-9 col-xl-4" :class="{'has-danger':errorExists('id_detalle_matricula')}">
                     <label>Pensiones </label>
-                    <select2 
-                        :options="pago.matricula.detalles" 
+                    <select2
+                        :options="detallesConEstado"
                         v-model="pago.id_detalle_matricula"
-                        placeholder="Seleccione una pension" 
-                        keyProperty="id" 
+                        placeholder="Seleccione una pension"
+                        keyProperty="id"
                         textProperty="nombre"
+                        :disabled="isDisabled"
                         @input="updatePrecioUnitario">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('id_detalle_matricula')" v-text="showError('id_detalle_matricula').errorDetail"></small>
@@ -235,10 +236,14 @@ export default {
                     detalles: [], // Array para los detalles del pago
                     matricula: [],
                     precio_unitario: 100,
-                    ids_detalles_matricula : []
+                    ids_detalles_matricula : [],
                 };
             }
-        }
+        },
+        isEditing: {
+            type: Boolean,
+            default: false
+        },
     },
     data() {
         return {
@@ -252,6 +257,7 @@ export default {
             tipocomprobante: null,
             tipocomprobanteSeleccionado: {
             },
+            isDisabled: false
         };
     },
     methods: {
@@ -309,7 +315,7 @@ export default {
         agregarDetalle() {
             if (!this.pago.matricula || Object.keys(this.pago.matricula).length === 0) {
                 this.setError('matricula_id', 'El campo matrícula es obligatorio');
-                
+
                 // Verifica si el ref existe antes de usarlo
                 if (this.$refs.matriculaSelect) {
                     // Desplaza el input al área visible
@@ -343,7 +349,7 @@ export default {
                 conceptopago: this.conceptopagos.find(c => c.id === Number(this.pago.concepto_id)),
                 precio_unitario: parseFloat(this.pago.precio_unitario || 0),
                 descuento: parseFloat(this.pago.descuento || 0),
-                cantidad: 1,                
+                cantidad: 1,
                 nombre_numero_mensualidad: this.pago.matricula.detalles.find(dtm => dtm.id === Number(this.pago.id_detalle_matricula))?.nombre || "",
             };
 
@@ -462,13 +468,13 @@ export default {
                     }, 0);
 
                     this.pago.precio_unitario = total;
-                    console.log('Total calculado:', total); 
+                    console.log('Total calculado:', total);
                 }
             },
 
             selectConcepto(){
                 console.log(this.pago.concepto_id);
-                
+
                 if(this.pago.concepto_id == 1 || !this.pago.concepto_id.length){
                     this.pago.id_detalle_matricula = '';
                     this.pago.precio_unitario = 100;
@@ -511,6 +517,15 @@ export default {
         /* selectedDetalleMatricula(){
             return this.pago.matricula && Array.isArray(this.pago.matricula.detalles) && this.pago.matricula.detalles.length > 0 ? this.pago.matricula.detalles : [];
         }, */
+        detallesConEstado() {
+            return this.pago.matricula.detalles.map(detalle => {
+        return {
+            ...detalle,
+            disabled: detalle.pagado === 1 && detalle.fecha_confirmacion_pago !== null
+        };
+    });
+        },
+
 
     },
     /* watch: {
@@ -536,3 +551,12 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+/* Añadir estilos para deshabilitar opciones en select2 */
+.select2-results__option[aria-disabled=true] {
+  color: #999 !important;
+  cursor: not-allowed !important;
+}
+
+</style>

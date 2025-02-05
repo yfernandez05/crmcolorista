@@ -1,6 +1,6 @@
 <template>
-    <select class="form-control custom-select" v-model="selectValue" style="width: 100%;">
-        <option v-for="(item, index) in options" :key="index" :value="getKeyProperty(item)"
+    <select class="form-control custom-select" v-model="selectValue" :disabled="disabled" style="width: 100%;">
+        <option v-for="(item, index) in options" :key="index" :value="getKeyProperty(item)" :disabled="item.disabled"
             v-text="getTextProperty(item)">
         </option>
     </select>
@@ -22,6 +22,10 @@
             },
             selectValue: {
                 default: ''
+            },
+            disabled: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -88,6 +92,9 @@
             function select2Focus() {
                 $(this).closest('.select2').prev('select').select2('open');
             };
+            if (vm.disabled) {
+                $(vm.$el).prop('disabled', true);
+            }
         },
         destroyed() {
             $(this.$el).off().select2('destroy')
