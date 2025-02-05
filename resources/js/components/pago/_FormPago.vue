@@ -535,7 +535,7 @@ export default {
             return this.pago.matricula.detalles.map(detalle => {
         return {
             ...detalle,
-            disabled: detalle.pagado === 1 && detalle.fecha_confirmacion_pago !== null
+            disabled: detalle.pagado == 1 && detalle.fecha_confirmacion_pago !== null
         };
     });
         },
