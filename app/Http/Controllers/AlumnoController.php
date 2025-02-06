@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\MessageReceived;
-use Intervention\Image\ImageManagerStatic as Image;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use App\Models\Alumno;
-use App\Util\LogErrorManager;
-use App\Util\ResultManager;
-use App\Util\RuleManager;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\QueryException;
+use Carbon\Carbon;
+use App\Models\Alumno;
+use App\Models\Matricula;
+use App\Util\RuleManager;
+use App\Util\ResultManager;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\MessageReceived;
+use App\Util\LogErrorManager;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Database\QueryException;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class AlumnoController extends BaseController
 {
@@ -115,20 +116,26 @@ class AlumnoController extends BaseController
      */
     public function destroy($id)
     {
-        $result = "";
+        $result ="";
+        $errorMsg='No se puede eliminar. Matricula hace uso de este alumno.';
 
         try {
+            $numberDependents = Matricula::where(['id'=>$id, 'estado'=> 'A'])->count();
 
-            $alumno = Alumno::findOrFail($id);
-            $alumno->estado = RuleManager::DISABLED_STATE;
-            $alumno->updated_usr = $this->user->email;
-            $alumno->update();
+            if($numberDependents==0){
 
-            $result = ResultManager::successMessage('Alumno eliminado correctamente.');
+                $alumno = Alumno::findOrFail($id);
+                $alumno->estado = RuleManager::DISABLED_STATE;
+                $alumno->updated_usr = $this->user->email;
+                $alumno->update();
 
+                $result = ResultManager::successMessage('alumno eliminado correctamente.');
+            }else{
+                $result=ResultManager::errorMessage($errorMsg);
+            }
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            $result = ResultManager::gerericErrorMessage();
+            $result = ResultManager::errorMessage($errorMsg);
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);

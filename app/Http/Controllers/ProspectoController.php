@@ -199,4 +199,13 @@ class ProspectoController extends BaseController
             throw new HttpException(500);
         }
     }
+
+    public function procedenciaAdsUtm()
+    {
+        $procedencia = [
+            ["procedencia" => 'Orgánico'],
+            ["procedencia" => 'Pauta'],
+        ];
+        return $procedencia;
+    }
 }

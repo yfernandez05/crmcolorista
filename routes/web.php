@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\AsistenciaController;
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
@@ -139,6 +140,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::get('prospecto/descargarplantilla', 'ProspectoController@descargarplantilla')->name('prospecto.descargarplantilla');
     Route::get('prospecto/select', 'ProspectoController@select')->name('prospecto.select');
+    Route::get('prospecto/procedenciaAdsUtm', 'ProspectoController@procedenciaAdsUtm')->name('prospecto.procedenciaAdsUtm');
     Route::resource('prospecto', 'ProspectoController')->except(['create']);
     Route::resource('seguimiento', 'SeguimientoController')->except(['create']);
 
@@ -167,4 +169,5 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::resource('agenda', AgendaController::class);
 
+    Route::post('pago/eliminar-detalles-matricula/{matricula_id}', [MatriculaController::class, 'eliminarDetallesMatricula']);
 });

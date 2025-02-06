@@ -24,18 +24,26 @@ class PagoObserver
     {
         try {
             $matricula_id = $pago->matricula_id;
+            $conceptopago = $pago->concepto_id;
 
-            $ids_detalles_matricula = Request::instance()->input('ids_detalles_matricula');
-    
             $fecha_actual = Carbon::now();
 
-            DetalleMatricula::whereIn('id', $ids_detalles_matricula)
-            ->where('matricula_id', $matricula_id)
-            ->update([
-                'pagado' => 1,
-                'fecha_confirmacion_pago' => $fecha_actual,
-            ]);
+            if ($conceptopago = 2) {
+                DetalleMatricula::where('matricula_id', $matricula_id)
+                    ->update([
+                        'pagado' => 1,
+                        'fecha_confirmacion_pago' => $fecha_actual,
+                    ]);
+            } else {
+                $ids_detalles_matricula = Request::instance()->input('ids_detalles_matricula');
 
+                DetalleMatricula::whereIn('id', $ids_detalles_matricula)
+                    ->where('matricula_id', $matricula_id)
+                    ->update([
+                        'pagado' => 1,
+                        'fecha_confirmacion_pago' => $fecha_actual,
+                    ]);
+            }
         } catch (QueryException $e) {
             DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
@@ -61,7 +69,7 @@ class PagoObserver
 
             // Verificamos si existe el array 'idsDetalleMatriculaDelete' y si no está vacío
             $idsDetalleMatriculaDelete = Request::instance()->input('idsDetalleMatriculaDelete', []);
-            
+
             // Si el array no está vacío, actualizamos solo esos registros
             if (!empty($idsDetalleMatriculaDelete)) {
                 $this->updateDetalleMatricula($matricula_id, $idsDetalleMatriculaDelete);

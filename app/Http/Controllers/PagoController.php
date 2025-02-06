@@ -156,7 +156,7 @@ class PagoController extends BaseController
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
         } catch (Exception $e) {
-            DB::rollBack(); 
+            DB::rollBack();
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
             $result = ResultManager::gerericErrorMessage();
         }
@@ -214,7 +214,7 @@ class PagoController extends BaseController
 
         $pdf = PDF::loadView('factura.factura', ['factura' => $comprobante]);
 
-        $nombrearchivo= "PRESUPUESTO ". $comprobante->numero.".pdf";
+        $nombrearchivo= "COMPROBANTE DE PAGO DE MATRICULA ". $comprobante->numero.".pdf";
         return $pdf->stream($nombrearchivo);
        // return $pdf->stream();
     }

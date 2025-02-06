@@ -238,4 +238,18 @@ class MatriculaController extends BaseController
         return $query;
     }
 
+    public function eliminarDetallesMatricula($matricula_id)
+    {
+        try {
+            DetalleMatricula::where('matricula_id', $matricula_id)
+                ->update([
+                    'pagado' => 0,
+                    'fecha_confirmacion_pago' => null,
+                ]);
+            return response()->json(['message' => 'Detalles de matrícula actualizados correctamente.'], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Error al actualizar detalles de matrícula.'], 500);
+        }
+    }
+
 }

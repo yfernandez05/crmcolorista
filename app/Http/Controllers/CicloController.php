@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ciclo;
-use App\Util\LogErrorManager;
-use App\Util\ResultManager;
-use App\Util\RuleManager;
 use Exception;
-use Illuminate\Database\QueryException;
+use App\Models\Ciclo;
+use App\Util\RuleManager;
+use App\Util\ResultManager;
 use Illuminate\Http\Request;
+use App\Util\LogErrorManager;
+use App\Models\DetalleMatricula;
+use Illuminate\Database\QueryException;
 
 class CicloController extends BaseController
 {
@@ -111,18 +112,26 @@ class CicloController extends BaseController
      */
     public function destroy($id)
     {
-        $result = "";
+
+        $result ="";
+        $errorMsg='No se puede eliminar. Matricula hace uso de este Modulo.';
+
         try {
+            $numberDependents = DetalleMatricula::where(['id'=>$id, 'estado'=> 'A'])->count();
 
-            $ciclo = Ciclo::findOrFail($id);
-            $ciclo->estado = RuleManager::DISABLED_STATE;
-            $ciclo->update();
+            if($numberDependents==0){
 
-            $result = ResultManager::successMessage('Ciclo eliminado correctamente.');
+                $ciclo = Ciclo::findOrFail($id);
+                $ciclo->estado = RuleManager::DISABLED_STATE;
+                $ciclo->update();
 
+                $result = ResultManager::successMessage('Ciclo eliminado correctamente.');
+            }else{
+                $result=ResultManager::errorMessage($errorMsg);
+            }
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            $result = ResultManager::gerericErrorMessage();
+            $result = ResultManager::errorMessage($errorMsg);
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
@@ -130,6 +139,8 @@ class CicloController extends BaseController
         }
 
         return $result;
+
+
     }
 
     private function setModel(Ciclo $ciclo, Request $request): Ciclo

@@ -14,7 +14,7 @@
                             No se han encontrado resultados
                         </template>
                         <template slot="option" slot-scope="option">
-                            <div class="my-1 d-flex justify-content-between align-items-center">
+                            <div class="my-1 d-flex justify-content-between align-items-center" @click="selectProspecto(option)">
                                 <div>
                                     <h5 class="font-weight-bold mb-1 d-block" v-text="option.nombre"></h5>
                                     <div class="d-flex no-block text-truncate">

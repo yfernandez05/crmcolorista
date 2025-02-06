@@ -36,16 +36,14 @@
                     <input type="text" class="form-control" v-model="prospecto.telefono" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('telefono')" v-text="showError('telefono').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('procedencia')}">
-                    <label>Procedencia <small class="text-danger">(*)</small></label>
-                    <input type="text" class="form-control" v-model="prospecto.procedencia" @keyup.enter ="doSaveData"/>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger': errorExists('procedencia')}">
+                    <label class="mb-1">Procedencia <small class="text-danger">(*)</small></label>
+                    <select2 :options="procedenciaAdsUtm" v-model="prospecto.procedencia"
+                            :selectValue="prospecto.procedencia" placeholder="Seleccione una Procedencia ADS"
+                            textProperty="procedencia">
+                    </select2>
                     <small class="form-control-feedback" v-if="errorExists('procedencia')" v-text="showError('procedencia').errorDetail"></small>
                 </div>
-                <!-- <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('cursointeres')}">
-                    <label>Curso de interes</label>
-                    <input type="text" class="form-control" v-model="prospecto.cursointeres" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('cursointeres')" v-text="showError('cursointeres').errorDetail"></small>
-                </div> -->
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('carrera_id')}">
                     <label>Carrera de interes<small class="text-danger">(*)</small></label>
@@ -99,7 +97,7 @@
                         fecha_nac: '',
                         correo: '',
                         telefono: '',
-                        procedencia: '',
+                        procedencia: 'Orgánico',
                         cursointeres: '',
 
                     }
@@ -109,7 +107,8 @@
         data(){
             return {
                 errors:[],
-                carreras: []
+                carreras: [],
+                procedenciaAdsUtm: [],
             }
         },
         methods: {
@@ -177,11 +176,21 @@
                         console.log(error);
                     })
             },
+            listarProcedenciaAdsUmt(){
+                let vm = this;
+                axios.get(`${appApiUrl}/prospecto/procedenciaAdsUtm`)
+                .then(function (response){
+                    vm.procedenciaAdsUtm = response.data
+                })
+                .catch(function (error){
+                    console.log(error);
+                })
+            },
 
         },
         mounted(){
             this.listarCarreras();
-
+            this.listarProcedenciaAdsUmt();
 
         },
         components: {

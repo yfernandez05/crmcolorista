@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ConceptoPago;
-use App\Util\LogErrorManager;
-use App\Util\ResultManager;
-use App\Util\RuleManager;
 use Exception;
-use Illuminate\Database\QueryException;
+use App\Util\RuleManager;
+use App\Models\DetallePago;
+use App\Util\ResultManager;
+use App\Models\ConceptoPago;
 use Illuminate\Http\Request;
+use App\Util\LogErrorManager;
+use Illuminate\Database\QueryException;
 
 class ConceptoPagoController extends BaseController
 {
@@ -25,7 +26,7 @@ class ConceptoPagoController extends BaseController
         $conceptopago = ConceptoPago::where($filters)
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
-            
+
         return $conceptopago;
     }
 
@@ -111,18 +112,26 @@ class ConceptoPagoController extends BaseController
      */
     public function destroy($id)
     {
-        $result = "";
+
+        $result ="";
+        $errorMsg='No se puede eliminar. Pago hace uso de este concepto.';
+
         try {
+            $numberDependents = DetallePago::where(['id'=>$id, 'estado'=> 'A'])->count();
 
-            $conceptoPago = ConceptoPago::findOrFail($id);
-            $conceptoPago->estado = RuleManager::DISABLED_STATE;
-            $conceptoPago->update();
+            if($numberDependents==0){
 
-            $result = ResultManager::successMessage('Concepto de pago eliminado correctamente.');
-            
+                $conceptoPago = ConceptoPago::findOrFail($id);
+                $conceptoPago->estado = RuleManager::DISABLED_STATE;
+                $conceptoPago->update();
+
+                $result = ResultManager::successMessage('Concepto eliminado correctamente.');
+            }else{
+                $result=ResultManager::errorMessage($errorMsg);
+            }
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            $result = ResultManager::gerericErrorMessage();
+            $result = ResultManager::errorMessage($errorMsg);
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
@@ -149,5 +158,5 @@ class ConceptoPagoController extends BaseController
             ->get();
         return $conceptopago;
     }
-    
+
 }

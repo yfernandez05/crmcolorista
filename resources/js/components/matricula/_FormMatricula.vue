@@ -42,8 +42,7 @@
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle')}">
                     <label>Detalle <small class="text-danger">(*)</small></label>
-                    <!-- <input type="text" class="form-control" v-model="matricula.detalle" @keyup.enter ="doSaveData"/> -->
-                    <input type="text" class="form-control" v-model="matriculaDetalle" @keyup.enter="doSaveData"/>
+                    <input type="text" class="form-control" v-model="matriculaDetalle" @keyup.enter="doSaveData" disabled/>
                     <small class="form-control-feedback" v-if="errorExists('detalle')" v-text="showError('detalle').errorDetail"></small>
                 </div>
 

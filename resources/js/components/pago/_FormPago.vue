@@ -373,9 +373,26 @@ export default {
             this.pago.id_detalle_matricula = '';
         },
         eliminarDetalle(index,id_detalle_matricula) {
-            this.pago.detalles.splice(index, 1);
-            if (this.isEditing && id_detalle_matricula) {
-                this.addIdsDetalleMatriculaDelete(id_detalle_matricula);
+            console.log('Concepto ID:', this.pago.detalles[0].concepto_id);
+            console.log('Is Editing:', this.isEditing);
+
+            if (this.pago.detalles[0].concepto_id == 2 && this.isEditing) {
+                console.log('Concepto ID es 2 y está en modo edición');
+                // Llamar a la API para actualizar todos los DetalleMatricula que pertenecen a la matrícula
+                axios.post(`${appApiUrl}/pago/eliminar-detalles-matricula/${this.pago.matricula_id}`)
+                .then(response => {
+                    console.log(response.data.message); // Aquí se muestra el mensaje en la consola
+                    // Eliminar el detalle específico de la lista local
+                    this.pago.detalles.splice(index, 1);
+                })
+                .catch(error => {
+                    console.error('Error en la llamada a la API:', error);
+                });
+            } else {
+                this.pago.detalles.splice(index, 1);
+                if (this.isEditing && id_detalle_matricula) {
+                    this.addIdsDetalleMatriculaDelete(id_detalle_matricula);
+                }
             }
         },
 

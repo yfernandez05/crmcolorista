@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Turno;
-use App\Util\LogErrorManager;
-use App\Util\ResultManager;
-use App\Util\RuleManager;
 use Exception;
-use Illuminate\Database\QueryException;
+use App\Models\Turno;
+use App\Util\RuleManager;
+use App\Util\ResultManager;
 use Illuminate\Http\Request;
+use App\Util\LogErrorManager;
+use App\Models\DetalleMatricula;
+use Illuminate\Database\QueryException;
 
 class TurnoController extends BaseController
 {
@@ -25,7 +26,7 @@ class TurnoController extends BaseController
         $turnos = Turno::where($filters)
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
-            
+
         return $turnos;
     }
 
@@ -111,18 +112,26 @@ class TurnoController extends BaseController
      */
     public function destroy($id)
     {
-        $result = "";
+
+        $result ="";
+        $errorMsg='No se puede eliminar. Matricula hace uso de este Turno.';
+
         try {
+            $numberDependents = DetalleMatricula::where(['id'=>$id, 'estado'=> 'A'])->count();
 
-            $turno = Turno::findOrFail($id);
-            $turno->estado=RuleManager::DISABLED_STATE;
-            $turno->update();
+            if($numberDependents==0){
 
-            $result = ResultManager::successMessage('Turno eliminado correctamente.');
-            
+                $turno = Turno::findOrFail($id);
+                $turno->estado=RuleManager::DISABLED_STATE;
+                $turno->update();
+
+                $result = ResultManager::successMessage('turno eliminado correctamente.');
+            }else{
+                $result=ResultManager::errorMessage($errorMsg);
+            }
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
-            $result = ResultManager::gerericErrorMessage();
+            $result = ResultManager::errorMessage($errorMsg);
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
