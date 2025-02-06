@@ -139,11 +139,34 @@
                                 </div> 
                             </div>
                             <div v-show="selectedAlumno.matriculas && selectedAlumno.matriculas.length" class="card col-12 cont-details-info">
+                                <h5 class="mt-3 col title-search-qr mb-1 text-info-dark text-dark">PAGOS:</h5>
                                 <div class="d-flex flex-wrap">
                                     <div v-for="(matri, index) in selectedAlumno.matriculas" :key="index" class="evento-item p-2">
-                                        <h6 class="title-search-qr mb-1 text-info-dark text-primary" v-text="matri.nombre_carrera"></h6>
-                                        <p class="card-text text-dark small" v-text="matri.detalle_matricula"></p>
-                                        <p class="card-text text-dark small" v-text="matri.fecha_matricula"></p>
+                                        <h6 class="title-search-qr mb-1 text-info-dark text-primary">{{ matri.nombre_carrera }} - {{ matri.nombre_ciclo }}</h6>
+                                        <div v-if="matri.detalles && matri.detalles.length > 0" class="table-responsive mt-3">
+                                            <table class="table table-sm table-striped table-hover table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Detalle</th>
+                                                        <th>Fecha de Pago</th>
+                                                        <th>Estado de Pago</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="(detalle) in matri.detalles" :key="detalle.detalle_id">
+                                                        <td>{{ detalle.detalle_nombre || 'N/A' }}</td>
+                                                        <td>{{ detalle.detalle_fechapago || 'N/A' }}</td>
+                                                        <td>
+                                                            <span class="badge badge-pill py-1 px-3" :class="getPagoStatusClass(detalle)">{{ getPagoStatusText(detalle) }}</span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Mensaje si no hay detalles -->
+                                        <div v-else>
+                                            <p class="text-center">No hay detalles de pago disponibles.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -332,12 +355,66 @@ export default {
                                             box-shadow: ${config.color === 'white' ? '0px 0px 5px rgba(0, 0, 0, 0.2)' : 'none'}; ">
                                             ${config.description}
                                         </h4>`;
-                }                
+                }
+
+                let matriculaTables = '';
+                if (result.dataaditional && result.dataaditional.matricula) {
+                    result.dataaditional.matricula.sort((a, b) => b.id - a.id);
+
+                    result.dataaditional.matricula.forEach((mat) => {
+                        let detallesHtml = '';
+                        if (mat.detalles && mat.detalles.length > 0) {
+                            mat.detalles.forEach(detalle => {
+
+                                let estadoPago = '';
+                                let estadoColor = '';
+
+                                if (detalle.pagado) {
+                                    estadoPago = 'Sí Pago';
+                                    estadoColor = 'badge-success';
+                                } else if (moment(detalle.fechapago).isBefore(moment())) {
+                                    estadoPago = 'No Pago';
+                                    estadoColor = 'badge-danger';
+                                } else {
+                                    estadoPago = 'Por Pagar';
+                                    estadoColor = 'badge-secondary';
+                                }
+
+                                detallesHtml += `
+                                    <tr>
+                                        <td>${detalle.nombre || 'N/A'}</td>
+                                        <td>${detalle.fechapago || 'N/A'}</td>
+                                        <td style="align-content: center;"><span class="badge badge-pill py-1 px-3 ${estadoColor}">${estadoPago}</span></td>
+                                    </tr>`;
+                            });
+                        } else {
+                            detallesHtml = `<tr><td colspan="3" class="text-center">No hay detalles disponibles</td></tr>`;
+                        }
+
+                        matriculaTables += `
+                            <h5 class="mt-3 font-weight-bold text-info text-info">${mat.carrera.nombre} - ${mat.ciclo.nombre}</h5>
+                            <div class="table-responsive" style="font-size: 14px;">
+                                <table class="table table-sm table-striped table-hover table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Detalle</th>
+                                            <th>Fecha Pago</th>
+                                            <th>Pagado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${detallesHtml}
+                                    </tbody>
+                                </table>
+                            </div>`;
+                    });
+                }
 
                 if (result.status) {
                     swalAlertSuccessQR(`Asistente: <br>
-                    <h3 class="name-qr-response mt-1 mb-0 text-primary">${result.dataaditional.nombrecompleto}</h3>
-                    <p class="email-qr-response mb-1">DNI: ${result.dataaditional.dni}</p> ${infodatahtml}` , messageResult, result.dataaditional.colorClass)
+                    <h3 class="name-qr-response my-0 text-primary">${result.dataaditional.nombrecompleto}</h3>
+                    <p class="email-qr-response mb-1">DNI: ${result.dataaditional.dni}</p> ${infodatahtml}
+                    <div style="max-height: 33vh; overflow: overlay;">${matriculaTables}</div>` , messageResult, result.dataaditional.colorClass)
                     .then(function(optionSelected){
                         if(optionSelected.value){
                             vm.startScanner();
@@ -443,7 +520,27 @@ export default {
                 // Actualiza solo los campos necesarios
                 Object.assign(this.alumnos[index], updatedFields);
             }
-        }
+        },
+
+        getPagoStatusClass(detalle) {
+            if (detalle.detalle_pagado === 1) {
+                return 'bg-success'; // Pagado
+            } else if (detalle.detalle_pagado === 0 && moment(detalle.detalle_fechapago).isBefore(moment(), 'day')) {
+                return 'bg-danger'; // No Pago
+            } else {
+                return 'bg-secondary'; // Por Pagar
+            }
+        },
+        getPagoStatusText(detalle) {
+            if (detalle.detalle_pagado === 1) {
+                return 'Sí Pago';
+            } else if (moment(detalle.detalle_fechapago).isBefore(moment(), 'day')) {
+                return 'No Pago';
+            } else {
+                return 'Por Pagar';
+            }
+        },
+
     },
 
     beforeDestroy() {

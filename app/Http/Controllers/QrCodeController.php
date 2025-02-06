@@ -7,6 +7,7 @@ use App\Models\Alumno;
 use App\Models\Asistencia;
 use App\Models\Cliente;
 use App\Models\EventoCliente;
+use App\Models\Matricula;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
 use App\Util\RuleManager;
@@ -25,21 +26,14 @@ class QrCodeController extends Controller
     public function decryptQRCode(Request $qrCodeData)
     {        
 
-        // El dato escaneado se espera como algo similar a "17-78775577"
         $data = $qrCodeData->qrCode;
-
-        // Dividir la cadena usando el guion como delimitador
         $parts = explode('-', $data);
-
-        // Tomar la segunda parte después del guion
         $afterHyphen = $parts[1] ?? null;
 
-        // Verificar si la parte después del guion es válida
         if (!$afterHyphen) {
             return ResultManager::warningMessage('QR no válido');
         }
 
-        // Usar la parte después del guion para continuar con la lógica
         return $this->authLogin($afterHyphen);
     }
 
@@ -69,50 +63,7 @@ class QrCodeController extends Controller
         $result = '';
         $errorMsg = 'Error al leer el QR, intentelo nuevamente';
 
-        try {
-            
-            /* $clientAsisten = Cliente::where(['email' => $dataQR['correo'], 'idcampania' => $dataQR['idcampania'], 'estado' => RuleManager::ACTIVE_STATE])->first();
-
-            if($clientAsisten->asistencia){
-
-                $anioEgreso = (int) $clientAsisten->anioegreso;
-
-                if ($anioEgreso <= 0) {
-                    return ResultManager::warningMessage('EL QR YA FUE USADO');
-                } else {
-                    $anioEgreso = (int) $clientAsisten->anioegreso;
-                    $dataQR['config'] = RuleManager::getQRConfigColor($anioEgreso);
-                    $config = $dataQR['config'];
-                
-                    $textColor = $config['color'] === 'white' ? 'black' : 'white';
-                    $borderColor = $config['color'] === 'white' ? 'gray' : $config['color']; 
-                
-                    return ResultManager::warningMessage('EL QR YA FUE USADO 
-                        <h4 style="
-                            text-transform: uppercase;
-                            background-color: ' . $config['color'] . ';
-                            padding: 10px;
-                            margin-top: 1em;
-                            color: ' . $textColor . ';
-                            border: 2px solid ' . $borderColor . ';
-                            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);">
-                            ' . $config['description'] . '
-                        </h4>'
-                    );
-                }
-
-                if ($anioAsistencia < 1970) {
-                    $clientAsisten->fechaasistencia = Carbon::now()->format('y-m-d H:i:s');
-                }
-    
-                $anioEgreso = (int) $clientAsisten->anioegreso;
-                $dataQR['config'] = RuleManager::getQRConfigColor($anioEgreso);
-                $clientAsisten->update();
-    
-                $result = ResultManager::successMessageData('El QR si es valido', $dataQR); */
-    
-
-
+        try {           
 
             $alumno = Alumno::select('id','dni','nombre','apellido')->where('dni', $dataQR)->first();
             //return dd($alumno);
@@ -122,6 +73,11 @@ class QrCodeController extends Controller
 
             if ($asistenciaHoy) {
                 return ResultManager::warningMessage('YA MARCO ASISTENCIA');
+            }
+            
+            $matriculas = Matricula::where('alumno_id',$alumno->id)->with('carrera','ciclo','detalles')->get(); 
+            if ($matriculas->isNotEmpty()) {
+                $alumno->matricula = $matriculas;
             }
 
             Asistencia::create([
