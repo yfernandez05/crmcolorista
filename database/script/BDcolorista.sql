@@ -944,3 +944,34 @@ ALTER TABLE detalle_matriculas ADD COLUMN pagado int NOT NULL DEFAULT '0' after 
 ALTER TABLE detalle_matriculas  ADD COLUMN fecha_confirmacion_pago timestamp NULL DEFAULT NULL after pagado;
 
  ALTER TABLE detallepagos ADD COLUMN `id_detalle_matricula` bigint unsigned NULL AFTER concepto_id;
+
+
+CREATE TABLE `files` (
+  `file_id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(255),
+  `url_relative` varchar(255),
+  `url_patch` varchar(255),
+  `fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `estado` char(1) NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60),
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `pago_file` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pago_id` bigint unsigned NOT NULL,
+  `file_id` int NOT NULL,
+  `estado` char(1) NOT NULL DEFAULT 'A',
+  `userinsert` varchar(60) DEFAULT 'sistemas@padinsolutions.com',
+  `dateinsert` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `userupdate` varchar(60),
+  `dateupdate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `pago_id` (`id`),
+  KEY `file_id` (`file_id`),
+  CONSTRAINT `pago_file_ibfk_1` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `pago_file_ibfk_2` FOREIGN KEY (`file_id`) REFERENCES `files` (`file_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
