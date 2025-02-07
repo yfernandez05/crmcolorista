@@ -1,4 +1,5 @@
 <template>
+      <div>
     <main-content>
         <template v-slot:card-header-title>
             Pago
@@ -74,6 +75,7 @@
                             <th class="p-2">Dni</th>
                             <th class="p-2">Monto</th>
                             <th class="p-2">Detalle - Matricula</th>
+                            <th class="p-2 text-center">Adjuntos</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -85,6 +87,10 @@
                                                 class="btn btn-sm btn-outline-sch waves-effect waves-light border-0 mr-1">
                                                 <i class="fas fa-print fa-lg"></i>
                                     </button>
+                                    <button type="button" title="Adjuntar Archivo" @click="adjuntararchivo(ps)"
+                                                class="btn btn-sm  waves-effect waves-light border-0 mr-1 btn-outline-warning">
+                                                <i class="fas fa-paperclip"></i>
+                                    </button>
                                 </row-actions>
                             </td>
                             <td v-text="ps.id"></td>
@@ -94,6 +100,11 @@
                             <td v-text="ps.matricula.alumno.dni"></td>
                             <td v-text="ps.subtotal"></td>
                             <td v-text="ps.matricula?.detalle"></td>
+                            <td>
+                                <span v-for="file in ps.files" :key="file.file_id" class="m-1">
+                                    <a :href="file.url_patch" target="_blank" class="badge badge-themprimary px-2 mb-1">{{ file.nombre }}</a>
+                                </span>
+                            </td>
                             <td >
                                 <span class="badge badge-pill py-1 px-3"
                                     :class="ps.isactive ? 'badge-success':'badge-danger'"
@@ -110,6 +121,10 @@
 
         </template>
     </main-content>
+
+
+    <Modaladjuntopago ref="Modaladjuntopago"></Modaladjuntopago>
+</div>
 </template>
 
 
@@ -119,6 +134,8 @@
     import VueNumeric from 'vue-numeric';
     import RowActions from './../../utils/RowActions';
     import Select2 from './../../utils/Select2';
+    import Modaladjuntopago from './_ModaladjuntoPago';
+    import {bus} from '../../app'
 
     export default {
         data() {
@@ -264,11 +281,24 @@
                 window.open(urlPdf,'_blank')
             },
 
+            adjuntararchivo(event) {
+                this.$nextTick(() => {
+                    this.$refs.Modaladjuntopago.showDetail(event);
+                });
+            },
+
         },
         mounted() {
             this.listarpago();
             this.listarMatriculas();
             this.listarConcepto();
+        },
+        created(){
+          this.listarpago();
+          const vm = this;
+            bus.$on('actualizarpagos',()=>{
+                vm.listarpago();
+            })
         },
         components: {
             MainContent,
@@ -276,7 +306,17 @@
             VueNumeric,
             RowActions,
             Select2,
+            Modaladjuntopago
         }
     }
 
 </script>
+<style scoped>
+.badge-themprimary{
+    background-color: #3509d3 ;
+    color: white;
+}
+.badge-themprimary[data-v-72f3d34e]:hover {
+color: white;
+}
+</style>

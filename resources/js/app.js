@@ -53,6 +53,9 @@ export const bus = new Vue({
         actualizaragendas(){
             this.$emit('actualizaragendas');
         },
+        actualizarpagos(){
+            this.$emit('actualizarpagos');
+        },
     }
 });
 

@@ -7,6 +7,7 @@ use App\Util\RuleManager;
 use App\Models\DetallePago;
 use App\Models\ConceptoPago;
 use App\Models\Tipocomprobante;
+use App\Models\File;
 use Illuminate\Database\Eloquent\Model;
 
 class Pago extends Model
@@ -60,6 +61,10 @@ class Pago extends Model
     public function comprobante()
     {
         return $this->belongsTo(Tipocomprobante::class, 'codcomprobante', 'codcomprobante');
+    }
+    public function files()
+    {
+        return $this->belongsToMany(File::class, 'pago_file', 'pago_id', 'file_id');
     }
 
 }

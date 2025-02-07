@@ -13,6 +13,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\AsistenciaController;
 
@@ -170,4 +171,5 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('agenda', AgendaController::class);
 
     Route::post('pago/eliminar-detalles-matricula/{matricula_id}', [MatriculaController::class, 'eliminarDetallesMatricula']);
+    Route::post('pago/{id}/adjunto/update', [PagoController::class, 'updateAttachment']);
 });

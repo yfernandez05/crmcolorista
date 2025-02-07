@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Pago;
+use App\Models\File;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Util\RuleManager;
 use App\Models\DetallePago;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use App\Util\LogErrorManager;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
 
 class PagoController extends BaseController
 {
@@ -27,7 +29,7 @@ class PagoController extends BaseController
         $perpage = $this->getLimitPagination($request);
 
         $pago = Pago::where($filters)
-            ->with('matricula','matricula.alumno','comprobante')
+            ->with('matricula','matricula.alumno','comprobante','files')
             ->orderBy('id', 'DESC')
             ->paginate($perpage);
 
@@ -52,6 +54,8 @@ class PagoController extends BaseController
             $pago->serie = $request->serie;
             $pago->numero = $request->numero;
             $pago->save();
+
+            $this->saveAttachments($request, $pago);
 
             $detallePagos = [];
 
@@ -90,6 +94,42 @@ class PagoController extends BaseController
         return $result;
     }
 
+    private function saveAttachments($request, $pago)
+    {
+
+        if ($request->hasFile('selectedFiles')) {
+
+            $nameFolder = 'public/Pagos';
+
+            foreach ($request->file('selectedFiles') as $archivo) {
+                // Obtener el nombre original del archivo y la extension
+                $nombreArchivo = $archivo->getClientOriginalName();
+                $extension = $archivo->getClientOriginalExtension();
+                $nombreLimpio = preg_replace('/[^\w\-\.]/', '', pathinfo($nombreArchivo, PATHINFO_FILENAME));
+                $nombreGuardado =  $nombreGuardado = $nombreLimpio . '_' . time() . '.' . $extension;
+
+
+                // Guardar el archivo en una carpeta específica dentro de storage/app/public
+                $archivo->storeAs($nameFolder, $nombreGuardado);
+
+
+                // Crear un nuevo registro en la tabla de archivos
+                $file = new File();
+                $file->nombre = $nombreArchivo;
+                $file->url_relative = 'storage/Pagos/' . $nombreGuardado; // Ruta relativa del archivo
+                $file->url_patch = url($file->url_relative); // URL completa del archivo
+                $file->fecharegistro = now();
+                $file->estado = 'A';
+                $file->save();
+
+                // Asociar el archivo con el producto
+                $pago->files()->attach($file->file_id);
+            }
+        }
+
+    }
+
+
     /**
      * Display the specified resource.
      *
@@ -100,7 +140,7 @@ class PagoController extends BaseController
     {
        /* $pago = Pago::with('matricula','detalles','alumno')->find($id);
         return $pago;*/
-        $pago = Pago::with(['matricula.alumno', 'detalles','matricula.detalles','matricula.carrera','matricula.ciclo','comprobante'])->find($id);
+        $pago = Pago::with(['matricula.alumno', 'detalles','matricula.detalles','matricula.carrera','matricula.ciclo','comprobante','files'])->find($id);
         return $pago;
     }
 
@@ -122,6 +162,8 @@ class PagoController extends BaseController
             $pago->matricula_id = $request->matricula_id;
             $pago->codcomprobante = $request->codcomprobante;
             $pago->serie = $request->serie;
+            if ($request->fileIdsRemove != '[]') { $this->removeFiles($request->fileIdsRemove); }
+            if ($request->hasFile('selectedFiles')) { $this->saveAttachments($request, $pago); }
             $pago->update();
 
             $detallesExistentes = $pago->detalles()->get();
@@ -164,7 +206,24 @@ class PagoController extends BaseController
         return $result;
     }
 
+    public function removeFiles($fileId)
+    {
+        try {
+            $fileIdsArray = json_decode($fileId);
 
+            foreach ($fileIdsArray as $fileId) {
+                $file = File::find($fileId);
+                if ($file) {
+                    $url_remove = str_replace('storage','public', $file->url_relative); //local link-storage
+                    Storage::delete($url_remove);
+
+                    $file->delete();
+                }
+            }
+        } catch (Exception $e) {
+            return dd($e);
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -217,6 +276,35 @@ class PagoController extends BaseController
         $nombrearchivo= "COMPROBANTE DE PAGO DE MATRICULA ". $comprobante->numero.".pdf";
         return $pdf->stream($nombrearchivo);
        // return $pdf->stream();
+    }
+
+
+    public function updateAttachment(Request $request, $id)
+    {
+        $result = "";
+        DB::beginTransaction();
+        try {
+
+            $pago = Pago::findOrFail($id);
+
+            // Eliminar archivos si es necesario
+            if ($request->fileIdsRemove != '[]') { $this->removeFiles($request->fileIdsRemove); }
+            // Guardar archivos
+            if ($request->hasFile('selectedFiles')) { $this->saveAttachments($request, $pago); }
+            $pago->update();
+
+            DB::commit();
+            $result = ResultManager::genericSuccessMessage();
+        } catch (QueryException $e) {
+            DB::rollBack();
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            $result = ResultManager::gerericErrorMessage();
+        } catch (Exception $e) {
+            DB::rollBack();
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            $result = ResultManager::gerericErrorMessage();
+        }
+        return response()->json(['status' => true, 'message' => $result]);
     }
 
 }
