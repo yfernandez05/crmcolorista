@@ -274,6 +274,23 @@ export default new VueRouter({
         },
 
 
+        {
+            path: `${intranetBaseUrl}/contrato`,
+            name: 'spa.contrato',
+            component: require('./components/contrato/ContratoIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/contrato/registrar`,
+            name: 'spa.contrato.registrar',
+            component: require('./components/contrato/ContratoCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/contrato/editar/:id`,
+            name: 'spa.contrato.editar',
+            component: require('./components/contrato/ContratoEdit').default
+        },
+
+
 
 
 

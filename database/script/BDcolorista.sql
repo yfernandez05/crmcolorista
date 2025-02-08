@@ -975,3 +975,44 @@ CREATE TABLE `pago_file` (
   CONSTRAINT `pago_file_ibfk_1` FOREIGN KEY (`pago_id`) REFERENCES `pagos` (`id`) ON DELETE CASCADE,
   CONSTRAINT `pago_file_ibfk_2` FOREIGN KEY (`file_id`) REFERENCES `files` (`file_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS `contratos`;
+CREATE TABLE `contratos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `alumno_id` bigint unsigned NOT NULL,
+  `matricula_id` bigint unsigned NOT NULL,
+  `domicilio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fecha_inscripcion` timestamp NOT NULL,
+  `monto_promocional` decimal(18,2) NULL DEFAULT '0.00',
+  `monto_preabonado` decimal(18,2) NULL DEFAULT '0.00',
+  `importe_restante` decimal(18,2) NULL DEFAULT '0.00',
+  `fecha_limitepago` timestamp NOT NULL,
+  `duracion_modulo` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cantidadveces` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `duracionhoras` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `file_id` int DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `alumno_id` (`alumno_id`),
+  CONSTRAINT `contratos_ibfk_1` FOREIGN KEY (`alumno_id`) REFERENCES `alumnos` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DROP TABLE IF EXISTS `detalle_contratos`;
+CREATE TABLE `detalle_contratos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `contrato_id` bigint unsigned NOT NULL,
+  `preciomes` decimal(10,2) NOT NULL,
+  `fechapago` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `detalle_contratos_id_foreign` (`contrato_id`),
+  CONSTRAINT `detalle_contratos_id_foreign` FOREIGN KEY (`contrato_id`) REFERENCES `contratos` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+

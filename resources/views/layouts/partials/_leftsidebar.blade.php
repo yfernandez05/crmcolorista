@@ -165,7 +165,7 @@
                         <!-- <li><router-link :to="{name: 'spa.carrera'}">Matricula</router-link></li>-->
                         <li><router-link :to="{name: 'spa.conceptopago'}">Concepto de pago</router-link></li>
                         <li><router-link :to="{name: 'spa.pago'}">Pago</router-link></li>
-                        <!-- <li><router-link :to="{name: 'spa.turno'}">Periodo</router-link></li> -->
+                        <li><router-link :to="{name: 'spa.contrato'}">Contrato</router-link></li>
                     </ul>
                 </li>
 

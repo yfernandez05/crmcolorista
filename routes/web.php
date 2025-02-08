@@ -172,4 +172,9 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::post('pago/eliminar-detalles-matricula/{matricula_id}', [MatriculaController::class, 'eliminarDetallesMatricula']);
     Route::post('pago/{id}/adjunto/update', [PagoController::class, 'updateAttachment']);
+
+    Route::get('contrato/pdfcontrato/{id}','ContratoController@pdfcontrato')->name('contrato.pdfcontrato');
+    Route::get('contrato/selectsearch','ContratoController@selectsearch')->name('contrato.selectsearch');
+    Route::resource('contrato', 'ContratoController');
+
 });
