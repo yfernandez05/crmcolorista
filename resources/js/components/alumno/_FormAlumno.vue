@@ -128,7 +128,7 @@
                 </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-4" >
-                    <label class="mb-1">Departamento </label>
+                    <label class="mb-1">Departamento Perú</label>
                     <select2 :options="departamentos" @input="listarProvincias(selectedDepartamento)" v-model="selectedDepartamento"
                         :selectValue="selectedDepartamento" placeholder="Seleccione un Departamento"
                         keyProperty="pkubigeo" textProperty="nombreubigeo">
@@ -136,7 +136,7 @@
 
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" >
-                    <label class="mb-1">Provincia </label>
+                    <label class="mb-1">Provincia Perú</label>
                     <select2 :options="provincias" @input="listarDistritos(selectedProvincia)" v-model="selectedProvincia"
                         :selectValue="selectedProvincia" placeholder="Seleccione una Provincia"
                         keyProperty="pkubigeo" textProperty="nombreubigeo">
@@ -144,7 +144,7 @@
 
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" >
-                    <label class="mb-1">Distrito </label>
+                    <label class="mb-1">Distrito Perú</label>
                     <select2 :options="distritos" v-model="alumno.coddistrito"
                         :selectValue="alumno.coddistrito" placeholder="Seleccione un Distrito"
                         keyProperty="pkubigeo" textProperty="nombreubigeo">
