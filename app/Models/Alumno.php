@@ -37,6 +37,14 @@ class Alumno extends Model
         'trabajo',
         'contactoemergencia',
         'edad',
+        'redfacebook',
+        'redinstagram',
+        'redtiktok',
+        'nombreemergencia',
+        'coddepartamento',
+        'codprovincia',
+        'coddistrito',
+        'pais' ,
         'estado',
     ];
 
@@ -102,5 +110,38 @@ class Alumno extends Model
     {
         return $this->hasMany(Matricula::class, 'alumno_id');
     }
+
+    public function distrito(){
+        return $this->belongsTo(Ubigeo::class, 'coddistrito', 'pkubigeo')
+            ->withDefault([
+                'pkubigeo'=>'',
+                'fkubigeo'=>'',
+                'nombreubigeo'=> '',
+                'nivel' => -1,
+                'nombrecompleto'=>'',
+            ]);
+    }
+    public function departamento(){
+        return $this->belongsTo(Ubigeo::class, 'coddepartamento', 'pkubigeo')
+            ->withDefault([
+                'pkubigeo'=>'',
+                'fkubigeo'=>'',
+                'nombreubigeo'=> '',
+                'nivel' => -1,
+                'nombrecompleto'=>'',
+            ]);
+    }
+
+    public function provincia(){
+        return $this->belongsTo(Ubigeo::class, 'codprovincia', 'pkubigeo')
+            ->withDefault([
+                'pkubigeo'=>'',
+                'fkubigeo'=>'',
+                'nombreubigeo'=> '',
+                'nivel' => -1,
+                'nombrecompleto'=>'',
+            ]);
+    }
+
 
 }

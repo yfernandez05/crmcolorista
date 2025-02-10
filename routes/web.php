@@ -43,6 +43,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('condicion', 'CondicionController');
 
     Route::get('alumno/select', 'AlumnoController@select')->name('alumno.select');
+    Route::get('alumno/paisalumno', 'AlumnoController@paisalumno')->name('alumno.paisalumno');
     Route::resource('alumno', 'AlumnoController');
 
     Route::get('turno/select', 'TurnoController@select');

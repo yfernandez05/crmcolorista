@@ -36,10 +36,10 @@
                     </v-date-picker>
                     <small class="form-control-feedback" v-if="errorExists('fecha_nac')" v-text="showError('fecha_nac').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('correo')}">
-                    <label>Correo <small class="text-danger">(*)</small></label>
+                <div class="form-group col-12 col-sm-6 col-md-4">
+                    <label>Correo</label>
                     <input type="text" class="form-control" v-model="alumno.correo" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('correo')" v-text="showError('correo').errorDetail"></small>
+
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('dni')}">
                     <label>DNI <small class="text-danger">(*)</small></label>
@@ -51,11 +51,7 @@
                     <input type="text" class="form-control" v-model="alumno.direccion" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('direccion')" v-text="showError('direccion').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('distrito')}">
-                    <label>Distrito </label>
-                    <input type="text" class="form-control" v-model="alumno.distrito" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('distrito')" v-text="showError('distrito').errorDetail"></small>
-                </div>
+
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('celular')}">
                     <label>Celular </label>
                     <input type="text" class="form-control" v-model="alumno.celular" @keyup.enter ="doSaveData"/>
@@ -123,6 +119,61 @@
                     <small class="form-control-feedback" v-if="errorExists('sexo')" v-text="showError('sexo').errorDetail"></small>
                 </div>
 
+                <div class="form-group col-12 col-sm-6 col-md-4" >
+                    <label class="mb-1">Pais</label>
+                        <select2 :options="paises" v-model="alumno.pais"
+                                :selectValue="alumno.pais" placeholder="Seleccione un Pais"
+                                keyProperty="pais" textProperty="pais">
+                        </select2>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" >
+                    <label class="mb-1">Departamento </label>
+                    <select2 :options="departamentos" @input="listarProvincias(selectedDepartamento)" v-model="selectedDepartamento"
+                        :selectValue="selectedDepartamento" placeholder="Seleccione un Departamento"
+                        keyProperty="pkubigeo" textProperty="nombreubigeo">
+                    </select2>
+
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" >
+                    <label class="mb-1">Provincia </label>
+                    <select2 :options="provincias" @input="listarDistritos(selectedProvincia)" v-model="selectedProvincia"
+                        :selectValue="selectedProvincia" placeholder="Seleccione una Provincia"
+                        keyProperty="pkubigeo" textProperty="nombreubigeo">
+                    </select2>
+
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" >
+                    <label class="mb-1">Distrito </label>
+                    <select2 :options="distritos" v-model="alumno.coddistrito"
+                        :selectValue="alumno.coddistrito" placeholder="Seleccione un Distrito"
+                        keyProperty="pkubigeo" textProperty="nombreubigeo">
+                    </select2>
+
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('nombreemergencia')}">
+                    <label>Contacto de emergencia (Nombre)</label>
+                    <input type="text" class="form-control" v-model="alumno.nombreemergencia" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('nombreemergencia')" v-text="showError('nombreemergencia').errorDetail"></small>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('redfacebook')}">
+                    <label>Facebook</label>
+                    <input type="text" class="form-control" v-model="alumno.redfacebook" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('redfacebook')" v-text="showError('redfacebook').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('redinstagram')}">
+                    <label> Instagram </label>
+                    <input type="text" class="form-control" v-model="alumno.redinstagram" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('redinstagram')" v-text="showError('redinstagram').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('redtiktok')}">
+                    <label>Tiktok</label>
+                    <input type="text" class="form-control" v-model="alumno.redtiktok" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('redtiktok')" v-text="showError('redtiktok').errorDetail"></small>
+                </div>
+
             </div>
             <hr class="mt-2">
         </template>
@@ -158,6 +209,7 @@
     import vSelect from 'vue-select';
     import ModalProspecto from './_ModalProspecto';
     import moment,{ now } from 'moment';
+    import Select2 from './../../utils/Select2';
 
     export default {
         props: {
@@ -183,10 +235,16 @@
                         contactoemergencia: '',
                         edad: '',
                         sexo: '',
+                        nombreemergencia: '',
+                        redfacebook: '',
+                        redinstagram: '',
+                        redtiktok: '',
+                        coddistrito: '',
 
                     }
                 }
-            }
+            },
+
         },
         data(){
             return {
@@ -197,7 +255,31 @@
                     id: 0,
                     nombre: '',
                 },
+                departamentos: [],
+                provincias: [],
+                distritos: [],
+                selectedDepartamento: null,
+                selectedProvincia: null,
+                paises: [],
             }
+        },
+        watch: {
+        alumno: {
+            handler(newVal) {
+                this.selectedDepartamento = newVal.coddepartamento;
+                this.selectedProvincia = newVal.codprovincia;
+                this.alumno.coddistrito = newVal.coddistrito;
+
+                if (this.selectedDepartamento) {
+                    this.listarProvincias(this.selectedDepartamento);
+                }
+                if (this.selectedProvincia) {
+                    this.listarDistritos(this.selectedProvincia);
+                }
+            },
+            immediate: true,
+            deep: true
+        }
         },
         methods: {
             doSaveData() {
@@ -222,6 +304,16 @@
                     contactoemergencia: this.alumno.contactoemergencia,
                     edad: this.alumno.edad,
                     sexo: this.alumno.sexo,
+                    nombreemergencia: this.alumno.nombreemergencia,
+                    redfacebook: this.alumno.redfacebook,
+                    redinstagram: this.alumno.redinstagram,
+                    redtiktok: this.alumno.redtiktok,
+                    //coddistrito: this.alumno.coddistrito,
+                    coddepartamento: this.selectedDepartamento,
+                    codprovincia: this.selectedProvincia,
+                    coddistrito: this.alumno.coddistrito,
+                    pais: this.alumno.pais,
+
                 }
 
                 this.$emit('saveData', rolData);
@@ -236,10 +328,6 @@
                 if (!this.alumno.apellido) {
                     this.setError('apellido', 'El campo apellido es obligatorio');
                 }
-                if (!this.alumno.correo) {
-                    this.setError('correo', 'El campo correo es obligatorio');
-                }
-
                 if (!this.alumno.dni) {
                     this.setError('dni', 'El campo DNI es obligatorio');
                 }
@@ -278,13 +366,59 @@
                     ? ''
                     : moment(value, 'YYYY-MM-DD HH:mm:ss').format(fmt)
             },
-
+            listarDepartamentos() {
+            let vm = this;
+            axios.get(`${appApiUrl}/ubigeo/departamentos`)
+                .then(function (response) {
+                    vm.departamentos = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            listarProvincias(departamentoId) {
+                let vm = this;
+                axios.get(`${appApiUrl}/ubigeo/provincias`, { params: { departamento_id: departamentoId } })
+                    .then(function (response) {
+                        vm.provincias = response.data;
+                        vm.distritos = []; // Clear distritos when provincia changes
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            listarDistritos(provinciaId) {
+                let vm = this;
+                axios.get(`${appApiUrl}/ubigeo/distritos`, { params: { provincia_id: provinciaId } })
+                    .then(function (response) {
+                        vm.distritos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            listarPais(){
+                let vm = this;
+                axios
+                .get(`${appApiUrl}/alumno/paisalumno`)
+                .then(function (response) {
+                vm.paises = response.data;
+                })
+                .catch(function (error) {
+                console.log(error);
+                });
+            },
+        },
+        mounted() {
+            this.listarDepartamentos();
+            this.listarPais();
         },
         components: {
             MainContent,
             VDatePicker,
             vSelect,
-            ModalProspecto
+            ModalProspecto,
+            Select2
         }
     }
 

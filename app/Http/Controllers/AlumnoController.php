@@ -30,7 +30,8 @@ class AlumnoController extends BaseController
         $filters = $this->getFilters($request, new Alumno());
         $perpage = $this->getLimitPagination($request);
 
-        $query = Alumno::where($filters);
+        $query = Alumno::where($filters)
+        ->with('distrito','departamento','provincia');
 
         $alumnos = $query-> orderBy('id', 'DESC')
             ->paginate($perpage);
@@ -76,7 +77,7 @@ class AlumnoController extends BaseController
      */
     public function show($id)
     {
-        return Alumno::find($id);
+        return Alumno::with('distrito','departamento','provincia')->find($id);
     }
 
     /**
@@ -173,6 +174,14 @@ class AlumnoController extends BaseController
         $alumno->trabajo = $request->trabajo;
         $alumno->contactoemergencia = $request->contactoemergencia;
         $alumno->edad = $request->edad;
+        $alumno->redfacebook = $request->redfacebook;
+        $alumno->redinstagram = $request->redinstagram;
+        $alumno->redtiktok = $request->redtiktok;
+        $alumno->nombreemergencia = $request->nombreemergencia;
+        $alumno->coddepartamento = $request->coddepartamento;
+        $alumno->codprovincia = $request->codprovincia;
+        $alumno->coddistrito = $request->coddistrito;
+        $alumno->pais = $request->pais;
 
         return $alumno;
     }
@@ -261,5 +270,97 @@ class AlumnoController extends BaseController
             ->get();
 
         return $carrera;
+    }
+
+    public function paisalumno()
+    {
+        $pais = [
+            ["pais" => 'United States'],
+            ["pais" => 'United Kingdom'],
+            ["pais" => 'Algeria'],
+            ["pais" => 'Argentina'],
+            ["pais" => 'Australia'],
+            ["pais" => 'Bahrain'],
+            ["pais" => 'Bangladesh'],
+            ["pais" => 'Belgium'],
+            ["pais" => 'Bolivia'],
+            ["pais" => 'Brazil'],
+            ["pais" => 'Cameroon'],
+            ["pais" => 'Canada'],
+            ["pais" => 'Chile'],
+            ["pais" => 'China'],
+            ["pais" => 'Colombia'],
+            ["pais" => 'Costa Rica'],
+            ["pais" => 'Côte d’Ivoire'],
+            ["pais" => 'Cuba'],
+            ["pais" => 'Dominican Republic '],
+            ["pais" => 'Ecuador'],
+            ["pais" => 'Egypt'],
+            ["pais" => 'El Salvador'],
+            ["pais" => 'Fiji'],
+            ["pais" => 'France'],
+            ["pais" => 'Germany '],
+            ["pais" => 'Ghana '],
+            ["pais" => 'Greece '],
+            ["pais" => 'Guatemala'],
+            ["pais" => 'Honduras'],
+            ["pais" => 'India '],
+            ["pais" => 'Indonesia'],
+            ["pais" => 'Iran '],
+            ["pais" => 'Iraq '],
+            ["pais" => 'Israel '],
+            ["pais" => 'Italy '],
+            ["pais" => 'Japan '],
+            ["pais" => 'Jordan '],
+            ["pais" => 'Kenya'],
+            ["pais" => 'Lebanon '],
+            ["pais" => 'Libya '],
+            ["pais" => 'Malaysia'],
+            ["pais" => 'Mexico'],
+            ["pais" => 'Morocco '],
+            ["pais" => 'Netherlands '],
+            ["pais" => 'New Zealand'],
+            ["pais" => 'Nicaragua'],
+            ["pais" => 'Nigeria'],
+            ["pais" => 'North Korea '],
+            ["pais" => 'Norway'],
+            ["pais" => 'Oman '],
+            ["pais" => 'Pakistan'],
+            ["pais" => 'Panama'],
+            ["pais" => 'Papua New Guinea'],
+            ["pais" => 'Paraguay'],
+            ["pais" => 'Peru '],
+            ["pais" => 'Philippines'],
+            ["pais" => 'Poland '],
+            ["pais" => 'Portugal'],
+            ["pais" => 'Puerto Rico'],
+            ["pais" => 'Qatar'],
+            ["pais" => 'Romania '],
+            ["pais" => 'Russia '],
+            ["pais" => 'Saudi Arabia'],
+            ["pais" => 'Senegal '],
+            ["pais" => 'Singapore'],
+            ["pais" => 'South Africa'],
+            ["pais" => 'South Korea'],
+            ["pais" => 'Spain '],
+            ["pais" => 'Sudan'],
+            ["pais" => 'Sweden '],
+            ["pais" => 'Tanzania'],
+            ["pais" => 'Thailand'],
+            ["pais" => 'Tonga'],
+            ["pais" => 'Tunisia'],
+            ["pais" => 'Turkey '],
+            ["pais" => 'Uganda'],
+            ["pais" => 'Ukraine'],
+            ["pais" => 'United Arab Emirates'],
+            ["pais" => 'United Kingdom'],
+            ["pais" => 'United States'],
+            ["pais" => 'Uruguay'],
+            ["pais" => 'Venezuela'],
+            ["pais" => 'Vietnam '],
+            ["pais" => 'Yemen '],
+
+        ];
+        return $pais;
     }
 }

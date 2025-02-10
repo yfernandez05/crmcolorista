@@ -25,10 +25,10 @@
                     </v-date-picker>
                     <small class="form-control-feedback" v-if="errorExists('fecha_nac')" v-text="showError('fecha_nac').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('correo')}">
-                    <label>Correo <small class="text-danger">(*)</small></label>
+                <div class="form-group col-12 col-sm-6 col-md-4" >
+                    <label>Correo </label>
                     <input type="text" class="form-control" v-model="prospecto.correo" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('correo')" v-text="showError('correo').errorDetail"></small>
+
                 </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('telefono')}">
@@ -141,9 +141,7 @@
                 if (!this.prospecto.apellido) {
                     this.setError('apellido', 'El campo apellido es obligatorio');
                 }
-                if (!this.prospecto.correo) {
-                    this.setError('correo', 'El campo correo es obligatorio');
-                }
+
                 if (!this.prospecto.procedencia) {
                     this.setError('procedencia', 'El campo procedencia es obligatorio');
                 }

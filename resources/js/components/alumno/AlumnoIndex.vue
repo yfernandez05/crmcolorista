@@ -60,15 +60,24 @@
                             <th class="p-2">Fech. Nacimiento</th>
                             <th class="p-2">DNI</th>
                             <th class="p-2">Direccion</th>
-                            <th class="p-2">Distrito</th>
+                            <!-- <th class="p-2">Distrito</th> -->
                             <th class="p-2">Celular</th>
                             <th class="p-2">Empresa</th>
                             <th class="p-2">Cargo Desempeña</th>
                             <!-- <th class="p-2">Colegio</th> -->
                             <th class="p-2">Trabajo</th>
                             <th class="p-2">Contacto Emerge</th>
+                            <th class="p-2">Nombre Emerge</th>
                             <th class="p-2">Edad</th>
                             <th class="p-2">Sexo</th>
+                            <th class="p-2">Pais</th>
+                            <th class="p-2">Departamento</th>
+                            <th class="p-2">Provincia</th>
+                            <th class="p-2">Distrito</th>
+
+                            <th class="p-2">Facebook</th>
+                            <th class="p-2">Instagram</th>
+                            <th class="p-2">Tiktok</th>
                             <th class="p-2">Estado</th>
                         </tr>
                     </thead>
@@ -83,21 +92,29 @@
                                 </row-actions>
                             </td>
                             <td v-text="alum.id"></td>
-                            <td v-text="alum.nombre"></td>
-                            <td v-text="alum.apellido"></td>
+                            <td v-text="alum.nombre" class="ui-max-w-300 text-truncate"></td>
+                            <td v-text="alum.apellido" class="ui-max-w-300 text-truncate"></td>
                             <td v-text="alum.correo"></td>
                             <td v-text="alum.fechanacimiento"></td>
                             <td v-text="alum.dni"></td>
                             <td v-text="alum.direccion"></td>
-                            <td v-text="alum.distrito"></td>
+                            <!-- <td v-text="alum.distrito"></td> -->
                             <td v-text="alum.celular"></td>
                             <td v-text="alum.empresa"></td>
                             <td v-text="alum.cargodesempenia"></td>
                             <!-- <td v-text="alum.colegiosegundario"></td> -->
                             <td v-text="alum.trabajo"></td>
                             <td v-text="alum.contactoemergencia"></td>
+                            <td v-text="alum.nombreemergencia" class="ui-max-w-300 text-truncate"></td>
                             <td v-text="alum.edad"></td>
                             <td v-text="alum.sexo"></td>
+                            <td v-text="alum.pais"></td>
+                            <td v-text="alum.departamento.nombreubigeo"></td>
+                            <td v-text="alum.provincia.nombreubigeo"></td>
+                            <td v-text="alum.distrito.nombreubigeo"></td>
+                            <td v-text="alum.redfacebook"></td>
+                            <td v-text="alum.redinstagram"></td>
+                            <td v-text="alum.redtiktok"></td>
                             <td >
                                 <span class="badge badge-pill py-1 px-3"
                                     :class="alum.isactive ? 'badge-success':'badge-danger'"
