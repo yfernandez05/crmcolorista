@@ -263,24 +263,6 @@
                 paises: [],
             }
         },
-        watch: {
-        alumno: {
-            handler(newVal) {
-                this.selectedDepartamento = newVal.coddepartamento;
-                this.selectedProvincia = newVal.codprovincia;
-                this.alumno.coddistrito = newVal.coddistrito;
-
-                if (this.selectedDepartamento) {
-                    this.listarProvincias(this.selectedDepartamento);
-                }
-                if (this.selectedProvincia) {
-                    this.listarDistritos(this.selectedProvincia);
-                }
-            },
-            immediate: true,
-            deep: true
-        }
-        },
         methods: {
             doSaveData() {
 
@@ -382,6 +364,12 @@
                     .then(function (response) {
                         vm.provincias = response.data;
                         vm.distritos = []; // Clear distritos when provincia changes
+                        // Forzar la actualización del valor seleccionado
+                        vm.$nextTick(() => {
+                            if (vm.alumno.codprovincia) {
+                                vm.selectedProvincia = vm.alumno.codprovincia;
+                            }
+                        });
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -392,6 +380,12 @@
                 axios.get(`${appApiUrl}/ubigeo/distritos`, { params: { provincia_id: provinciaId } })
                     .then(function (response) {
                         vm.distritos = response.data;
+                        // Forzar la actualización del valor seleccionado
+                        vm.$nextTick(() => {
+                            if (vm.alumno.coddistrito) {
+                                vm.selectedDistrito = vm.alumno.coddistrito;
+                            }
+                        });
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -412,6 +406,33 @@
         mounted() {
             this.listarDepartamentos();
             this.listarPais();
+        },
+        watch: {
+            selectedDepartamento(newVal) {
+                if (newVal) {
+                    this.listarProvincias(newVal);
+                }
+            },
+            selectedProvincia(newVal) {
+                if (newVal) {
+                    this.listarDistritos(newVal);
+                }
+            },
+            alumno: {
+                handler(newVal) {
+                    if (newVal.coddepartamento) {
+                        this.selectedDepartamento = newVal.coddepartamento;
+                    }
+                    if (newVal.codprovincia) {
+                        this.selectedProvincia = newVal.codprovincia;
+                    }
+                    if (newVal.coddistrito) {
+                        this.selectedDistrito = newVal.coddistrito;
+                    }
+                },
+                immediate: true,
+                deep: true
+            }
         },
         components: {
             MainContent,

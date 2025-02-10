@@ -111,7 +111,7 @@
                             <td v-text="alum.pais"></td>
                             <td v-text="alum.departamento.nombreubigeo"></td>
                             <td v-text="alum.provincia.nombreubigeo"></td>
-                            <td v-text="alum.distrito.nombreubigeo"></td>
+                            <td v-text="alum.distrito.nombreubigeo" class="ui-max-w-300 text-truncate"></td>
                             <td v-text="alum.redfacebook"></td>
                             <td v-text="alum.redinstagram"></td>
                             <td v-text="alum.redtiktok"></td>
