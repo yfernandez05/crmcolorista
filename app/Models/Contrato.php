@@ -3,6 +3,7 @@
 namespace App\Models;
 use App\Models\Alumno;
 use App\Models\Matricula;
+use App\Models\File;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
@@ -63,5 +64,23 @@ class Contrato extends Model
     }
     public function matricula(){
         return $this->belongsTo(Matricula::class, 'matricula_id', 'id');
+    }
+
+    public function file()
+    {
+        return $this->belongsTo(File::class, 'file_id');
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetalleContrato::class, 'contrato_id', 'id');
+    }
+
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class, 'matricula_id', 'matricula_id')
+                    ->with(['detalles' => function ($query) {
+                        $query->where('concepto_id', 1);
+                    }]);
     }
 }

@@ -80,12 +80,12 @@ class QrCodeController extends Controller
                 $alumno->matricula = $matriculas;
             }
 
-            Asistencia::create([
+            /* Asistencia::create([
                 'alumno_id' => $alumno->id,
                 'fecha_asistencia' => Carbon::now()->format('Y-m-d H:i:s'),
                 'fecha' => Carbon::now()->startOfDay()->format('Y-m-d H:i:s'),
 
-            ]);
+            ]); */
             
             $result = ResultManager::successMessageData('El QR si es valido', $alumno);
 

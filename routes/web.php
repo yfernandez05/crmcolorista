@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\AsistenciaController;
+use App\Http\Controllers\ContratoController;
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Auth::routes(['register' => false]);
@@ -177,5 +178,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('contrato/pdfcontrato/{id}','ContratoController@pdfcontrato')->name('contrato.pdfcontrato');
     Route::get('contrato/selectsearch','ContratoController@selectsearch')->name('contrato.selectsearch');
     Route::resource('contrato', 'ContratoController');
+    Route::put('contrato/{id}/guardarfirma', [ContratoController::class, 'guardarfirma']);
+    Route::put('contrato/{id}/deletefirma', [ContratoController::class, 'deletefirma']);
 
 });
