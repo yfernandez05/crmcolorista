@@ -118,6 +118,7 @@
                     </a>
                     <ul aria-expanded="false" class="collapse">
                         <li><router-link :to="{name: 'spa.carrera'}">Carreras</router-link></li>
+                        <li><router-link :to="{name: 'spa.aula'}">Aulas</router-link></li>
                         <li><router-link :to="{name: 'spa.planestudio'}">Plan de estudio</router-link></li>
                     </ul>
                 </li>

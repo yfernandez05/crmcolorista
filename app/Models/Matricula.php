@@ -29,6 +29,7 @@ class Matricula extends Model
         'turno_id',
         'alumno_id',
         'carrera_id',
+        'detalle_aula_id',
         'user_id',
         'estado',
     ];
@@ -93,5 +94,11 @@ class Matricula extends Model
     {
         return $this->hasMany(DetalleMatricula::class, 'matricula_id', 'id');
     }
+
+    public function aula()
+    {
+        return $this->belongsTo(DetalleAulas::class, 'detalle_aula_id');
+    }
+
 
 }

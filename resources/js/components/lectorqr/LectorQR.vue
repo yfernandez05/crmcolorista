@@ -148,8 +148,9 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Detalle</th>
-                                                        <th>Fecha de Pago</th>
+                                                        <th>F. Pago Asignado</th>
                                                         <th>Estado de Pago</th>
+                                                        <th>F. pago Realizado</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -159,6 +160,7 @@
                                                         <td>
                                                             <span class="badge badge-pill py-1 px-3" :class="getPagoStatusClass(detalle)">{{ getPagoStatusText(detalle) }}</span>
                                                         </td>
+                                                        <td>{{ detalle.fecha_confirmacion_pago || '--' }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -369,10 +371,10 @@ export default {
                                 let estadoPago = '';
                                 let estadoColor = '';
 
-                                if (detalle.pagado) {
+                                if (Number(detalle.pagado) === 1) {
                                     estadoPago = 'Sí Pago';
                                     estadoColor = 'badge-success';
-                                } else if (moment(detalle.fechapago).isBefore(moment())) {
+                                } else if (Number(detalle.pagado) === 0 && moment(detalle.fechapago).isBefore(moment())) {
                                     estadoPago = 'No Pago';
                                     estadoColor = 'badge-danger';
                                 } else {
@@ -385,6 +387,7 @@ export default {
                                         <td>${detalle.nombre || 'N/A'}</td>
                                         <td>${detalle.fechapago || 'N/A'}</td>
                                         <td style="align-content: center;"><span class="badge badge-pill py-1 px-3 ${estadoColor}">${estadoPago}</span></td>
+                                        <td>${detalle.fecha_confirmacion_pago || ''}</td>
                                     </tr>`;
                             });
                         } else {
@@ -398,8 +401,9 @@ export default {
                                     <thead>
                                         <tr>
                                             <th>Detalle</th>
-                                            <th>Fecha Pago</th>
+                                            <th>F. Pago Asignado</th>
                                             <th>Pagado</th>
+                                            <th>F. Pago Realizado</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -523,18 +527,18 @@ export default {
         },
 
         getPagoStatusClass(detalle) {
-            if (detalle.detalle_pagado === 1) {
+            if (Number(detalle.detalle_pagado) === 1) {
                 return 'bg-success'; // Pagado
-            } else if (detalle.detalle_pagado === 0 && moment(detalle.detalle_fechapago).isBefore(moment(), 'day')) {
+            } else if (Number(detalle.detalle_pagado) === 0 && moment(detalle.detalle_fechapago).isBefore(moment(), 'day')) {
                 return 'bg-danger'; // No Pago
             } else {
                 return 'bg-secondary'; // Por Pagar
             }
         },
         getPagoStatusText(detalle) {
-            if (detalle.detalle_pagado === 1) {
+            if (Number(detalle.detalle_pagado) === 1) {
                 return 'Sí Pago';
-            } else if (moment(detalle.detalle_fechapago).isBefore(moment(), 'day')) {
+            } else if (Number(detalle.detalle_pagado) === 0 && moment(detalle.detalle_fechapago).isBefore(moment(), 'day')) {
                 return 'No Pago';
             } else {
                 return 'Por Pagar';
@@ -561,7 +565,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped> 
   .qr-scanner-container {
     display: flex;
     flex-direction: column;
@@ -650,4 +654,7 @@ export default {
  .select-vue-customers .vs__dropdown-toggle .vs__selected-options .vs__search{
     line-height: 2 !important;
   }
+  .custom-swal-qrsucces .swal2-popup{
+        width: 38em !important;
+    }
   </style>

@@ -19,7 +19,15 @@
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('carrera_id')}">
                     <label>Carrera <small class="text-danger">(*)</small></label>
                     <select2 :options="carreras" v-model="matricula.carrera_id" :selectValue="matricula.carrera_id"
-                        placeholder="Seleccione una carrera" keyProperty="id" textProperty="nombre">
+                        placeholder="Seleccione una carrera" keyProperty="id" textProperty="nombre" @input="obtenerAulasPorCarrera">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('carrera_id')"
+                        v-text="showError('carrera_id').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle_aula_id')}">
+                    <label>Aula </label>
+                    <select2 :options="aulas" v-model="matricula.detalle_aula_id" :selectValue="matricula.detalle_aula_id"
+                        placeholder="Seleccione una aula" keyProperty="id" textProperty="nombre">
                     </select2>
                     <small class="form-control-feedback" v-if="errorExists('carrera_id')"
                         v-text="showError('carrera_id').errorDetail"></small>
@@ -129,6 +137,7 @@
                         fecha:'',
                         alumno_id: '',
                         carrera_id: '',
+                        detalle_aula_id: '',
                         ciclo_id: '',
                        // periodo_id: '',
                        // condicion_id: '',
@@ -141,6 +150,7 @@
         data(){
             return {
                 carreras: [],
+                aulas: [],
                 alumnos: [],
                 ciclos: [],
                 //periodos: [],
@@ -206,6 +216,7 @@
                     fecha: this.matricula.fecha,
                     alumno_id: this.matricula.alumno_id,
                     carrera_id: this.matricula.carrera_id,
+                    detalle_aula_id: this.matricula.detalle_aula_id,
                     ciclo_id: this.matricula.ciclo_id,
                    // periodo_id: this.matricula.periodo_id,
                    // condicion_id: this.matricula.condicion_id,
@@ -272,6 +283,22 @@
                     .catch(function (error) {
                         console.log(error);
                     })
+            },
+            obtenerAulasPorCarrera() {
+                this.aulas = []; 
+                console.log('si paso');
+
+                let vm = this;
+                axios.get(`${appApiUrl}/aula/select`, { params: { carrera_id: this.matricula.carrera_id } })
+                    .then(function (response) {
+                        vm.aulas = response.data.map(detalle => ({
+                            id: detalle.id, // ID del detalle del aula
+                            nombre: detalle.nombre_aula // Nombre del aula
+                        }));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             listarCiclo() {
                 let vm = this;
@@ -350,7 +377,6 @@
             }
 
 
-
         },
         watch: {
             matricula: {
@@ -366,6 +392,16 @@
             },
             'matricula.ciclo_id': function(newVal) {
                 this.onCicloChange();
+            },
+
+            'matricula.carrera_id': {
+                handler(newVal, oldVal) {
+                    // Solo ejecutar si carrera_id tiene un valor inicial (modo edición) y no es un cambio manual del usuario
+                    if (newVal && !oldVal) {
+                        this.obtenerAulasPorCarrera();
+                    }
+                },
+                immediate: true // Ejecutar inmediatamente cuando el componente se monta
             },
 
         },

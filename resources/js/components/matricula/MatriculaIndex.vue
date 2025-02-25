@@ -4,6 +4,13 @@
             Matricula
         </template>
         <template v-slot:card-header-actions>
+            <button class="btn btn-sm btn-green waves-effect waves-light" @click="descargarExcel()">
+                <i class="fas fa-file-excel"></i>
+                <span class="d-none d-sm-inline-block">
+                    Descargar
+                </span>
+            </button>
+            <i class="fas fa-grip-lines-vertical text-white px-3"></i>
             <button class="btn btn-sm btn-info waves-effect waves-light" @click="buscarMatricula()">
                 <i class="fas fa-search"></i>
                 <span class="d-none d-sm-inline-block">
@@ -49,9 +56,15 @@
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
                     <label class="mb-1">Carrera</label>
-                    <select2 :options="carreras" @input="buscarMatricula()" v-model="matricula.carrera_id"
+                    <select2 :options="carreras" v-model="matricula.carrera_id"
                         :selectValue="matricula.carrera_id" placeholder="Seleccione una carrera" keyProperty="carrera_id"
-                        textProperty="nombre">
+                        textProperty="nombre" @input="obtenerAulasPorCarrera">
+                    </select2>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
+                    <label>Aula </label>
+                    <select2 :options="aulas" v-model="matricula.detalle_aula_id" :selectValue="matricula.detalle_aula_id"
+                        placeholder="Seleccione un aula" keyProperty="id" textProperty="nombre" @input="buscarMatricula()">
                     </select2>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4 col-xl-3">
@@ -89,6 +102,7 @@
                             <th class="p-2">Cod</th>
                             <th class="p-2">Alumno</th>
                             <th class="p-2">Carrera</th>
+                            <th class="p-2">Aula</th>
                             <th class="p-2">Detalle</th>
                             <th class="p-2">Fecha</th>
                             <th class="p-2">Modulo</th>
@@ -105,6 +119,7 @@
                             <td v-text="mts.id"></td>
                             <td v-text="mts.alumno?.nombre"></td>
                             <td v-text="mts.carrera?.nombre"></td>
+                            <td v-text="mts.aula?.nombre_aula"></td>
                             <td v-text="mts.detalle"></td>
                             <td v-text="mts.fecha"></td>
                             <td v-text="mts.ciclo?.nombre"></td>
@@ -133,6 +148,7 @@
     import PaginationLinks from './../../utils/PaginationLinks';
     import RowActions from './../../utils/RowActions';
     import Select2 from './../../utils/Select2';
+    import qs from 'qs';
     import VDatePicker from 'vue2-datepicker';
     import 'vue2-datepicker/locale/es';
     import moment, {
@@ -145,6 +161,7 @@
             return {
                 matriculas: [],
                 carreras: [],
+                aulas: [],
                 alumnos: [],
                 ciclos: [],
                 turnos: [],
@@ -155,6 +172,7 @@
                     fecha: '',
                     alumno_id: '',
                     carrera_id: '',
+                    detalle_aula_id: '',
                     ciclo_id: '',
                     turno_id: '',
                     estado: false
@@ -243,6 +261,22 @@
                     break;
                 }
             },
+            obtenerAulasPorCarrera() {
+                this.aulas = [];
+
+                let vm = this;
+                axios.get(`${appApiUrl}/aula/select`, { params: { carrera_id: this.matricula.carrera_id } })
+                    .then(function (response) {
+                        vm.aulas = response.data.map(detalle => ({
+                            id: detalle.id, 
+                            nombre: detalle.nombre_aula 
+                        }));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                this.buscarMatricula();
+            },
             buscarMatricula() {
                 this.filters = {};
                 this.filters.page = 1;
@@ -263,6 +297,9 @@
 
                 if (this.matricula.carrera_id.length)
                     this.filters.carrera_id = this.matricula.carrera_id;
+
+                if (this.matricula.detalle_aula_id.length)
+                    this.filters.detalle_aula_id = this.matricula.detalle_aula_id;
 
                 if (this.matricula.ciclo_id.length)
                     this.filters.ciclo_id = this.matricula.ciclo_id;
@@ -321,10 +358,20 @@
                 this.matricula.fecha = '';
                 this.matricula.alumno_id = '';
                 this.matricula.carrera_id = '';
+                this.matricula.detalle_aula_id = '';
+                this.matricula.detalle_aula_id = '';
+                this.aulas = [];
                 this.matricula.ciclo_id = '';
                 this.matricula.turno_id = '';
 
                 this.buscarMatricula();
+            },
+
+            descargarExcel() {
+                this.buscarMatricula();
+
+                let urlexcel = `${appApiUrl}/matricula/exportarexcel?${qs.stringify(this.filters)}`;
+                window.location = urlexcel;
             },
 
         },

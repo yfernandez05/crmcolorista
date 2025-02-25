@@ -123,9 +123,39 @@ class ContratoController extends BaseController
      * @param  \App\Contrato  $contrato
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contrato $contrato)
-    {
-        //
+    public function destroy($id)
+    {   
+        $result = "";
+        try {
+
+            $contrato = Contrato::find($id);
+
+            if (!$contrato) {
+                return ResultManager::errorMessage('Contrato no encontrado.');
+            }
+
+            if ($contrato->file_id) {
+                $this->removeFile($contrato->file_id);
+            }
+
+            DetalleContrato::where('contrato_id', $id)->delete();
+
+            $contrato->delete();
+
+            $result = ResultManager::successMessage('Contrato eliminado correctamente.');
+
+        } catch (QueryException $e) {
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            //dd($e);
+            $result = ResultManager::gerericErrorMessage();
+
+        } catch (Exception $e) {
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            //dd($e);
+            $result = ResultManager::gerericErrorMessage();
+        }
+
+        return $result;
     }
 
     public function selectsearch(Request $request)

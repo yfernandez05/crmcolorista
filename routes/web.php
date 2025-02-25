@@ -61,6 +61,10 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::resource('planestudio', 'PlanEstudioController');
 
+    Route::get('aula/select', 'AulaController@select')->name('aula.select');
+    Route::resource('aula', 'AulaController');
+
+
 
 
 
@@ -156,6 +160,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::resource('inscripcion', 'InscripcionController');
 
+    Route::get('matricula/exportarexcel', 'MatriculaController@exportarExcel')->name('matricula.exportarexcel');
     Route::get('matricula/selectsearch','MatriculaController@selectsearch')->name('matricula.selectsearch');
     Route::get('matricula/select', 'MatriculaController@select');
     Route::get('matricula/factura/{id}', 'MatriculaController@factura');

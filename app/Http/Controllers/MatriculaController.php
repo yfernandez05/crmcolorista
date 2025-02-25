@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MatriculaExport;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Alumno;
@@ -14,6 +15,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\DetalleMatricula;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class MatriculaController extends BaseController
 {
@@ -28,7 +31,7 @@ class MatriculaController extends BaseController
         $perpage = $this->getLimitPagination($request);
 
         $query = Matricula::where($filters)
-        ->with('user','carrera','alumno','ciclo','turno');
+        ->with('user','carrera','aula','alumno','ciclo','turno');
 
         if ($request->exists('fechadesde')) {
             $fechadesde = Carbon::createFromFormat('d-m-Y', $request->fechadesde)->toDateString();
@@ -128,6 +131,7 @@ class MatriculaController extends BaseController
             $matricula->fecha = Carbon::createFromFormat('d-m-Y', $request->fecha);
             $matricula->alumno_id = $request->alumno_id;
             $matricula->carrera_id = $request->carrera_id;
+            $matricula->detalle_aula_id = $request->detalle_aula_id;
             $matricula->ciclo_id = $request->ciclo_id;
             $matricula->turno_id = $request->turno_id;
             $matricula->save();
@@ -204,6 +208,7 @@ class MatriculaController extends BaseController
         $matricula->turno_id = $request->turno_id;
         $matricula->alumno_id = $request->alumno_id;
         $matricula->carrera_id = $request->carrera_id;
+        $matricula->detalle_aula_id = $request->detalle_aula_id;
         $matricula->user_id = Auth()->user()->id;
 
         return $matricula;
@@ -249,6 +254,23 @@ class MatriculaController extends BaseController
             return response()->json(['message' => 'Detalles de matrícula actualizados correctamente.'], 200);
         } catch (Exception $e) {
             return response()->json(['message' => 'Error al actualizar detalles de matrícula.'], 500);
+        }
+    }
+
+    public function exportarExcel(Request $request)
+    {
+        try {
+            $name = 'Matriculas[' . Carbon::now('America/Lima')->format('d-m-Y H:i:s') . ' ].xlsx';
+            return Excel::download(new MatriculaExport($request), $name);
+            
+        } catch (QueryException $e) {
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            //dd($e);
+            throw new HttpException(500);
+        } catch (Exception $e) {
+            LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            //dd($e);
+            throw new HttpException(500);
         }
     }
 

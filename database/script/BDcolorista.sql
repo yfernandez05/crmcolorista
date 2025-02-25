@@ -3148,3 +3148,36 @@ ALTER TABLE alumnos ADD COLUMN coddistrito char(6) DEFAULT NULL AFTER nombreemer
 ALTER TABLE alumnos ADD COLUMN coddepartamento char(6) DEFAULT NULL AFTER coddistrito;
 ALTER TABLE alumnos ADD COLUMN codprovincia char(6) DEFAULT NULL AFTER coddepartamento;
 ALTER TABLE alumnos ADD COLUMN pais varchar(150) DEFAULT NULL AFTER codprovincia;
+
+
+CREATE TABLE `aulas` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `carrera_id` bigint unsigned NOT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `carrera_id` (`carrera_id`),
+  CONSTRAINT `alumnos_ibfk_1` FOREIGN KEY (`carrera_id`) REFERENCES `carreras` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `detalle_aulas` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `aula_id` bigint unsigned NOT NULL,
+  `nombre_aula` varchar(150) NOT NULL,
+  `foro_maximo` varchar(5) NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `detalle_aulas_id_foreign` (`aula_id`),
+  CONSTRAINT `detalle_aulas_id_foreign` FOREIGN KEY (`aula_id`) 
+  REFERENCES `aulas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ALTER TABLE matriculas add column detalle_aula_id BIGINT UNSIGNED NULL after carrera_id;
+
+ALTER TABLE matriculas ADD CONSTRAINT matriculas_detalle_aula_id_foreign
+FOREIGN KEY (detalle_aula_id) REFERENCES detalle_aulas(id);

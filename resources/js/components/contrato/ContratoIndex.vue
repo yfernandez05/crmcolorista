@@ -69,6 +69,13 @@
                                           class="btn btn-sm waves-effect waves-light border-0 mr-1">
                                           <i class="fas fa-file-contract fa-flip-horizontal fa-lg"></i>
                                       </button>
+                                      <button 
+                                        v-if="isValidPhone(cont.alumno?.celular)" 
+                                        @click="openWhatsApp(cont.alumno.celular)" 
+                                        title="Enviar WhatsApp"
+                                        class="btn btn-sm btn-outline-success border-0">
+                                        <i class="fab fa-whatsapp fa-lg"></i>
+                                    </button>
                                 </row-actions>
                             </td>
                             <td v-text="cont.id"></td>
@@ -176,7 +183,7 @@
 
                 this.listarContrato();  
             },
-            aliminarContraro(param){
+            eliminarContrato(param){
                 let vm = this;
 
                 if(!param.isactive) {
@@ -184,7 +191,7 @@
                     return;
                 }
 
-                swalAlertConfirm(`¿Seguro que quiere eliminar el contrato <b>${param.nombre}</b>?`, appName)
+                swalAlertConfirm(`¿Seguro que quiere eliminar el contrato <b>${param.matricula.detalle}</b>?`, appName)
                     .then(function(optionSelected){
                         if(optionSelected.value){
                             
@@ -291,9 +298,24 @@
                 });
             },
 
+            openWhatsApp(phone) {
+                if (!phone) return;
+                const url = `https://web.whatsapp.com/send?phone=51${phone}`;
+                window.open(url, "_blank");
+            },
+            openEmail() {
+                const mailto = `mailto:${this.email}`;
+                window.open(mailto, "_blank");
+            }
+
         },
         mounted() {
             this.listarContrato();
+        },
+        computed: {
+            isValidPhone() {
+            return (phone) => phone && /^\d{9}$/.test(phone) && phone.startsWith('9');
+            }
         },
         components: {
             MainContent,

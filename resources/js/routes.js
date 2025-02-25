@@ -291,6 +291,23 @@ export default new VueRouter({
         },
 
 
+        {
+            path: `${intranetBaseUrl}/aula`,
+            name: 'spa.aula',
+            component: require('./components/aula/AulaIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/aula/registrar`,
+            name: 'spa.aula.registrar',
+            component: require('./components/aula/AulaCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/aula/editar/:id`,
+            name: 'spa.aula.editar',
+            component: require('./components/aula/AulaEdit').default
+        },
+
+
 
 
 

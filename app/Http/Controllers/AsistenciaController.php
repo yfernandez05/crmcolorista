@@ -211,6 +211,7 @@ class AsistenciaController extends BaseController
                         'dm.id as detalle_id',
                         'dm.nombre as detalle_nombre',
                         'dm.fechapago as detalle_fechapago',
+                        'dm.fecha_confirmacion_pago',
                         'dm.pagado as detalle_pagado'
                     )
                     ->where('dm.matricula_id', $matricula->matricula_id)
