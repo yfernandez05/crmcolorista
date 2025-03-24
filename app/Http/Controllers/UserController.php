@@ -196,4 +196,9 @@ class UserController extends BaseController
         return User::where('rol_id','=', RuleManager::ASESOR_ACCESS)->get();
     }
 
+    public function selectdocente(){
+        $usuario = User::where([['rol_id','=', RuleManager::DOCENTE_ACCESS], ['estado','=', RuleManager::ACTIVE_STATE]])->orderBy('id', 'DESC')->get();
+        return $usuario;
+    }
+
 }

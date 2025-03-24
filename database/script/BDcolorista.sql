@@ -3181,3 +3181,45 @@ ALTER TABLE matriculas add column detalle_aula_id BIGINT UNSIGNED NULL after car
 
 ALTER TABLE matriculas ADD CONSTRAINT matriculas_detalle_aula_id_foreign
 FOREIGN KEY (detalle_aula_id) REFERENCES detalle_aulas(id);
+
+
+CREATE TABLE `docente` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `usuario_id` bigint unsigned NOT NULL,
+  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'A',
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `profesores_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `docente_curso` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `docente_id` bigint unsigned NOT NULL,
+  `curso_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (docente_id) REFERENCES docente(id) ON DELETE CASCADE,
+  FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE asistencias_clases (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    alumno_id BIGINT UNSIGNED NOT NULL,
+    docente_id BIGINT UNSIGNED NOT NULL,
+    curso_id BIGINT UNSIGNED NOT NULL,
+	`fecha_asistencia` timestamp NOT NULL,
+    estado CHAR(1) NOT NULL DEFAULT 'A',
+  `created_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `updated_usr` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+    FOREIGN KEY (alumno_id) REFERENCES alumnos(id) ON DELETE CASCADE,
+    FOREIGN KEY (docente_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
+);

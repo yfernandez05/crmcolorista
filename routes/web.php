@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\MatriculaController;
 use App\Http\Controllers\AsistenciaController;
+use App\Http\Controllers\AsistenciaDocenteAlumno;
 use App\Http\Controllers\ContratoController;
 
 Route::get('/', 'Auth\LoginController@showLoginForm');
@@ -34,6 +35,7 @@ Route::get('crm/{path?}', "SpaController@index")->where('path', '([A-z0-9-\/_.]+
 Route::prefix('rest')->name('rest.')->group(function () {
 
     Route::get('user/userasesor', 'UserController@userasesor')->name('user.userasesor');
+    Route::get('user/selectdocente', 'UserController@selectdocente')->name('user.selectdocente');
     Route::get('user/select', 'UserController@select')->name('user.select');
     Route::resource('user', 'UserController');
 
@@ -50,6 +52,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('turno/select', 'TurnoController@select');
     Route::resource('turno', 'TurnoController');
 
+    Route::get('curso/selectdocente', 'CursoController@selectdocente');
     Route::get('curso/select', 'CursoController@select');
     Route::resource('curso', 'CursoController');
 
@@ -64,7 +67,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('aula/select', 'AulaController@select')->name('aula.select');
     Route::resource('aula', 'AulaController');
 
-
+    Route::resource('docente', 'DocenteController');
 
 
 
@@ -144,6 +147,9 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::get('asistencias/alumno/{alumno_id}', [AsistenciaController::class, 'getAsistenciasByAlumno']);
     Route::resource('asistencias', 'AsistenciaController')->except(['show', 'create']);
     Route::get('alumno/generatecard/{id}','AlumnoController@generatecard')->name('alumno.generatecard');
+
+    Route::get('asistenciadocente/alumno', [AsistenciaDocenteAlumno::class, 'getasistenciadetail']);
+    Route::resource('asistenciadocente', 'AsistenciaDocenteAlumno');
 
     Route::get('prospecto/descargarplantilla', 'ProspectoController@descargarplantilla')->name('prospecto.descargarplantilla');
     Route::get('prospecto/select', 'ProspectoController@select')->name('prospecto.select');

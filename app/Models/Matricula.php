@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Ciclo;
 use App\Models\Turno;
 use App\Models\Carrera;
+use App\Models\planEstudio;
 use App\Models\Periodo;
 use App\Models\Condicion;
 use App\Util\RuleManager;
@@ -98,6 +99,12 @@ class Matricula extends Model
     public function aula()
     {
         return $this->belongsTo(DetalleAulas::class, 'detalle_aula_id');
+    }
+
+    public function planEstudio()
+    {
+        return $this->hasOne(PlanEstudio::class, 'carrera_id', 'carrera_id')
+                    ->whereColumn('ciclo_id', 'ciclo_id');
     }
 
 

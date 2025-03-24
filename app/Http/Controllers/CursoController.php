@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curso;
+use App\Models\Docente;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
 use App\Util\RuleManager;
@@ -150,6 +151,31 @@ class CursoController extends BaseController
 
         return $curso;
     }
+    
+
+    public function selectdocente(Request $request)
+    {
+        $usuarioId = $this->user->id;
+
+        if(in_array($usuarioId, RuleManager::ADMINISTRATORS_ACCESS)){
+            return $cursos = Curso::orderBy('id', 'DESC')->get();
+        }
+
+        // Buscar el docente asociado al usuario autenticado
+        $docente = Docente::where('usuario_id', $usuarioId)->first();
+        //return dd($docente);
+        if (!$docente) {
+            return response()->json(['message' => 'Docente no encontrado'], 404);
+        }
+
+        // Obtener los cursos asignados al docente desde la tabla docente_curso
+        $cursos = Curso::whereHas('docenteCursos', function ($query) use ($docente) {
+            $query->where('docente_id', $docente->id);
+        })->orderBy('id', 'DESC')->get();
+
+        return $cursos;
+    }
+
 
 
 }

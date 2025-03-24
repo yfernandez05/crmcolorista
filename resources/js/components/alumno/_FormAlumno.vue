@@ -53,9 +53,19 @@
                 </div>
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('celular')}">
-                    <label>Celular </label>
+                    <label>Celular <small class="text-danger">(*)</small></label>
                     <input type="text" class="form-control" v-model="alumno.celular" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('celular')" v-text="showError('celular').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('contactoemergencia')}">
+                    <label>Contacto de emergencia (Teléfono)</label>
+                    <input type="text" class="form-control" v-model="alumno.contactoemergencia" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('contactoemergencia')" v-text="showError('contactoemergencia').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('nombreemergencia')}">
+                    <label>Contacto de emergencia (Nombre)</label>
+                    <input type="text" class="form-control" v-model="alumno.nombreemergencia" @keyup.enter ="doSaveData"/>
+                    <small class="form-control-feedback" v-if="errorExists('nombreemergencia')" v-text="showError('nombreemergencia').errorDetail"></small>
                 </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('empresa')}">
                     <label>Empresa </label>
@@ -88,13 +98,7 @@
                         </label>
                     </div>
                     <small class="form-control-feedback" v-if="errorExists('trabajo')" v-text="showError('trabajo').errorDetail"></small>
-                </div>
-
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('contactoemergencia')}">
-                    <label>Contacto de emergencia (Teléfono)</label>
-                    <input type="text" class="form-control" v-model="alumno.contactoemergencia" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('contactoemergencia')" v-text="showError('contactoemergencia').errorDetail"></small>
-                </div>
+                </div>               
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('edad')}">
                     <label>Edad</label>
@@ -150,13 +154,7 @@
                         keyProperty="pkubigeo" textProperty="nombreubigeo">
                     </select2>
 
-                </div>
-
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('nombreemergencia')}">
-                    <label>Contacto de emergencia (Nombre)</label>
-                    <input type="text" class="form-control" v-model="alumno.nombreemergencia" @keyup.enter ="doSaveData"/>
-                    <small class="form-control-feedback" v-if="errorExists('nombreemergencia')" v-text="showError('nombreemergencia').errorDetail"></small>
-                </div>
+                </div>                
 
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('redfacebook')}">
                     <label>Facebook</label>
@@ -312,6 +310,9 @@
                 }
                 if (!this.alumno.dni) {
                     this.setError('dni', 'El campo DNI es obligatorio');
+                }
+                if (!this.alumno.celular) {
+                    this.setError('celular', 'El campo celular es obligatorio');
                 }
                 return this.errors;
             },

@@ -54,8 +54,8 @@ class User extends Authenticatable
 
     protected $appends = [
         'isactive',
-        'statename'
-
+        'statename',
+        'nombrecompleto'
     ];
 
     public function rol(){
@@ -82,5 +82,15 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    public function getNombrecompletoAttribute()
+    {
+        $nombreCompleto = $this->name;
+
+        if($this->last_name != null)
+            $nombreCompleto = $nombreCompleto.' '.$this->last_name;
+
+        return $nombreCompleto;
     }
 }

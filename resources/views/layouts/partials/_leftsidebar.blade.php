@@ -27,7 +27,7 @@
                     </ul>
                 </li>
                 {{-- @if (Auth::user()->idrol == Rule::PERSONAL_ATTENDANCE_ACCESS || Auth::user()->idrol == Rule::PERSONAL_STAND_ACCESS || Auth::user()->idrol == Rule::PERSONAL_STAND_SALE_ACCESS || in_array(Auth::user()->idrol, Rule::ADMINISTRATORS_ACCESS)) --}}
-                @if (Auth::user()->rol_id == Rule::PERSONAL_ATTENDANCE_ACCESS || Auth::user()->rol_id == Rule::PERSONAL_STAND_ACCESS || Auth::user()->rol_id == Rule::PERSONAL_STAND_SALE_ACCESS || in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS))
+                @if (in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS))
                 <div class="dropdown-divider"></div>
                 <li>
                     <router-link class="waves-effect waves-dark" :to="{ name: 'spa.lectorqr'}" aria-expanded="false">
@@ -54,7 +54,6 @@
                 </li>
                 @endif
 
-                {{-- @if (in_array(Auth::user()->idrol, Rule::ADMINISTRATORS_ACCESS)) --}}
                 @if (in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS))
                 <li class="nav-small-cap">
                     <span>ADMINISTRADOR</span>
@@ -77,7 +76,14 @@
                         <li><router-link :to="{name: 'spa.buttonmessage'}">Botones directos</router-link></li> -->
                     </ul>
                 </li>
+                @endif
 
+                @if (in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS) || in_array(Auth::user()->rol_id, Rule::DOCENTE_ACCESS))
+                <li class="nav-small-cap">
+                    <span>ASISTENCIA</span>
+                </li>
+
+                @if (in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS))
                 <li>
                     <router-link class="waves-effect waves-dark" :to="{name: 'spa.asistencia'}" aria-expanded="false">
                         {{-- <i class="ti-server"></i> --}}
@@ -85,7 +91,18 @@
                         <span class="hide-menu">Asistencia</span>
                     </router-link>
                 </li>
+                @endif
 
+                <li>
+                    <router-link class="waves-effect waves-dark" :to="{name: 'spa.asistenciadocente'}" aria-expanded="false">
+                        {{-- <i class="ti-server"></i> --}}
+                        <i class="far fa-check-square"></i>
+                        <span class="hide-menu">Asistencia Docente</span>
+                    </router-link>
+                </li> 
+                @endif
+
+                @if (in_array(Auth::user()->rol_id, Rule::ADMINISTRATORS_ACCESS))
                 <li class="nav-small-cap">
                     <span>PROFESIONAL</span>
                 </li>
@@ -109,6 +126,12 @@
                     <router-link class="waves-effect waves-dark" :to="{ name: 'spa.curso'}" aria-expanded="false">
                         <i class="fas fa-book"></i>
                         <span class="hide-menu">Curso</span>
+                    </router-link>
+                </li>
+                <li>
+                    <router-link class="waves-effect waves-dark" :to="{ name: 'spa.docente'}" aria-expanded="false">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span class="hide-menu">Cursos de Docentes</span>
                     </router-link>
                 </li>
                 <li>

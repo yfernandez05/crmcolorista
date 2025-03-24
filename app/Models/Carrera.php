@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\PlanEstudio;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +38,10 @@ class Carrera extends Model
 
     public function getStatenameAttribute(){
         return RuleManager::getStateName($this->estado);
+    }
+
+    public function planEstudios()
+    {
+        return $this->hasMany(PlanEstudio::class, 'carrera_id');
     }
 }

@@ -14,7 +14,7 @@ class RuleManager
     const DISABLED_STATE_NAME = 'Eliminado';
     const ADMINISTRATORS_ACCESS = [1, 2];
     const UNATTENDED_STATE_TYPE = 1;
-    const STANDARD_ACCESS = [3];
+    const DOCENTE_ACCESS = [3];
     const REPORT_ACCESS = [4];
     const ASESOR_ACCESS = [5];
     const PERSONAL_ATTENDANCE_ACCESS = 3;

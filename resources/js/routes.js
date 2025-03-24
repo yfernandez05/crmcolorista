@@ -308,6 +308,29 @@ export default new VueRouter({
         },
 
 
+        {
+            path: `${intranetBaseUrl}/docente`,
+            name: 'spa.docente',
+            component: require('./components/docente/DocenteIndex').default
+        },
+        {
+            path: `${intranetBaseUrl}/docente/registrar`,
+            name: 'spa.docente.registrar',
+            component: require('./components/docente/DocenteCreate').default
+        },
+        {
+            path: `${intranetBaseUrl}/docente/editar/:id`,
+            name: 'spa.docente.editar',
+            component: require('./components/docente/DocenteEdit').default
+        },
+
+
+
+        {
+            path: `${intranetBaseUrl}/asistenciadocente`,
+            name: 'spa.asistenciadocente',
+            component: require('./components/asistenciaDocente/DocenteAsistencia').default
+        },
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\DocenteCurso;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,5 +39,10 @@ class Curso extends Model
 
     public function getStatenameAttribute(){
         return RuleManager::getStateName($this->estado);
+    }
+
+    public function docenteCursos()
+    {
+        return $this->hasMany(DocenteCurso::class, 'curso_id', 'id');
     }
 }

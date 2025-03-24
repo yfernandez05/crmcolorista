@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Carrera;
 use App\Models\Ciclo;
+use App\Models\DetallePlanes;
 use App\Util\RuleManager;
 use Illuminate\Database\Eloquent\Model;
 
