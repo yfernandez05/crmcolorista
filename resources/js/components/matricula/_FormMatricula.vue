@@ -83,7 +83,10 @@
                             <td>{{ index + 1 }}</td>
                             <td>{{ item.nombre }}</td>
                             <td>1 Mes</td>
-                            <td>{{ item.preciomes }}</td>
+                            <!-- <td>{{ item.preciomes }}</td> -->
+                            <td>
+                                <input type="number" v-model.number="item.preciomes" step="0.001" min="0" class="form-control">
+                            </td>
                             <td>
                                     <v-date-picker v-model="item.fechapago"
                                         format="DD-MM-YYYY"
