@@ -28,7 +28,7 @@ class PagoObserver
 
             $fecha_actual = Carbon::now();
 
-            if ($conceptopago = 2) {
+            if ($conceptopago == 2) {
                 DetalleMatricula::where('matricula_id', $matricula_id)
                     ->update([
                         'pagado' => 1,

@@ -24,14 +24,6 @@
                     <small class="form-control-feedback" v-if="errorExists('carrera_id')"
                         v-text="showError('carrera_id').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle_aula_id')}">
-                    <label>Aula </label>
-                    <select2 :options="aulas" v-model="matricula.detalle_aula_id" :selectValue="matricula.detalle_aula_id"
-                        placeholder="Seleccione una aula" keyProperty="id" textProperty="nombre">
-                    </select2>
-                    <small class="form-control-feedback" v-if="errorExists('carrera_id')"
-                        v-text="showError('carrera_id').errorDetail"></small>
-                </div>
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('ciclo_id')}">
                     <label>Modulo <small class="text-danger">(*)</small></label>
                     <select2 :options="ciclos" v-model="matricula.ciclo_id" :selectValue="matricula.ciclo_id"
@@ -40,6 +32,14 @@
                     <small class="form-control-feedback" v-if="errorExists('ciclo_id')"
                         v-text="showError('ciclo_id').errorDetail"></small>
                 </div>
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('detalle_aula_id')}">
+                    <label>Aula </label>
+                    <select2 :options="aulas" v-model="matricula.detalle_aula_id" :selectValue="matricula.detalle_aula_id"
+                        placeholder="Seleccione una aula" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('carrera_id')"
+                        v-text="showError('carrera_id').errorDetail"></small>
+                </div>                
                 <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('turno_id')}">
                     <label>Turno <small class="text-danger">(*)</small></label>
                     <select2 :options="turnos" v-model="matricula.turno_id" :selectValue="matricula.turno_id"
@@ -126,6 +126,7 @@
     import VDatePicker from 'vue2-datepicker';
     import 'vue2-datepicker/locale/es';
     import moment,{ now } from 'moment';
+import { param } from 'jquery';
 
     export default {
         props: {
@@ -296,14 +297,28 @@
                     .then(function (response) {
                         vm.aulas = response.data.map(detalle => ({
                             id: detalle.id, // ID del detalle del aula
-                            nombre: detalle.nombre_aula // Nombre del aula
+                            nombre: detalle.nombre_aula, // Nombre del aula
+                            diapagofecha: detalle.diapagofecha // Nombre del aula
                         }));
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
+
+                this.obtenerModulosPorCarrera();
             },
-            listarCiclo() {
+            obtenerModulosPorCarrera(){
+                this.ciclos = [];
+                let vm = this;
+                axios.get(`${appApiUrl}/ciclo/selectfilter`, {params: { carrera_id: this.matricula.carrera_id } })
+                    .then(function (response) {
+                        vm.ciclos = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            /* listarCiclo() {
                 let vm = this;
                 axios.get(`${appApiUrl}/ciclo/select`)
                     .then(function (response) {
@@ -312,7 +327,7 @@
                     .catch(function (error) {
                         console.log(error);
                     })
-            },
+            }, */
 
             listarTurno() {
                 let vm = this;
@@ -352,23 +367,43 @@
                 console.log('updateDetalles called');
                 if (this.selectedCiclo) {
                     console.log('selectedCiclo:', this.selectedCiclo);
+
+                    const aulaSeleccionada = this.aulas.find(aula => aula.id === this.matricula.detalle_aula_id);
+                    const diaPago = aulaSeleccionada ? parseInt(aulaSeleccionada.diapagofecha, 10) : 1;
+
                     const nuevosDetalles = Array.from({ length: this.selectedCiclo.duracion }, (_, index) => ({
                         nombre: `${this.selectedCiclo.nombre} pago ${index + 1}`,
                         duracion: this.selectedCiclo.duracion,
                         preciomes: this.selectedCiclo.preciomes,
-                        fechapago: this.today,
+                        fechapago: this.generarFechaPago(diaPago, index),
                         index: index + 1
                     }));
+
                     this.detalles = nuevosDetalles;
                     console.log('detalles updated:', this.detalles);
                 }
             },
 
+            generarFechaPago(dia, index) {
+                let fecha = moment().add(index, 'months').date(dia);
+
+                if (fecha.date() !== dia) {
+                    fecha = moment().add(index, 'months').endOf('month');
+                }
+
+                if (index === 0 && fecha.isBefore(moment(), 'day')) {
+                    fecha.add(1, 'months');
+                }
+
+                return fecha.format('DD-MM-YYYY');
+            }
+
+
         },
         mounted(){
             this.listarAlumnos();
             this.listarCarreras();
-            this.listarCiclo();
+            /* this.listarCiclo(); */
             this.listarTurno();
             this.matricula.fecha = this.formatDate(new Date(),'DD-MM-YYYY');
 
@@ -406,6 +441,28 @@
                 },
                 immediate: true // Ejecutar inmediatamente cuando el componente se monta
             },
+
+            "matricula.detalle_aula_id": {
+                handler(newAulaId) {
+                    if (newAulaId) {
+                        const aulaSeleccionada = this.aulas.find(aula => aula.id === Number(newAulaId));
+                        console.log('aula seleccioanda: ', aulaSeleccionada);
+                        console.log('aulas : ', this.aulas);
+                        if (aulaSeleccionada) {
+                            console.log('Aula seleccionada:', aulaSeleccionada);
+
+                            const diaPago = parseInt(aulaSeleccionada.diapagofecha, 10) || 1;
+                            console.log('dia seleccionada: ', diaPago);
+
+                            this.detalles = this.detalles.map((detalle, index) => ({
+                                ...detalle,
+                                fechapago: this.generarFechaPago(diaPago, index)
+                            }));
+                        }
+                    }
+                },
+                deep: true
+            }
 
         },
         components: {

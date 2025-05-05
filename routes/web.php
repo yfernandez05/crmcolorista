@@ -60,6 +60,7 @@ Route::prefix('rest')->name('rest.')->group(function () {
     Route::resource('carrera', 'CarreraController');
 
     Route::get('ciclo/select', 'CicloController@select')->name('ciclo.select');
+    Route::get('ciclo/selectfilter', 'CicloController@selectFilter')->name('ciclo.selectFilter');
     Route::resource('ciclo', 'CicloController');
 
     Route::resource('planestudio', 'PlanEstudioController');

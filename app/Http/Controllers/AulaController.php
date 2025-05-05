@@ -7,6 +7,7 @@ use App\Models\Aula;
 use App\Util\LogErrorManager;
 use App\Util\ResultManager;
 use App\Util\RuleManager;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -54,6 +55,7 @@ class AulaController extends BaseController
                 $detalleAula = new DetalleAulas();
                 $detalleAula->aula_id = $aula->id;
                 $detalleAula->nombre_aula = $detalle['nombre_aula'];
+                $detalleAula->diapagofecha = $detalle['diapagofecha'];
                 $detalleAulas[] = $detalleAula;
             }
 
@@ -128,6 +130,7 @@ class AulaController extends BaseController
                     [
                         'nombre_aula' => $detalle['nombre_aula'],
                         'foro_maximo' => $detalle['foro_maximo'],
+                        'diapagofecha' => $detalle['diapagofecha'],
                         'aula_id' => $aula->id,
                     ]
                 );

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Util\RuleManager;
+use App\Models\DetalleCiclo;
 use Illuminate\Database\Eloquent\Model;
 
 class Ciclo extends Model
@@ -38,5 +39,10 @@ class Ciclo extends Model
 
     public function getStatenameAttribute(){
         return RuleManager::getStateName($this->estado);
+    }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetalleCiclo::class, 'ciclo_id', 'id');
     }
 }

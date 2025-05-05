@@ -25,10 +25,19 @@
                     <input type="text" class="form-control" v-model="aula.nombre_aula" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('nombre_aula')" v-text="showError('nombre_aula').errorDetail"></small>
                 </div>
-                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('foro_maximo')}">
+                <div class="form-group col-12 col-sm-6 col-md-3" :class="{'has-danger':errorExists('foro_maximo')}">
                     <label>Foro maximo</label>
                     <input type="text" class="form-control" v-model="aula.foro_maximo" @keyup.enter ="doSaveData"/>
                     <small class="form-control-feedback" v-if="errorExists('foro_maximo')" v-text="showError('foro_maximo').errorDetail"></small>
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-3" :class="{'has-danger':errorExists('diapagofecha')}">
+                    <label>Día de pago</label>
+                    <v-date-picker v-model="aula.diapagofecha"
+                        format="DD"
+                        value-type="format"
+                        placeholder="Seleccione día">
+                    </v-date-picker>
+                    <small class="form-control-feedback" v-if="errorExists('diapagofecha')" v-text="showError('diapagofecha').errorDetail"></small>
                 </div>
                <div class="form-group mb-1 col-sm-3 col-md-2 align-items-end justify-content-end">
                     <label class="mb-0">&nbsp;&nbsp;</label><br>
@@ -45,6 +54,7 @@
                             <tr>
                                 <th>Cursos</th>
                                 <th>Foro Max.</th>
+                                <th>Día de pago.</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -52,6 +62,14 @@
                             <tr v-for="(detalle, index) in aula.detalles" :key="index">
                                 <td v-text="detalle.nombre_aula"></td>
                                 <td v-text="detalle.foro_maximo"></td>
+                                <!-- <td v-text="detalle.diapagofecha"></td> -->
+                                <td>
+                                    <v-date-picker v-model="detalle.diapagofecha"
+                                        format="DD"
+                                        value-type="format"
+                                        placeholder="Seleccione día">
+                                    </v-date-picker>
+                                </td>
                                 <td>
                                     <button class="btn btn-danger" @click="eliminarDetalle(index)">Eliminar</button>
                                 </td>
@@ -86,6 +104,7 @@
 <script>
     import MainContent from './../../utils/MainContent';
     import Select2 from './../../utils/Select2';
+    import VDatePicker from 'vue2-datepicker';
 
     export default {
         props: {
@@ -99,6 +118,7 @@
                         carrera_id: '',
                         nombre_aula: '',
                         foro_maximo: '',
+                        diapagofecha: '',
                         detalles: [], // Array para los detalles
                         carrera: [],
                     }
@@ -131,10 +151,15 @@
                     this.setError('nombre_aula', 'Debe agregar el nombre de aula.');
                     return;
                 }
+                if (!this.aula.diapagofecha) {
+                    this.setError('diapagofecha', 'Debe agregar el dia de pago.');
+                    return;
+                }
 
                 let detalle = {
                     nombre_aula: this.aula.nombre_aula,
                     foro_maximo: this.aula.foro_maximo ? this.aula.foro_maximo : null,
+                    diapagofecha: this.aula.diapagofecha,
                 };
 
                 this.aula.detalles.push(detalle);
@@ -142,6 +167,7 @@
                 // Limpiar los campos de detalle después de añadirlos
                 this.aula.nombre_aula = '';
                 this.aula.foro_maximo = '';
+                this.aula.diapagofecha = '';
             },
             eliminarDetalle(index) {
                 this.aula.detalles.splice(index, 1);
@@ -185,7 +211,8 @@
         },
         components: {
             MainContent,
-            Select2
+            Select2,
+            VDatePicker
         }
     }
 

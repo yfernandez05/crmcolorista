@@ -3223,3 +3223,17 @@ CREATE TABLE asistencias_clases (
     FOREIGN KEY (docente_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
 );
+
+
+alter table detalle_aulas add column `diapagofecha` VARCHAR(2) NULL after foro_maximo;
+
+CREATE TABLE `detalle_ciclos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `ciclo_id` bigint unsigned NOT NULL,
+  `carrera_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `detalle_ciclos_ciclo_id_foreign` FOREIGN KEY (`ciclo_id`) REFERENCES `ciclos` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `detalle_ciclos_carrera_id_foreign` FOREIGN KEY (`carrera_id`) REFERENCES `carreras` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

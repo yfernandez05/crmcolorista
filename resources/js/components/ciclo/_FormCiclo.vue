@@ -28,6 +28,49 @@
                 </div>
             </div>
             <hr class="mt-2">
+            <div class="row">
+                <div class="col-12 col-md-3 col-lg-3 col-xl-2 d-none d-md-block">
+                    <h3 class="card-title mb-1">Carrera</h3>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-4" :class="{'has-danger':errorExists('carrera_id')}">
+                    <label>Carrera<small class="text-danger">(*)</small></label>
+                    <select2 :options="carreras" v-model="ciclo.carrera_id" :selectValue="ciclo.carrera_id"
+                        placeholder="Seleccione una carrera" keyProperty="id" textProperty="nombre">
+                    </select2>
+                    <small class="form-control-feedback" v-if="errorExists('carrera_id')"
+                        v-text="showError('carrera_id').errorDetail"></small>
+                </div>
+                <div class="form-group mb-1 col-sm-3 col-md-2 align-items-end justify-content-end">
+                    <label class="mb-0">&nbsp;&nbsp;</label><br>
+                    <button type="submit" @click.prevent="agregarDetalle()"
+                        class="btn waves-effect waves-light btn-primary text-truncate px-2">
+                        <i class="far fa-hand-point-up"></i> <span>Añadir Carrera</span></button>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <!-- Tabla de Detalles -->
+                <div class="form-group col-12">
+                    <table class="table table-sm table-hover table-striped table-bordered mb-2">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Carrera</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(detalle, index) in ciclo.detalles" :key="index">
+                                <td v-text="detalle.nombre"></td>
+                                <td>
+                                    <button class="btn btn-danger" @click="eliminarDetalle(index)">Eliminar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <hr class="mt-2">
         </template>
 
         <template v-slot:card-body-actions>
@@ -51,6 +94,7 @@
 
 <script>
     import MainContent from './../../utils/MainContent';
+    import Select2 from './../../utils/Select2';
 
     export default {
         props: {
@@ -65,12 +109,15 @@
                         descripcion: '',
                         duracion: 0,
                         preciomes: 0.00,
+                        carrera_id: '',
+                        detalles: [],
                     }
                 }
             }
         },
         data(){
             return {
+                carreras:[],
                 errors:[]
             }
         },
@@ -86,9 +133,30 @@
                     descripcion: this.ciclo.descripcion,
                     duracion: this.ciclo.duracion,
                     preciomes: this.ciclo.preciomes,
+                    detalles: this.ciclo.detalles,
                 }
 
                 this.$emit('saveData', rolData);
+            },
+
+            agregarDetalle() {
+                
+                if (!this.ciclo.carrera_id) {
+                    this.setError('carrera_id', 'Debe una selecionar una carrera.');
+                    return;
+                }
+
+                const carreraSeleccionada = this.carreras.find(carrera => carrera.id === Number(this.ciclo.carrera_id));
+                console.log(carreraSeleccionada);
+
+                let detalle = {
+                    carrera_id: this.ciclo.carrera_id,
+                    nombre: carreraSeleccionada.nombre,
+                };
+
+                this.ciclo.detalles.push(detalle);
+
+                this.ciclo.carrera_id = '';
             },
 
             validateFields() {
@@ -108,6 +176,9 @@
 
                 return this.errors;
             },
+            eliminarDetalle(index) {
+                this.ciclo.detalles.splice(index, 1);
+            },
             setError(keyModel, errorDetail) {
                 this.errors.push({
                     keyModel: keyModel,
@@ -120,10 +191,52 @@
             showError(keyModel){
                 return this.errors.find(err => err.keyModel === keyModel);
             },
+            async listarCarreras() {
+                let vm = this;
+                axios.get(`${appApiUrl}/carrera/select`)
+                    .then(function (response) {
+                        vm.carreras = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            actualizarDetalles() {
+                this.ciclo.detalles.forEach(detalle => {
+                    const carrera = this.carreras.find(carrera => Number(carrera.id) === Number(detalle.carrera_id));
+                    console.log(`Buscando carrera con id: ${detalle.carrera_id}, encontrado:`, carrera);
+                    this.$set(detalle, 'nombre', carrera ? carrera.nombre : 'Desconocido');
+                });
+            }
 
+        },
+        watch: {
+            /* 'ciclo.detalles': {
+                handler() {
+                    if (this.carreras.length > 0) {
+                        // Solo actualizar si las carreras están disponibles
+                        this.actualizarDetalles();
+                    } else {
+                        console.log('Carreras aún no cargadas');
+                    }
+                },
+                deep: true
+            }, */
+            'carreras': {
+                handler() {
+                    if (this.carreras.length > 0) {
+                        this.actualizarDetalles();
+                    }
+                },
+                immediate: true
+            },
+        },
+        mounted(){
+            this.listarCarreras();
         },
         components: {
             MainContent,
+            Select2,
         }
     }
 

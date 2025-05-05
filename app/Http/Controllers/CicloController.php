@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Ciclo;
+use App\Models\DetalleCiclo;
 use App\Util\RuleManager;
 use App\Util\ResultManager;
 use Illuminate\Http\Request;
 use App\Util\LogErrorManager;
 use App\Models\DetalleMatricula;
+use App\Models\Matricula;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class CicloController extends BaseController
 {
@@ -39,11 +42,25 @@ class CicloController extends BaseController
     public function store(Request $request)
     {
         $result = "";
+        DB::beginTransaction();
         try {
 
             $ciclo = $this->setModel(new Ciclo(), $request);
             $ciclo->created_usr  = $this->user->email;
             $ciclo->save();
+
+            $detalleCiclos = [];
+
+            foreach ($request->detalles as $detalle) {
+                $detalleCiclo = new DetalleCiclo();
+                $detalleCiclo->ciclo_id = $ciclo->id;
+                $detalleCiclo->carrera_id = $detalle['carrera_id'];
+                $detalleCiclos[] = $detalleCiclo;
+            }
+
+            $ciclo->detalles()->saveMany($detalleCiclos);
+
+            DB::commit();
 
             $result = ResultManager::genericSuccessMessage();
 
@@ -69,7 +86,7 @@ class CicloController extends BaseController
      */
     public function show($id)
     {
-        return Ciclo::find($id);
+        return Ciclo::with('detalles')->find($id);
     }
 
     /**
@@ -82,12 +99,37 @@ class CicloController extends BaseController
     public function update(Request $request, $id)
     {
         $result = "";
+        DB::beginTransaction();
         try {
 
             $ciclo = $this->setModel(Ciclo::findOrFail($id), $request);
             $ciclo->created_usr = $this->user->email;
             $ciclo->update();
 
+            $detallesExistentes = $ciclo->detalles()->get();
+
+            $detallesRecibidosIds = collect($request->detalles)->pluck('id')->filter();
+
+            // Eliminar los detalles que no están en la solicitud (detalles que fueron eliminados)
+            foreach ($detallesExistentes as $detalleExistente) {
+                if (!in_array($detalleExistente->id, $detallesRecibidosIds->toArray())) {
+                    $detalleExistente->delete();
+                }
+            }
+
+            // Ccrea los detalles
+            foreach ($request->detalles as $detalle) {
+                // updateOrCreate actualizar o crear el detalle
+                DetalleCiclo::updateOrCreate(
+                    ['id' => $detalle['id'] ?? null], // Si existe 'id', actualiza; si no, crea un nuevo detalle
+                    [
+                        'ciclo_id' => $ciclo->id,
+                        'carrera_id' => $detalle['carrera_id'],
+                    ]
+                );
+            }
+
+            DB::commit();
             $result = ResultManager::genericSuccessMessage();
 
         } catch (QueryException $e) {
@@ -117,7 +159,7 @@ class CicloController extends BaseController
         $errorMsg='No se puede eliminar. Matricula hace uso de este Modulo.';
 
         try {
-            $numberDependents = DetalleMatricula::where(['id'=>$id, 'estado'=> 'A'])->count();
+            $numberDependents = Matricula::where(['ciclo_id'=>$id, 'estado'=> 'A'])->count();
 
             if($numberDependents==0){
 
@@ -131,10 +173,12 @@ class CicloController extends BaseController
             }
         } catch (QueryException $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            dd($e);
             $result = ResultManager::errorMessage($errorMsg);
 
         } catch (Exception $e) {
             LogErrorManager::saveInDB($this, __FUNCTION__, $e);
+            dd($e);
             $result = ResultManager::gerericErrorMessage();
         }
 
@@ -161,5 +205,16 @@ class CicloController extends BaseController
             ->get();
 
         return $ciclo;
+    }
+
+    public function selectFilter(Request $request)
+    {
+        $ciclos = Ciclo::with('detalles')->where('estado','=','A')
+        ->whereHas('detalles', function ($query) use ($request) {
+            $query->where('carrera_id', $request->carrera_id);
+        })
+        ->get();
+
+        return $ciclos;
     }
 }

@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Aula;
+use App\Models\Carrera;
 use Illuminate\Database\Eloquent\Model;
 
-class DetalleAulas extends Model
+class DetalleCiclo extends Model
 {
-    protected $table = 'detalle_aulas';
+    protected $table = 'detalle_ciclos';
     protected $primaryKey = 'id';
     public $timestamps = false;
 
     protected $fillable = [
-        'aula_id', 
-        'nombre_aula',
-        'foro_maximo',
-        'diapagofecha',
+        'ciclo_id', 
+        'carrera_id',
         'created_usr',
         'updated_usr',
     ];
@@ -27,6 +25,6 @@ class DetalleAulas extends Model
 
     public function aula()
     {
-        return $this->belongsTo(Aula::class, 'aula_id', 'id');
+        return $this->belongsTo(Carrera::class, 'carrera_id', 'id');
     }
 }
